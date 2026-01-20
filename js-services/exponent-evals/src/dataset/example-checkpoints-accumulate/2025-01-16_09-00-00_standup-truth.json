@@ -1,0 +1,28 @@
+[
+  {
+    "input": {
+      "linearState": [
+        {
+          "id": "issue-darkmode-1",
+          "title": "Add dark mode to dashboard",
+          "description": "Sarah committed to adding dark mode to the dashboard this week.",
+          "assigneeId": "sarah"
+        }
+      ],
+      "docs": ["2025-01-16_09-00-00_standup.json"]
+    },
+    "output": {
+      "operations": [
+        {
+          "action": "UPDATE",
+          "updateData": {
+            "issueId": "issue-darkmode-1",
+            "description": "Sarah committed to adding dark mode to the dashboard this week.\n\n**Progress update (2025-01-16):**\n- 50% done\n- Color palette completed\n- Toggle component in progress\n- Need to wire up persistence layer for preference saving"
+          },
+          "confidence": 85,
+          "reasoning": "Progress update on existing dark mode task. Updated description with new progress details."
+        }
+      ]
+    }
+  }
+]

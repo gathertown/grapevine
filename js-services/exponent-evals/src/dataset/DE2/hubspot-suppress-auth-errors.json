@@ -1,0 +1,13 @@
+{
+  "id": "hubspot-suppress-auth-errors",
+  "type": "slack",
+  "sourceDescription": "this error report",
+  "sourceContent": "HubSpot suppress expiring auth errors\n\nhubspot.crm.objects.tasks.exceptions:UnauthorizedException\n\nhubspot.crm.objects.tasks.exceptions:UnauthorizedException\n(401)\nReason: Unauthorized\nHTTP response headers: HTTPHeaderDict({'Date': '<DAY_OF_WEEK>, <DATETIME>', 'Content-Type': 'application/json;charset=utf-8', 'Content-Length': '240', 'Connection': 'keep-alive', 'CF-Ray': '<HEX>-IAD', 'CF-Cache-Status': 'DYNAMIC', 'Strict-Transport-Security': 'max-age=<NUMBER>; includeSubDomains; preload', 'Vary': 'origin, Accept-Encoding', 'access-control-allow-credentials': 'false', 'x-hubspot-auth-failure': '401 Unauthorized', 'x-hubspot-correlation-id': '<GUID>', 'Set-Cookie': '__cf_bm=rA3DhjrJpb3LUt7E5KmIwHg2EGnvy_CLGmO4ktKLc4o-<NUMBER>-<IPV4>-MLnM3AqxoPU35z4Ihi1m3unMMel62fcwWJWr4qfmpt5aCIeImS26kbe9PpwVoOg3tVXkt7G6KjaXf36d8oLTywqV7fEtvqB2EI1E2AyubQ0; path=/; expires=<DAY_OF_WEEK>, <DATETIME>; domain=.hubapi.com; HttpOnly; Secure; SameSite=None', 'Report-To': '{\"endpoints\":[{\"url\":\"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v4?s=Mr567zJD%2FqK8jZrlIOwTcjkdCQSXjnjOWNNJuFoFQ1hNzbs1Jhti8Ce5i0oxwfxSlALX4tijE0F5GZqwusFa6VIplwi%2FMcHMLWUbMaikiWCrfDZ%2BMGaODELCJvYLptOs\"}],\"group\":\"cf-nel\",\"max_age\":<NUMBER>}', 'NEL': '{\"success_fraction\":0.01,\"report_to\":\"cf-nel\",\"max_age\":<NUMBER>}', 'Server': 'cloudflare'})\nHTTP response body: {\"status\":\"error\",\"message\":\"The OAuth token used to make this call expired 0 second(s) ago.\",\"correlationId\":\"<GUID>\",\"category\":\"EXPIRED_AUTHENTICATION\",\"context\":{\"expire time\":[\"<DATETIME>\"]}}",
+  "operation": {
+    "action": "CREATE",
+    "createData": {
+      "title": "HubSpot suppress expiring auth errors",
+      "description": "HubSpot suppress expiring auth errors\n\nhubspot.crm.objects.tasks.exceptions:UnauthorizedException\n(401) - The OAuth token used to make this call expired.\n\nCategory: EXPIRED_AUTHENTICATION"
+    }
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "$schema": "https://unpkg.com/knip@latest/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": ["nx.json", "knip.json"],
+      "project": ["package.json", "*.config.*"]
+    },
+    "admin-backend": {
+      "entry": ["src/server.ts"],
+      "project": ["src/**/*.ts", "!src/**/*.test.ts", "package.json", "*.config.*"]
+    },
+    "admin-frontend": {
+      "entry": ["src/main.tsx", "src/App.tsx", "vite.config.ts"],
+      "project": ["src/**/*.{ts,tsx}", "!src/**/*.test.*", "package.json", "*.config.*"]
+    },
+    "backend-common": {
+      "entry": ["src/index.ts"],
+      "project": ["src/**/*.ts", "!src/**/*.test.ts", "package.json", "*.config.*"]
+    },
+    "frontend-common": {
+      "entry": ["src/index.ts"],
+      "project": ["src/**/*.{ts,tsx}", "!src/**/*.test.*", "package.json", "*.config.*"]
+    },
+    "shared-common": {
+      "entry": ["src/index.ts"],
+      "project": ["src/**/*.ts", "!src/**/*.test.ts", "package.json", "*.config.*"]
+    },
+    "slack-bot": {
+      "entry": ["src/index.ts"],
+      "project": ["src/**/*.ts", "!src/**/*.test.ts", "package.json", "*.config.*"]
+    },
+    "localstack-ui-frontend": {
+      "entry": ["src/main.tsx", "src/App.tsx", "vite.config.ts"],
+      "project": ["src/**/*.{ts,tsx}", "!src/**/*.test.*", "package.json", "*.config.*"]
+    },
+    "localstack-ui-backend": {
+      "entry": ["src/server.ts"],
+      "project": ["src/**/*.ts", "!src/**/*.test.ts", "package.json", "*.config.*"]
+    }
+  },
+  "exclude": ["classMembers"],
+  "rules": {
+    "files": "error",
+    "dependencies": "error",
+    "devDependencies": "error",
+    "unlisted": "error",
+    "exports": "warn",
+    "types": "warn",
+    "nsExports": "off",
+    "nsTypes": "off"
+  },
+  "ignore": [
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "**/__tests__/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/.nx/**",
+    "**/node_modules/**",
+    "**/*.d.ts"
+  ],
+  "ignoreDependencies": [
+    "@types/*",
+    "typescript",
+    "prettier",
+    "eslint*",
+    "@eslint/*",
+    "@typescript-eslint/*",
+    "jest*",
+    "@testing-library/*",
+    "nodemon",
+    "tsx",
+    "ts-node",
+    "ts-jest",
+    "globals",
+    "@nx/workspace",
+    "@swc/cli",
+    "@vanilla-extract/css",
+    "js-yaml",
+    "react",
+    "identity-obj-proxy"
+  ],
+  "ignoreBinaries": ["tsc", "vite", "jest", "nx"]
+}

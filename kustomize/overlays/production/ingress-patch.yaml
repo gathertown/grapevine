@@ -1,0 +1,21 @@
+# Production environment hostnames
+# Replace with your actual production domain
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingest-gatekeeper
+  namespace: grapevine-services
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: "*.ingest.example.com"
+spec:
+  rules:
+    - host: "*.ingest.example.com"
+      http:
+        paths:
+          - backend:
+              service:
+                name: ingest-gatekeeper
+                port:
+                  number: 8001
+            path: /
+            pathType: Prefix

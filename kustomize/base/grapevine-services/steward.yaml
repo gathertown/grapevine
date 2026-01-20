@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: steward
+  namespace: grapevine-services
+  annotations:
+    reloader.stakater.com/auto: "true"
+  labels:
+    app.kubernetes.io/name: steward
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: steward
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: steward
+    spec:
+      serviceAccountName: steward
+      terminationGracePeriodSeconds: 180
+      imagePullSecrets:
+        - name: priv-docker-registry
+      containers:
+        - name: steward
+          image: REGISTRY/grapevine-steward:latest
+          envFrom:
+            - secretRef:
+                name: steward-secrets
+          resources:
+            requests:
+              cpu: 100m
+              memory: "256Mi"
+            limits:
+              cpu: 500m
+              memory: "1Gi"
+          securityContext:
+            runAsUser: 1000
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - all
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: steward
+  namespace: grapevine-services
+  labels:
+    app.kubernetes.io/name: steward
+spec:
+  minAvailable: 60%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: steward
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: steward
+  namespace: grapevine-services
+  labels:
+    app.kubernetes.io/name: steward
+spec:
+  selector:
+    app.kubernetes.io/name: steward
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: steward-metrics
+  namespace: grapevine-services
+  labels:
+    app.kubernetes.io/name: steward
+spec:
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 30s
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: steward
+  namespaceSelector:
+    matchNames:
+      - grapevine-services

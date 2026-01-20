@@ -1,0 +1,20 @@
+{
+  "_comment": {
+    "description": "Test: PR description contains Linear issue ID (not in title)",
+    "expected": "UPDATE the referenced issue",
+    "LINEAR_TICKET_TO_CREATE": {
+      "title": "Users randomly get logged out",
+      "description": "Multiple reports of users losing their session unexpectedly. Happens across different browsers and devices. No pattern identified yet."
+    }
+  },
+  "id": "gh-explicit-id-in-description",
+  "title": "Fix the logout bug",
+  "date": "2025-01-21",
+  "type": "github",
+  "author": "devuser",
+  "repository": "gathertown/corporate-context",
+  "prNumber": 202,
+  "content": "Repository: gathertown/corporate-context\nPull Request: #202 - Fix the logout bug\nURL: https://github.com/gathertown/corporate-context/pull/202\nStatus: merged\nAuthor: devuser\n\nDescription:\nThis resolves EXP-166.\n\nThe issue was caused by a race condition in the session validation middleware where concurrent requests could invalidate each other's sessions.\n\nChanges:\n- Added mutex lock around session validation\n- Improved session storage to handle concurrent access\n- Added regression tests\n\nActivity:\n\n2025-01-21 09:00:00 devuser opened pull request\n2025-01-21 10:30:00 karenying approved\n2025-01-21 11:00:00 devuser merged pull request",
+  "participants": [],
+  "files": []
+}

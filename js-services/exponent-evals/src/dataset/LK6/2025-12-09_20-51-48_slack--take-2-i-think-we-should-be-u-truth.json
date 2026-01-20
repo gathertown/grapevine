@@ -1,0 +1,213 @@
+{
+  "output": {
+    "operations": [
+      {
+        "action": "SKIP",
+        "skipData": {
+          "reason": "Phrased as a self-directed investigation that Brent will take on."
+        }
+      }
+    ]
+  },
+  "input": {
+    "docs": ["2025-12-09_20-51-48_slack--take-2-i-think-we-should-be-u.json"],
+    "linearState": [
+      {
+        "id": "dd61269e-c5b8-479a-9058-08eaee12378e",
+        "identifier": "AIVP-994",
+        "title": "Debug Grapevine search not finding Notion doc '[Gather Chat] Custom Emojis'",
+        "description": "Debug Grapevine search not finding Notion doc '\\[Gather Chat\\] Custom Emojis'.\n\nNew clarification from Slack (2025-12-09 20:31 UTC):\n\n* Kumail Jaffer: If the doc is in personal docs and not explicitly nested under 'General', Grapevine cannot find it; it needs to be moved under 'General'.\n* Karen Ying asked if this holds even with 'all workspace access' — confirmed 'yeah'.\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1765312307773549?thread_ts=1765311202.570749)",
+        "assigneeId": "51b51810-a5b5-4578-a95e-3322a9b6eedf",
+        "assignee": "Karen Ying",
+        "priority": 0,
+        "state": "In Progress",
+        "createdAt": "2025-12-09T20:15:40.583Z"
+      },
+      {
+        "id": "a9b95a89-fcf9-4195-9ad7-73f47d61af8a",
+        "identifier": "AIVP-993",
+        "title": "Fix Reviewer CI leaking github cred",
+        "description": "[https://github.com/gathertown/corporate-context/pull/2377#pullrequestreview-3554952107](https://github.com/gathertown/corporate-context/pull/2377#pullrequestreview-3554952107)\n\n```\n1. .github/scripts/call_pr_review_tool.py:79\nThe script prints the full request_payload to stdout, which includes github_token when present. This leaks a privileged token into GitHub Actions logs and, in this workflow, into the Slack message (review_output.txt is sent to Slack). Do not print secrets; redact or omit tokens from logs. References: code at https://github.com/gathertown/corporate-context/blob/main/.github/scripts/call_pr_review_tool.py#L79 and workflow forwarding https://github.com/gathertown/corporate-context/blob/main/.github/workflows/grapevine-pr-review.yml#L59-L66.\n\nImpact: 90/100 | Confidence: 90/100 | Categories: security\n```",
+        "assigneeId": "77222287-ba34-46bc-b360-d5be5b4c009b",
+        "assignee": "David Orr",
+        "priority": 0,
+        "state": "In Review",
+        "createdAt": "2025-12-09T18:33:04.839Z"
+      },
+      {
+        "id": "95e0847f-bf19-4e11-90d8-7f95a92a8416",
+        "identifier": "AIVP-992",
+        "title": "Move workflow builder PR on top of agent harness PR to enable integration",
+        "description": "Bryan Phelps committed to move the workflow builder PR on top of Jordan's agent harness PR to try connecting them.\n\n* Goal: enable initial integration between the workflow builder UI and the agent harness\n* Related PR: agent harness PR ([https://github.com/gathertown/corporate-context/pull/2350](https://github.com/gathertown/corporate-context/pull/2350))\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1765302350314019?thread_ts=1765300907.197159)",
+        "assigneeId": "4e49bce1-a0f0-42c6-b387-b843f08519c5",
+        "assignee": "Bryan Phelps",
+        "priority": 0,
+        "state": "Done",
+        "createdAt": "2025-12-09T17:47:30.879Z"
+      },
+      {
+        "id": "e1ce9588-7099-45fa-ba1f-30987140ac85",
+        "identifier": "AIVP-991",
+        "title": "Migrate per-tenant secrets from SSM to KMS + Tenant DB",
+        "description": "Context:\n\n**From Original Slack Report:**\n\n> **Johnny D**  [Oct 9th at 4:23 PM](https://gather-town.slack.com/archives/C08BMCZK81F/p1760041417156219):\n>\n> oh damn we hit a limit preventing new tenants\n>\n> **New error group detected****\n**[**botocore.errorfactory:ParameterLimitExceeded**](https://one.newrelic.com/launcher/errors-inbox.launcher?pane=eyJuZXJkbGV0SWQiOiJlcnJvcnMtaW5ib3guaG9tZSIsIndvcmtsb2FkSWQiOiJNek0zTXpreU5ueE9VakY4VjA5U1MweFBRVVI4TkRJMk5EWXkifQ%3D%3D&cards%5B0%5D=eyJ0aW1lU3RhbXAiOiIxNzYwMDQxMjI1NDA0IiwibmVyZGxldElkIjoiZXJyb3JzLWluYm94LmVycm9yLWdyb3VwLWRldGFpbHMiLCJlbnRpdHlHdWlkIjoiTXpNM016a3lObnhPVWpGOFYwOVNTMHhQUVVSOE5ESTJORFl5IiwiZXJyb3JHcm91cEd1aWQiOiJNek0zTXpreU5ueEZVbFI4UlZKU1gwZFNUMVZRZkdWbU5EazBPRE5rTFdSbVpUZ3RNMlUyTnkxaFpEVXdMVFEyTUdVNU1tTTBZV0ZsT0EifQ%3D%3D&platform%5BtimeRange%5D%5Bduration%5D=600000&platform%5B%24isFallbackTimeRange%5D=true&utm_source=errors-inbox&utm_medium=slack&utm_campaign=errors-inbox-slack-post-click)\n>\n> ```\n> An error occurred (ParameterLimitExceeded) when calling the PutParameter operation: You have reached the maximum number of standard parameters for this AWS account and Region (<NUMBER>). To add more parameters, either delete existing parameters or upgrade to the advanced-parameter tier (charges apply).\n> ```\n>\n> hm we can't raise this limit. advanced params have a hard cap too\n>\n> immediate concern is getting back live - I think we likely have params for tenants that have been deleted, which we can clear out as an immediate step\n>\n> **jared**  [Oct 9th at 4:28 PM](https://gather-town.slack.com/archives/C08BMCZK81F/p1760041716560969?thread_ts=1760041417.156219&cid=C08BMCZK81F):\n>\n> Could probably switch to advanced params to buy some breathing room. In theory that shouldn't be hard\n>\n> I think it'd be a code change though, so probably: delete unused -> advanced -> explore KMS/secrets store\n>\n> **Johnny D**  [Oct 9th at 4:41 PM](https://gather-town.slack.com/archives/C08BMCZK81F/p1760042471546389?thread_ts=1760041417.156219&cid=C08BMCZK81F):\n> deleted them - we need to delete more to have a bit more breathing room though. [@Dave Orr](https://gather-town.slack.com/team/U025PUZ532N) is going to delete more tenants from staging, since we currently use the same SSM for staging and prod\n>\n> It looks like 2 tenants tried and failed to provision:\n>\n> * `8c899323eb484c06` tried and got through all the opensearch & postgres setup, as well as some of the SSM saving, but failed on one of the final SSM saves\n> * `bcad3d514c724b4e` then signed up - also got through opensearch & postgres, though was unable to save anything to SSM\n>\n> Since both were created in postgres & opensearch, we can't simply retry them as they'll fail on the postgres user role issue. I'm going to manually fix them by deleting their roles from prod PSQL\n>\n> Between these 2 actions we should be in an ok \"breathing room\" state - I'm going to switch us over to advanced params so we have a 10x from there, which should give us enough time to decide how we want to handle this properly\n>\n> PR to use [Advanced Parameters](https://github.com/gathertown/corporate-context/pull/1470) shipping to staging. Once deployed, I'm going to test by:\n>\n> * confirming existing staging tenant isn't broken (i.e we can properly fetch non-Advanced params still)\n> * creating a new Staging tenant\n> * confirming that this new tenant uses advanced params manually in AWS console\n>\n> \n> assuming all goes well, will ship to prod\n>\n> We definitely need to figure out a real solution to this though - advanced SSM params are 5c/mo/param, which will add up very fast in costs\n>\n> I expect we're over-using params atm - i.e we could just store all tenant provisioning details in 1 param, cutting does \\~4 params/tenant\n> but that still might not be enough headroom with 10k cap; likely need to move off SSM to secret manager or some other secure KV store\n>\n> new tenant params are advanced, DMs and proactivity aren't broken on staging - promoting to prod\n>\n> OK calling the all clear - prod is rolled out, and a new organic tenant is using advanced tier params\n> [@vic](https://gather-town.slack.com/team/U01FGUX678C) [@Kumail Jaffer](https://gather-town.slack.com/team/U0180NKJP89) this will buy us a good amount of time, but I mean buy in a literal sense 🤑🤑. We should discuss tomorrow in standup how we want to proceed\n>\n> **Kumail Jaffer**  [Oct 9th at 6:53 PM](https://gather-town.slack.com/archives/C08BMCZK81F/p1760050395799469?thread_ts=1760041417.156219&cid=C08BMCZK81F)\n>\n> oof this is a really rough limit\n>\n> almost certainly need to choose a different secure KV store\n>\n> **vic**  [Oct 13th at 8:37 PM](https://gather-town.slack.com/archives/C08BMCZK81F/p1760402255693349?thread_ts=1760041417.156219&cid=C08BMCZK81F)\n>\n> damn, thanks for dealing with this yall\n>\n> is this still TODO to figure out? don’t see it mentioned in friday standup notes\n>\n> **Dave Orr**  [Oct 13th at 8:40 PM](https://gather-town.slack.com/archives/C08BMCZK81F/p1760402414498799?thread_ts=1760041417.156219&cid=C08BMCZK81F)\n>\n> I don’t believe we’ve figured out our alternative secret store or started migrating\n\n**From Relevant Security Plan:**\n\n> **Johnny D**  [Oct 14th at 2:37 PM](https://gather-town.slack.com/archives/C01CNT77ZLG/p1760467075264589)\n>\n> [@Josh Yavor](https://gather-town.slack.com/team/U08RDCGU4US) Wanted to get your take on a potential architecture change we're considering for Grapevine.\n> Some context:\n>\n> * Currently, we store 2 types of privileged data for our customers:\n>   * External API Keys (Slack API Key, Notion API Key, etc.). These are currently stored in SSM, encrypted with a shared KMS key, **with each field as their own parameter**\n>   * Company Docs (Slack messages, notion docs, etc.). These are stored in RDS (1 db per tenant), Opensearch (1 index per tenant) and Turbopuffer (1 namespace per tenant)\n> * We store the tenant-scoped credentials needed to access each of these in SSM - **each as their own parameter**\n> * Last week, we had an incident where we hit the hard limit on SSM Parameters per account (10k Standard). We've temporarily mitigated by upping to using Advanced Parameters (100k limit), but these are more expensive and are still limited in scale\n>\n> \n> Our plan:\n>\n> * As part of our longer-term solution, we'd like to move to 1 SSM parameter / tenant. This would contain only the Grapevine-managed credentials (PG, OS)\n> * The External API Keys would move to being stored in RDS, alongside the Company Docs. They would remain encrypted at rest and well-secured\n>\n> \n> Question for you: Do you think there's any issue with us storing these external API keys in RDS? The only argument I can think of against it would be that if our RDS leaked we'd expose these API keys, but they can only be used to fetch the data that's already being stored in that DB so this feels like a weak argument\n> cc [@Kumail Jaffer](https://gather-town.slack.com/team/U0180NKJP89) if you have any other context to add\n>\n> **Achilleas**  [Oct 14th at 2:48 PM](https://gather-town.slack.com/archives/C01CNT77ZLG/p1760467689343929?thread_ts=1760467075.264589&cid=C01CNT77ZLG)\n>\n> Do we plan to store the external api keys in an encrypted format (for example, encrypted using a Grapevine-owned KMS. fwiw we ended up doing the same in Gather Core as well - [ref](https://gather-town.slack.com/archives/C02EGRGH8SY/p1755799946894989)), or will they be stored as plain text?\n>\n> **Josh Yavor**  [Oct 14th at 3:01 PM](https://gather-town.slack.com/archives/C01CNT77ZLG/p1760468487612829?thread_ts=1760467075.264589&cid=C01CNT77ZLG)\n>\n> ^this is the right direction - it can be okay to store safely encrypted versions of the keys in a database with the key management / encryption / decryption provided via AWS (KMS). that gives you the appropriate flexibility for separation of duties for keys while keeping the volume of keys manageable.\n>\n> > but they can only be used to fetch the data that's already being stored in that DB\n>\n> While this **may** be true now, this is not a safe assumption to make long term. Depending on what other future API integrations you add support for, any changes made to API authorization behavior for the existing integrations, or any configuration drift that may be introduced by customer decisions (over-scoping access accidentally), you can not rely on your integration's access being limited to \"read only\". You need to protect these credentials based on the assumption that some of them may (intentionally or not) have additional capabilities such as writing data and/or making state changes to your customer's systems.\n> Here's an example of a recent vendor breach where attackers went after them specifically for their API credentials to then get to their customer's data directly. Even in read-only modes, you don't want to be responsible for letting these credentials fall into attacker's hands.\n> Overview: [https://cloud.google.com/blog/topics/threat-intelligence/data-theft-salesforce-instances-via-salesloft-drift](https://cloud.google.com/blog/topics/threat-intelligence/data-theft-salesforce-instances-via-salesloft-drift)\n> Coverage of impacted customers: [https://www.driftbreach.com/](https://www.driftbreach.com/)\n>\n> would the DB in RDS storing the keys be postgress?\n>\n> **Johnny D**  [Oct 14th at 3:14 PM](https://gather-town.slack.com/archives/C01CNT77ZLG/p1760469286713759?thread_ts=1760467075.264589&cid=C01CNT77ZLG)\n>\n> Yes, DB would be Postgres\n>\n> Makes sense. So sounds like this approach would work if we encrypt them with KMS in our application logic coming in/out of RDS\n\n**From Original Notion Plan:**\n\n> Kumail:\n>\n> \\> we need to find an alternate secret store\n>\n> @Johnny Dallas any suggestions?\n>\n> Johnny:\n>\n> thinking/looking through some options today, will have more specific ideas later toda\n>\n> Spent some time digging into this. Have a clear plan of action:\n>\n> \\- migrate to 1 SSM parameter/tenant, storing ONLY: OS creds, DB creds\n>\n> \\- all other secrets move to a new table in the tenant DB: external_secrets\n>\n> \\- all values are encrypted by KMS going in/out of this table\n>\n> Next steps would be to create this table, update codepaths for fetching/saving these values, and write a migration script\n\n**From Reinforcing Notion Plan:**\n\n> * plan:\n>   * keep using ssm, but 1 param / tenant\n>   * move all external creds out of ssm, into tenant db - it should only be storing pg and os creds\n>   * encrypt external creds via kms before writing to tenant db\n\nSynthesized:\n\nProblem:\n\n* Every tenant uses multiple SSM parameters \n* SSM has a hard cap on the number of parameters that can be used per AWS account\n* We ran out of SSM parameters, preventing new users from signing up\n\nSolution:\n\n* Migrate to only 1 SSM parameter per tenant by moving all non-postgres credentials into postgres, and consolidating all postgres credentials into 1 parameter",
+        "priority": 2,
+        "state": "Backlog",
+        "createdAt": "2025-12-09T17:17:22.002Z"
+      },
+      {
+        "id": "a0d4bf6c-61fd-47e2-bb79-792e2e14c068",
+        "identifier": "AIVP-990",
+        "title": "Switch agent LLM provider from OpenAI to Anthropic API",
+        "description": "Update from Slack (2025-12-09 18:23 UTC, Johnny Dallas):\n\n* PR [https://github.com/gathertown/corporate-context/pull/2394](https://github.com/gathertown/corporate-context/pull/2394) implements the provider switch (authored via Devin)\n* It got stuck until an Anthropic API key was added to Doppler; after adding, the PR continued\n* Acceptance tests succeeded for:\n  * ask a question via /ask endpoint\n  * list all MCP tools\n* Concern: the sample question (\"whats the capital of Paris\") did not require tool use, so internal agent tools may be broken or untested\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1765304600269559?thread_ts=1765298877.122089)",
+        "assigneeId": "6ce1dce5-d5b4-4e6f-a6bc-4beda94c5082",
+        "assignee": "Kumail",
+        "priority": 0,
+        "state": "Triage",
+        "createdAt": "2025-12-09T16:48:53.943Z"
+      },
+      {
+        "id": "c087566e-2dbf-41fb-98d6-6d80291304ff",
+        "identifier": "AIVP-989",
+        "title": "PR Review github action is sending multiple messages per review",
+        "description": "[https://gather-town.slack.com/archives/C0A1HMDP63E/p1765245282808189](https://gather-town.slack.com/archives/C0A1HMDP63E/p1765245282808189)",
+        "assigneeId": "7ff3efc2-b5a2-4820-b4b4-7ec1d829e35a",
+        "assignee": "Andy Lui",
+        "priority": 0,
+        "state": "In Review",
+        "createdAt": "2025-12-09T02:05:54.125Z"
+      },
+      {
+        "id": "1f05e4a9-a90a-4166-b828-cabf488001ad",
+        "identifier": "AIVP-988",
+        "title": "Check current comments before posting",
+        "description": "Reviewer should review current comments on the PR to prevent redundant comments\n\nThis is especially important when iterating on a PR, reviewer will post many of the same comments every time",
+        "priority": 3,
+        "state": "Backlog",
+        "createdAt": "2025-12-09T01:35:03.883Z"
+      },
+      {
+        "id": "26796661-fd93-4871-998b-c1ceb46383a5",
+        "identifier": "AIVP-987",
+        "title": "Don't request changes ever",
+        "description": "This prevents the PR from being merged, it's very annoying",
+        "assigneeId": "77222287-ba34-46bc-b360-d5be5b4c009b",
+        "assignee": "David Orr",
+        "priority": 1,
+        "state": "Done",
+        "createdAt": "2025-12-09T01:28:07.872Z"
+      },
+      {
+        "id": "18ac524d-5fe2-4f59-8cd3-54eb653cc87a",
+        "identifier": "AIVP-986",
+        "title": "Fix duplicate calls in github CI",
+        "description": "I think I've seen multiple calls on github CI for a single commit on a single PR. Not sure of the cause, and it's possible I'm just wrong about this, double check.",
+        "priority": 4,
+        "state": "Backlog",
+        "createdAt": "2025-12-09T01:27:46.068Z"
+      },
+      {
+        "id": "b6a2cd4d-975f-45d8-b792-e746959d8be1",
+        "identifier": "AIVP-985",
+        "title": "Provide script to run on local changes for vibework",
+        "description": "Vibework team wants a script that Vlad can run to review its local changes.\n\n* Get local diff\n* Make each LLM call locally (maybe to staging/prod is OK?)\n  * that's already what our script does, right?",
+        "priority": 2,
+        "state": "Backlog",
+        "createdAt": "2025-12-09T01:26:32.803Z"
+      },
+      {
+        "id": "02d80d23-fef3-4270-bdff-7aa6565a3f5b",
+        "identifier": "AIVP-984",
+        "title": "Reduce false positive comments",
+        "description": "We think false positives are worse for vibe work than false negatives\n\n* other AI reviewers can catch stuff, too, reducing the impact of false negatives\n* false positives will cause extra dev cycles and make code more complicated",
+        "priority": 2,
+        "state": "Backlog",
+        "createdAt": "2025-12-09T01:23:15.366Z"
+      },
+      {
+        "id": "9d742f93-9eac-4070-9f4e-d07e076161d6",
+        "identifier": "AIVP-983",
+        "title": "Post comments to Github",
+        "description": "",
+        "assigneeId": "77222287-ba34-46bc-b360-d5be5b4c009b",
+        "assignee": "David Orr",
+        "priority": 1,
+        "state": "In Progress",
+        "createdAt": "2025-12-09T01:19:17.302Z"
+      },
+      {
+        "id": "ced75b3d-61c3-482a-8203-2dd8641490c3",
+        "identifier": "AIVP-982",
+        "title": "Hook acceptance-testing setup into a new n8n workflow for a basic E2E",
+        "description": "Per Slack, <@U08S4NPGX7X> will hook this up to a new n8n workflow to get a basic end-to-end run.\n\n* Goal: basic E2E via new n8n workflow\n* Context: \"this\" refers to Brent’s system prompt/setup used with Devin for acceptance tests\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1765235128984909?thread_ts=1765235083.191019)",
+        "priority": 0,
+        "state": "Triage",
+        "createdAt": "2025-12-08T23:06:32.709Z"
+      },
+      {
+        "id": "49031d52-d301-4519-bcde-d5950c4ab951",
+        "identifier": "AIVP-980",
+        "title": "Prepare Vlad prototype today so Chandler can contribute tomorrow",
+        "description": "Update from Slack (2025-12-09):\n\n* Container now spins up all corporate-context services (+ Chromium) for Vlad.\n* Next: figure out the cloud environment for this setup due to docker-in-docker complexities; aiming to make substantial progress tonight.\n* After that, to make Vlad more parallelizable, we will need to:\n  * Set up the db-seed script (currently stubbed) to copy tenant data into the Vlad environment\n  * Set up the coding agent (+ MCPs)\n  * Develop the harness further to post back to GitHub / integrate into the workflow\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1765239858234859)",
+        "priority": 2,
+        "state": "In Progress",
+        "createdAt": "2025-12-08T18:30:17.189Z"
+      },
+      {
+        "id": "47327fd3-e841-4c87-9cc0-f2e85a1b8d38",
+        "identifier": "AIVP-979",
+        "title": "Harden verification loop (Jordan + Bryan): reliable test plans and execution evidence",
+        "description": "**Additional context (2025-12-09 16:55 UTC, Bryan Phelps):**\n\n* Considering running Claude Code in headless mode for test plan generation (using `-p` for the prompt and `--output-format=json`).\n* Planning a similar headless run for test execution, allowing MCPs such as the Playwright tool.\n* Hypothesis: test plan generation may benefit from subagents like Explore to gather additional context.\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1765299358709759?thread_ts=1765298519.650139)",
+        "priority": 2,
+        "state": "In Progress",
+        "createdAt": "2025-12-08T18:30:16.943Z"
+      },
+      {
+        "id": "c5a15492-4887-41b2-a97d-61f51675ca30",
+        "identifier": "AIVP-978",
+        "title": "Review unapproved PRs blocking promotion #2352 to production",
+        "description": "Production promotion tracking for PR #2352\nLink: [https://github.com/gathertown/corporate-context/pull/2352](https://github.com/gathertown/corporate-context/pull/2352)\nStatus: Open (in review)\nCommit promoted: a93b931be848135ecc533bec9a4324ab68a3a808 (base: 354032950cac04e4631e343d64cd0b5be35c40e2)\n\nUpdate (Dec 8): Promotion checklist in PR body was toggled to checked to refresh constituent PR statuses. Current approval status in this promotion:\n\nNot approved yet (❌):\n\n* #2312 \\[Grapevine UI\\] Install eslint-plugin-verb-nouns\n* #2341 feat(attio-connector): CONN-480 batch job processing\n* #2342 chore: add operation counts to log\n* #2343 feat: added PR URL in update slack msg\n* #2344 chore: refactor ambient extraction Slack message formatting/send logic\n* #2345 fix: only show meeting extraction messages w/ create/update actions in team channel\n* #2347 feat: add linear team name to extraction msgs\n* #2351 Make LK2 accumulate\n* #2340 Move asana task refresh/delete logic into the incremental job\n\nApproved (✅):\n\n* #2337 \\[Grapevine\\] - fix gather connector installer\n* #2326 feat(attio-connector): CONN-429 pruner and citation\n* #2346 Scale down staging replicas\n\nNext step: Review and approve the ❌ PRs above before approving promotion #2352.",
+        "priority": 0,
+        "state": "In Review",
+        "createdAt": "2025-12-08T17:53:37.932Z"
+      },
+      {
+        "id": "20d4c39a-85bb-450b-8e86-9b7db84c5c87",
+        "identifier": "AIVP-977",
+        "title": "SSO: Install Gather connector when API key stored and space_id present, then trigger backfill",
+        "description": "Track work to install the Gather connector from the SSO grant flow and trigger a root backfill when appropriate.\n\nPR #2337: Open (in review)\nLink: [https://github.com/gathertown/corporate-context/pull/2337](https://github.com/gathertown/corporate-context/pull/2337)\nAuthor: @awlui\n\nKey changes:\n\n* Admin backend (sso.ts):\n  * Store Gather API key and webhook secret via SSMClient; track apiKeyStored/secretStored\n  * If space_id is provided and API key storage succeeded, call installConnector({ tenantId, type: Gather, externalId: space_id })\n  * Log success/failure of installation; do not fail grant creation on install errors\n  * Trigger backfill with getSqsClient().sendGatherApiIngestJob(tenant_id, space_id)\n* Tests (sso.test.ts):\n  * Ensure connector installs and backfill triggers when API key + space_id provided\n  * Ensure no install when space_id missing\n  * Ensure no install when API key storage fails\n\nFiles touched:\n\n* js-services/admin-backend/src/controllers/sso.ts\n* js-services/admin-backend/src/controllers/**tests**/sso.test.ts",
+        "priority": 0,
+        "state": "In Review",
+        "createdAt": "2025-12-08T00:34:34.023Z"
+      },
+      {
+        "id": "d82c4d14-3f57-4905-ba29-270893dc4fa3",
+        "identifier": "AIVP-976",
+        "title": "Review unapproved PRs blocking promotion #2324 to production",
+        "description": "Production promotion tracking for PR #2324\nLink: [https://github.com/gathertown/corporate-context/pull/2324](https://github.com/gathertown/corporate-context/pull/2324)\nStatus: Open (in review)\nCommit promoted: 8b878a521789ac83650acd6347c3e2ad99be1771 (base: 7633a8ea1e75bdd391ee6d05a27031fd43ad1b6d)\n\nUpdate (Dec 5): Promotion checklist in PR body toggled back to unchecked to refresh the list of constituent PR approvals. Current approval status in this promotion:\n\n* Not approved yet:\n  * PR #2313: Revert \"\\[Devin\\] Potentially fix vite x playwright (#2310)\"\n  * PR #2320: feat: improve reasoning formatting\n* Approved:\n  * PR #2322: fix: rename files to avoid URL blocking in Devin browser\n  * PR #2323: Asana event parents might be missing gid\n\nNext step: Review unapproved PRs (#2313, #2320) before approving promotion #2324.",
+        "priority": 0,
+        "state": "In Review",
+        "createdAt": "2025-12-07T20:07:01.891Z"
+      },
+      {
+        "id": "ecf89e6a-7afa-4428-8b1c-575817772c1d",
+        "identifier": "AIVP-975",
+        "title": "Review unapproved PRs blocking promotion #2319 to production",
+        "description": "Production promotion tracking for commit af06f026e81d5cd2d1532a63f53f8d0e4dfca221 (base: e4124fbbdefab9cafcab611d6a376344f9c3777d).\n\nPR #2319 (open): [https://github.com/gathertown/corporate-context/pull/2319](https://github.com/gathertown/corporate-context/pull/2319)\n\nUpdate (Dec 5): Promotion PR body refreshed (checkbox toggled) to reflect approval statuses. Current list shows the following constituent PRs still unapproved (❌):\n\n* #2300 Use connector installations repo for zendesk/asana cron jobs\n* #2304 Zendesk: Only wrap the smallest scope necessary with rate limiters\n* #2305 feat: GitHub PR updates sent to #exponent-ambient-feedback\n* #2297 Add more SKIP tuning to slack prompt\n* #2285 Grapevine reviewer\n* #2306 Add repo name to all reviewer agents\n* #2308 Add MCP url to reviewer readme\n* #2310 \\[Devin\\] Potentially fix vite x playwright\n* #2176 feat(github): add upload to s3 workflow\n* #2315 \\[GRAPEVINE\\] - reviewer GitHub action\n* #2307 Use traceback to format exception groups\n* #2318 feat(attio-connector): CONN-424, CONN-427 backfill and client\n\nNext steps:\n\n* Continue reviewing the unapproved PRs listed above before approving promotion #2319.",
+        "priority": 0,
+        "state": "In Review",
+        "createdAt": "2025-12-07T15:31:38.972Z"
+      },
+      {
+        "id": "a9c85ec5-3d63-4387-b1e5-cf609b7715b1",
+        "identifier": "AIVP-974",
+        "title": "Remove graphics on admin frontend dashboard",
+        "description": "Remove graphics/GIFs from the admin dashboard homepage header.\n\nPR #2339: Open (in review)\nLink: [https://github.com/gathertown/corporate-context/pull/2339](https://github.com/gathertown/corporate-context/pull/2339)\nAuthor: devin-ai-integration\\[bot\\]\nRequestor: brent@gather.town (@btraut)\n\nKey changes delivered:\n\n* Deleted HomePageSubtitle component and its CSS module\n* Removed assets: control_your_data.gif, delete_your_data.gif, index_data.svg\n* Updated routes.tsx to remove HomePageSubtitle usage\n\nAcceptance Test Results:\n\n* \n  1. Homepage Loads Without Graphics (HIGH): PASSED\n* \n  2. QA Mode Homepage Layout Intact (MED): PASSED\n* \n  3. Dev Platform Homepage Unaffected (MED): NOT TESTED (could not switch to dev_platform tenant)\n* \n  4. No Broken Imports or Console Errors (LOW): PASSED\n\nScreenshots:\n\n* Homepage without graphics: [https://app.devin.ai/api/presigned_proxy?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvcmdfaWQiOiJvcmdfWVRGSzVkZGVVVWI4MzJEaSIsInVzZXJfaWQiOiJlbWFpbHw2NzQ0ZjZlYWY4ZDU1NjQzYzg1NTU1MjMiLCJidWNrZXRfbmFtZSI6ImRldmluYXR0YWNobWVudHMiLCJidWNrZXRfa2V5IjoiYXR0YWNobWVudHNfcHJpdmF0ZS9vcmdfWVRGSzVkZGVVVWI4MzJEaS8wNDdkOGJjYy02MTE1LTQ4ZDMtOTM2OC1iZjQ5ZmFjY2RlNjUiLCJpYXQiOjE3NjQ5NzcwOTIsImV4cCI6MTc2NTU4MTg5Mn0.C5715RVkB4cr0k4TxPWdynh3AqlmXddMA0jDbw6j8zw](https://app.devin.ai/api/presigned_proxy?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvcmdfaWQiOiJvcmdfWVRGSzVkZGVVVWI4MzJEaSIsInVzZXJfaWQiOiJlbWFpbHw2NzQ0ZjZlYWY4ZDU1NjQzYzg1NTU1MjMiLCJidWNrZXRfbmFtZSI6ImRldmluYXR0YWNobWVudHMiLCJidWNrZXRfa2V5IjoiYXR0YWNobWVudHNfcHJpdmF0ZS9vcmdfWVRGSzVkZGVVVWI4MzJEaS8wNDdkOGJjYy02MTE1LTQ4ZDMtOTM2OC1iZjQ5ZmFjY2RlNjUiLCJpYXQiOjE3NjQ5NzcwOTIsImV4cCI6MTc2NTU4MTg5Mn0.C5715RVkB4cr0k4TxPWdynh3AqlmXddMA0jDbw6j8zw)\n* Onboarding steps rendering correctly: [https://app.devin.ai/api/presigned_proxy?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvcmdfaWQiOiJvcmdfWVRGSzVkZGVVVWI4MzJEaSIsInVzZXJfaWQiOiJlbWFpbHw2NzQ0ZjZlYWY4ZDU1NjQzYzg1NTU1MjMiLCJidWNrZXRfbmFtZSI6ImRldmluYXR0YWNobWVudHMiLCJidWNrZXRfa2V5IjoiYXR0YWNobWVudHNfcHJpdmF0ZS9vcmdfWVRGSzVkZGVVVWI4MzJEaS8zNDNhYTA1Zi1iNDE4LTQ0YjktOGM2ZC0wMGEyMjNhNGMyYTAiLCJpYXQiOjE3NjQ5NzcwOTIsImV4cCI6MTc2NTU4MTg5Mn0.ynkJuUGeXwMdgqZc-NGd8boNFj04PiAStvsrHvxPi48](https://app.devin.ai/api/presigned_proxy?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvcmdfaWQiOiJvcmdfWVRGSzVkZGVVVWI4MzJEaSIsInVzZXJfaWQiOiJlbWFpbHw2NzQ0ZjZlYWY4ZDU1NjQzYzg1NTU1MjMiLCJidWNrZXRfbmFtZSI6ImRldmluYXR0YWNobWVudHMiLCJidWNrZXRfa2V5IjoiYXR0YWNobWVudHNfcHJpdmF0ZS9vcmdfWVRGSzVkZGVVVWI4MzJEaS8zNDNhYTA1Zi1iNDE4LTQ0YjktOGM2ZC0wMGEyMjNhNGMyYTAiLCJpYXQiOjE3NjQ5NzcwOTIsImV4cCI6MTc2NTU4MTg5Mn0.ynkJuUGeXwMdgqZc-NGd8boNFj04PiAStvsrHvxPi48)",
+        "assigneeId": "66792a5f-1fbc-4c4b-9fbb-3310dddc2b3c",
+        "assignee": "Brent Traut",
+        "priority": 0,
+        "state": "In Review",
+        "createdAt": "2025-12-05T22:41:47.136Z"
+      }
+    ]
+  }
+}

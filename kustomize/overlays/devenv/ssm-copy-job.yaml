@@ -1,0 +1,125 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ssm-copy-job-sa
+  namespace: __REPLACED_BY_ARGOCD__
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::444339626364:role/ssm-copy-job-stg
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: copy-ssm-to-localstack
+  namespace: __REPLACED_BY_ARGOCD__
+  labels:
+    app.kubernetes.io/name: ssm-copy
+spec:
+  # Don't automatically retry on failure - let users debug
+  backoffLimit: 0
+  # Clean up completed jobs after 1 hour
+  ttlSecondsAfterFinished: 3600
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ssm-copy
+    spec:
+      restartPolicy: Never
+      serviceAccountName: ssm-copy-job-sa
+      imagePullSecrets:
+        - name: priv-docker-registry
+      containers:
+        - name: ssm-copy
+          image: amazon/aws-cli:latest
+          command:
+            - /bin/bash
+            - -c
+            - |
+              #!/bin/bash
+              set -e
+
+              echo "==============================================="
+              echo "Copying SSM parameters from AWS to LocalStack"
+              echo "==============================================="
+
+              # Wait for localstack to be ready
+              echo "Waiting for localstack to be ready..."
+              until curl -s http://localstack:4566/_localstack/health | grep -q '"ssm": *"running"'; do
+                echo "Waiting for localstack SSM service..."
+                sleep 5
+              done
+              echo "✓ LocalStack is ready"
+
+              # Function to copy a parameter from AWS to LocalStack
+              copy_parameter() {
+                local param_name=$1
+                echo "Copying parameter: $param_name"
+                
+                # Get parameter from real AWS
+                local value=$(aws ssm get-parameter --name "$param_name" --with-decryption --query 'Parameter.Value' --output text 2>/dev/null || echo "")
+                
+                if [ -z "$value" ]; then
+                  echo "  ⚠️  Parameter not found in AWS, skipping: $param_name"
+                  return
+                fi
+                
+                # Put parameter in localstack (as String type, not SecureString)
+                aws ssm put-parameter \
+                  --endpoint-url http://localstack:4566 \
+                  --name "$param_name" \
+                  --value "$value" \
+                  --type String \
+                  --overwrite \
+                  --region us-east-1 >/dev/null 2>&1
+                
+                echo "  ✓ Copied: $param_name"
+              }
+
+              # Define tenant ID to copy parameters for
+              TENANT_ID="${TENANT_ID:-878f6fb522b441d1}"
+              echo "Tenant ID: $TENANT_ID"
+              echo ""
+
+              # Get all parameters under /{tenant_id}/ recursively
+              echo "Fetching all parameters under /${TENANT_ID}/ ..."
+              PARAMS=$(aws ssm get-parameters-by-path \
+                --path "/${TENANT_ID}/" \
+                --recursive \
+                --with-decryption \
+                --query 'Parameters[].Name' \
+                --output text 2>/dev/null || echo "")
+
+              if [ -z "$PARAMS" ]; then
+                echo "⚠️  No parameters found under /${TENANT_ID}/"
+                exit 0
+              fi
+
+              # Count parameters
+              PARAM_COUNT=$(echo "$PARAMS" | wc -w)
+              echo "Found $PARAM_COUNT parameters to copy"
+              echo ""
+
+              # Copy each parameter
+              for param_name in $PARAMS; do
+                copy_parameter "$param_name"
+              done
+
+
+              echo ""
+              echo "==============================================="
+              echo "✓ SSM parameter copy completed successfully"
+              echo "==============================================="
+          env:
+            # AWS region configuration
+            - name: AWS_REGION
+              value: 'us-east-1'
+            - name: AWS_DEFAULT_REGION
+              value: 'us-east-1'
+            # Note: AWS credentials are provided automatically via IRSA (ServiceAccount annotation)
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi

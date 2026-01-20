@@ -1,0 +1,24 @@
+{
+  "_comment": {
+    "description": "Test: PR shares keywords with wrong ticket but functionally matches different ticket",
+    "expected": "UPDATE only the functionally matching issue, NOT the keyword-similar one",
+    "LINEAR_TICKET_TO_CREATE_CORRECT": {
+      "title": "File uploads fail silently for large files",
+      "description": "When users try to upload files over 10MB, nothing happens. No error message, the file just doesn't appear. Users think it worked but the file is missing."
+    },
+    "LINEAR_TICKET_TO_CREATE_DECOY": {
+      "title": "Upload progress bar gets stuck at 99%",
+      "description": "The progress indicator for file uploads freezes at 99% even after the upload completes. Users have to refresh to see their uploaded file. The upload itself works fine."
+    }
+  },
+  "id": "gh-keyword-vs-functional",
+  "title": "Fix multipart upload chunking for large files",
+  "date": "2025-01-22",
+  "type": "github",
+  "author": "karenying",
+  "repository": "gathertown/corporate-context",
+  "prNumber": 210,
+  "content": "Repository: gathertown/corporate-context\nPull Request: #210 - Fix multipart upload chunking for large files\nURL: https://github.com/gathertown/corporate-context/pull/210\nStatus: merged\nAuthor: karenying\n\nDescription:\nFixes an issue where files over 10MB weren't being uploaded correctly.\n\nThe multipart upload was failing silently because we weren't handling the chunking properly for files that exceeded the single-request size limit. Added proper chunk splitting and retry logic.\n\nChanges:\n- Fixed chunk size calculation in uploadService.ts\n- Added proper error propagation for failed chunks\n- Increased timeout for large file uploads\n\nActivity:\n\n2025-01-22 09:00:00 karenying opened pull request\n2025-01-22 10:30:00 devuser approved\n2025-01-22 11:00:00 karenying merged pull request",
+  "participants": [],
+  "files": []
+}

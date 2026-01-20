@@ -1,0 +1,6 @@
+import * as React from "react";
+import type { SVGProps } from "react";
+import { memo } from "react";
+const SvgList = (props: SVGProps<SVGSVGElement>) => <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}><path d="M8.99878 6.43671H20.0034M20.0034 12H8.99878M8.99878 17.5633H20.0034" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" /><path d="M4.49691 5.93646C4.22065 5.93646 3.9967 6.16041 3.9967 6.43667C3.9967 6.71293 4.22065 6.93688 4.49691 6.93688C4.77317 6.93688 4.99712 6.71293 4.99712 6.43667C4.99712 6.16041 4.77317 5.93646 4.49691 5.93646" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" /><path d="M4.49691 11.4998C4.22065 11.4998 3.9967 11.7238 3.9967 12C3.9967 12.2763 4.22065 12.5002 4.49691 12.5002C4.77317 12.5002 4.99712 12.2763 4.99712 12C4.99712 11.7238 4.77317 11.4998 4.49691 11.4998" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" /><path d="M4.49691 17.0631C4.22065 17.0631 3.9967 17.2871 3.9967 17.5633C3.9967 17.8396 4.22065 18.0635 4.49691 18.0635C4.77317 18.0635 4.99712 17.8396 4.99712 17.5633C4.99712 17.2871 4.77317 17.0631 4.49691 17.0631" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" /></svg>;
+const Memo = memo(SvgList);
+export default Memo;

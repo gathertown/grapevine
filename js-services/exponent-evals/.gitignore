@@ -1,0 +1,18 @@
+# Environment variables
+.env
+
+# Generated results
+src/results/
+
+# Real Slack data (don't commit sensitive data)
+src/dataset/cases/*.json
+
+# Checkpoint evaluation results
+src/dataset/**/results/
+
+# Node modules
+node_modules/
+
+# Build artifacts
+dist/
+*.tsbuildinfo

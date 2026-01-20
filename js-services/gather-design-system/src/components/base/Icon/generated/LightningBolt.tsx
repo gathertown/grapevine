@@ -1,0 +1,6 @@
+import * as React from "react";
+import type { SVGProps } from "react";
+import { memo } from "react";
+const SvgLightningBolt = (props: SVGProps<SVGSVGElement>) => <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}><path d="M19.7978 8.74998H13.75C13.4739 8.74998 13.25 8.52612 13.25 8.24998V2.35568C13.25 1.86503 12.6169 1.6679 12.3384 2.07181L3.79061 14.4661C3.56186 14.7978 3.79929 15.25 4.20221 15.25H10.25C10.5261 15.25 10.75 15.4739 10.75 15.75V21.6443C10.75 22.135 11.383 22.3321 11.6616 21.9282L20.2094 9.53385C20.4382 9.20216 20.2007 8.74998 19.7978 8.74998Z" stroke="currentColor" strokeWidth={1.5} strokeLinejoin="round" /></svg>;
+const Memo = memo(SvgLightningBolt);
+export default Memo;

@@ -1,0 +1,20 @@
+{
+  "_comment": {
+    "description": "Test: PR title contains explicit Linear issue ID",
+    "expected": "UPDATE the referenced issue",
+    "LINEAR_TICKET_TO_CREATE": {
+      "title": "Fix session timeout bug",
+      "description": "Users are getting logged out after 30 minutes of inactivity. Need to extend the session duration or implement token refresh."
+    }
+  },
+  "id": "gh-explicit-id-in-title",
+  "title": "EXP-165: Fix session timeout",
+  "date": "2025-01-20",
+  "type": "github",
+  "author": "karenying",
+  "repository": "gathertown/corporate-context",
+  "prNumber": 201,
+  "content": "Repository: gathertown/corporate-context\nPull Request: #201 - EXP-165: Fix session timeout\nURL: https://github.com/gathertown/corporate-context/pull/201\nStatus: open\nAuthor: karenying\n\nDescription:\nThis PR fixes the session timeout issue referenced in EXP-165.\n\nChanges:\n- Extended session duration from 30 minutes to 24 hours\n- Added token refresh logic on user activity\n- Updated session middleware\n\nActivity:\n\n2025-01-20 10:30:00 karenying opened pull request\n2025-01-20 11:00:00 CI passed",
+  "participants": [],
+  "files": []
+}

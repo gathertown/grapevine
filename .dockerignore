@@ -1,0 +1,53 @@
+# Configuration and environment files
+config.yaml
+.env
+.claude
+*.md
+
+# Git
+.git
+.gitignore
+
+# JavaScript/TypeScript build artifacts and caches
+js-services/node_modules
+js-services/*/node_modules
+js-services/*/dist
+js-services/.nx
+js-services/tmp
+js-services/.yarn/cache
+js-services/.yarn/install-state.gz
+
+# Python artifacts
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info
+.pytest_cache
+.mypy_cache
+.ruff_cache
+
+# IDE files
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Test coverage
+coverage
+*.lcov
+.nyc_output
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local data
+data/
+snapshots/
+supabase/.temp

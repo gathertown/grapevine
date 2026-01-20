@@ -1,0 +1,213 @@
+{
+  "output": {
+    "operations": [
+      {
+        "action": "SKIP",
+        "skipData": {
+          "reason": "This is not fixable by code. Requires manual human review"
+        }
+      }
+    ]
+  },
+  "input": {
+    "docs": ["2025-12-04_19-22-42_slack-do-we-check-for-dupes-atm-u01h.json"],
+    "linearState": [
+      {
+        "id": "7fe2fe58-e6f7-4b3f-89fd-30c767ba7e0a",
+        "identifier": "EXMR-754",
+        "title": "Disable Slack link unfurling (per Chandler's example)",
+        "description": "Karen will disable Slack link unfurling as requested by Chandler in the thread.\n\n* Expected to be a small code tweak (per Karen)\n\n[View original Slack message](https://slack.com/archives/C09HTTVUSH5/p1764875239741629?thread_ts=1764873086.091459)",
+        "assigneeId": "51b51810-a5b5-4578-a95e-3322a9b6eedf",
+        "assignee": "Karen Ying",
+        "priority": 0,
+        "state": "Backlog",
+        "createdAt": "2025-12-04T19:08:13.157Z"
+      },
+      {
+        "id": "ecb45701-8882-459d-908e-6defa068f984",
+        "identifier": "EXMR-753",
+        "title": "Automate PR creation/linking when Linear tickets are updated",
+        "description": "Define and implement automation to create or link a GitHub PR when a Linear issue is updated (clarify exact behavior), ensuring no duplication with existing PR→Linear flows.\n\n* Clarify desired behavior: create a new PR vs. link to an existing PR on certain Linear updates (which updates?)\n* Coordinate with existing work (EXMR-672) that links PRs to Linear and updates status on PR events\n* Design webhook/worker flow, idempotency keys, and safeguards to avoid spam/duplicates\n* Implement feature flag/config per team\n* Add logging/metrics and basic tests",
+        "priority": 0,
+        "state": "Backlog",
+        "createdAt": "2025-12-04T18:25:57.785Z"
+      },
+      {
+        "id": "e7f028bd-640a-49ea-917c-7874e340043e",
+        "identifier": "EXMR-752",
+        "title": "Finish VibeWork harness and refine Camille’s PR to improve ambient ticket quality",
+        "description": "Complete the VibeWork harness and use it to refine Camille’s ticket creation logic PR for higher-quality ambient ticketing.\n\n* Finish harness that ingests Slack-only threads, supports retries/self-correction, and measures success/turn count\n* Use insights from harness runs to rewrite or adjust Camille’s PR to improve ticket creation quality and logic\n* Ensure harness outputs are suitable for future evals focused on MVN extraction quality\n* Add basic tests/docs for running the harness locally and in CI",
+        "priority": 0,
+        "state": "Backlog",
+        "createdAt": "2025-12-04T18:25:57.565Z"
+      },
+      {
+        "id": "34ff1521-c578-4049-a09f-fc073811ee49",
+        "identifier": "EXMR-751",
+        "title": "Investigate GitHub extraction creating unknown/extra Linear tickets; add event-level visibility",
+        "description": "Investigate why GitHub extraction is generating unknown/extra Linear tickets and implement diagnostics to make every action visible.\n\n* Reproduce and diagnose cases where GitHub extraction creates unexpected/new tickets\n* Audit flow for missing/implicit 'skip' logic when no existing issue is found to update\n* Add structured logging/metrics for each GitHub extraction action (CREATE/UPDATE/SKIP/NOOP) with identifiers for traceability\n* Compare implementation against the Exponent repo and align behavior to avoid extraneous tickets\n* Output visibility should mirror Slack extraction’s current transparency (per meeting)\n* Coordinate with David starting tomorrow on extraction quality",
+        "priority": 0,
+        "state": "Backlog",
+        "createdAt": "2025-12-04T18:25:56.787Z"
+      },
+      {
+        "id": "ef90468c-3cf6-40cd-b61a-0722445fb969",
+        "identifier": "EXMR-750",
+        "title": "Fix duplicate Slack notifications after meeting transcript processing",
+        "description": "Eliminate duplicate Slack notifications when meeting transcripts are processed, likely due to multiple document update events.\n\n* Reproduce duplicate notification case cited by Johnny\n* Implement idempotency/debouncing keyed by artifact ID + event type to ensure a single notification per processed meeting\n* Filter/aggregate multiple doc-update events to one outbound Slack message\n* Compare and align with Exponent repo’s approach if it already solved this\n* Add unit/integration tests around the meetingProcessor and SlackMessageSender paths",
+        "priority": 0,
+        "state": "Backlog",
+        "createdAt": "2025-12-04T18:25:56.699Z"
+      },
+      {
+        "id": "dddfdea4-20b6-4c6c-a172-751036c1ad7c",
+        "identifier": "EXMR-749",
+        "title": "Emit Slack notifications for PR-driven Linear task creation and updates",
+        "description": "Post Slack messages to the relevant team channel when Linear issues are created from PRs or when existing Linear issues are updated due to PR events.\n\n* Scope: PR-driven CREATE and UPDATE operations on Linear issues\n* Channel: use existing linear_team_id → Slack channel mapping (same approach as meeting extraction notifications)\n* Message content: include PR link/number, Linear issue identifier/title, and action (created/updated) with a brief summary of changes\n* Avoid duplication with existing meeting/GitHub extraction notifications (post once per event)\n* Confirm exact channel targeting with team owners if needed (undecided)",
+        "priority": 0,
+        "state": "Backlog",
+        "createdAt": "2025-12-04T16:34:04.269Z"
+      },
+      {
+        "id": "070d382b-2644-4d87-82f9-d9ff6eb11411",
+        "identifier": "EXMR-748",
+        "title": "Reduce standard notification size",
+        "description": "Reduce standard Slack notification size by removing the summary line in ambient-extraction.\n\nPR #2289: Closed without merge on 2025-12-04 — [https://github.com/gathertown/corporate-context/pull/2289](https://github.com/gathertown/corporate-context/pull/2289)\nKey changes proposed in PR #2289:\n\n* Removed the summary section from formatMeetingNotificationBlocks/SlackMessageSender that displayed totals (totalOperations/successful/failed)\n* Kept header, optional team context, and detailed lists for created, updated, and failed operations\n* Adjusted destructuring to drop unused totalOperations, successful, and failed\n\nNote: This PR was closed without merge; updating issue state accordingly.",
+        "assigneeId": "a53ca982-8854-4161-b91a-ad17363f4477",
+        "assignee": "David Rios",
+        "priority": 0,
+        "state": "Canceled",
+        "createdAt": "2025-12-04T16:30:21.556Z"
+      },
+      {
+        "id": "1615ad37-35bc-4345-a94f-e4ae6b4e76cf",
+        "identifier": "EXMR-747",
+        "title": "Host web bundles on S3 + Cloudfront",
+        "description": "Host web bundles on S3 + CloudFront to eliminate deploy-time whitescreens caused by 404s on old JS bundles. Serve versioned assets via CDN and rewrite index.html to point to CDN-hosted bundles.\n\nPR #2176: Currently in review\nLink: [https://github.com/gathertown/corporate-context/pull/2176](https://github.com/gathertown/corporate-context/pull/2176)\n\nKey changes in PR #2176:\n\n* CI/CD:\n  * Add upload-s3-assets input and id-token: write permissions where needed.\n  * New build-assets job builds frontend/backend, uploads assets to s3://assets.getgrapevine.ai/app/<short-sha>/assets, and publishes a built-assets artifact.\n  * Build matrix (grapevine) consumes prebuilt assets; passes ASSETS_COMMIT_SHA and USE_PREBUILT_ASSETS.\n* Docker (Dockerfile.grapevine):\n  * Add ASSETS_COMMIT_SHA and USE_PREBUILT_ASSETS build args; copy prebuilt-assets/ into image when present.\n  * Conditionally use prebuilt frontend assets or build in-image; always build backend; place assets in admin-backend/dist/public/.\n* Backend (admin-backend server.ts):\n  * Rewrite index.html href/src=\"/assets/...\" to ${ASSETS_BASE_URL||[https://assets.getgrapevine.ai](https://assets.getgrapevine.ai)}/app/${ASSETS_COMMIT_SHA}/assets/... when ASSETS_COMMIT_SHA is set; cache rewritten HTML.\n  * Explicitly serve /index.html; express.static with { index: false }; return 404 for missing /assets/\\*.",
+        "priority": 0,
+        "state": "In Review",
+        "createdAt": "2025-12-04T08:39:05.747Z"
+      },
+      {
+        "id": "349079ff-5416-4fcb-9664-3a36dce92cac",
+        "identifier": "EXMR-746",
+        "title": "Investigate Pangram triage workflow error; patch if simple or disable triage bot",
+        "description": "Karen will review Pangram's triage workflow error output and act based on findings.\n\n* Monitor error returned from Pangram triage workflow\n* If fix is straightforward: patch it\n* Otherwise: disable the triage bot to avoid distraction from the coding demo\n\nUpdate (2025-12-04): Timebox initial investigation to \\~5 minutes; if not quickly fixable, temporarily disable the triage bot.",
+        "assigneeId": "51b51810-a5b5-4578-a95e-3322a9b6eedf",
+        "assignee": "Karen Ying",
+        "priority": 0,
+        "state": "Backlog",
+        "createdAt": "2025-12-03T22:17:20.869Z"
+      },
+      {
+        "id": "96669e48-9da7-4cd1-8d7d-9fafa58b33ee",
+        "identifier": "EXMR-745",
+        "title": "Push PR #2274 to prod to gather info on triage workflow error (Pangram)",
+        "description": "Production promotion tracking for triage workflow logging hotfix.\n\nPR #2291: Open (in review)\nLink: [https://github.com/gathertown/corporate-context/pull/2291](https://github.com/gathertown/corporate-context/pull/2291)\n\nNew since last update:\n• \\[CONN-357\\] Migrate away from connector-specific installation tables (#2250) — Approved (✅)\n• feat(attio-connector): CONN-425 artifacts and documents (#2276) — Approved (✅)\n\nPreviously noted as approved:\n• Remove old feature flags (#2268)\n• \\[CONN-357\\] Drop legacy \\*\\_installations tables (#2280)\n• PR #2274 (Stringify triage bot error for better diagnostics) remains included in this promotion.\n\nNext steps:\n• Monitor merge of PR #2291\n• Validate richer triage error logs in production post-deploy",
+        "assigneeId": "51b51810-a5b5-4578-a95e-3322a9b6eedf",
+        "assignee": "Karen Ying",
+        "priority": 0,
+        "state": "In Review",
+        "createdAt": "2025-12-03T21:42:59.312Z"
+      },
+      {
+        "id": "09bbf943-25dc-45d5-86c4-a5d22d83a25c",
+        "identifier": "EXMR-744",
+        "title": "Send Exponent-extracted baseline ticket list for Grapevine standups",
+        "description": "Karen will send a baseline list of what Exponent would have extracted from Grapevine standup summaries to be modified by the team.\n\n* Deliver initial list in \\~10 minutes from message time\n* Context: Grapevine Core/Q&A and Grapevine Connectors standups\n* Intended for Chandler (and others) to modify within a 20–30 min timebox\n\n[View original Slack message](https://slack.com/archives/C09HTTVUSH5/p1764789786504389?thread_ts=1764789127.218369)",
+        "assigneeId": "51b51810-a5b5-4578-a95e-3322a9b6eedf",
+        "assignee": "Karen Ying",
+        "priority": 0,
+        "state": "Done",
+        "createdAt": "2025-12-03T19:24:35.692Z"
+      },
+      {
+        "id": "572e0829-3164-4b81-bf3c-8425acedc145",
+        "identifier": "EXMR-743",
+        "title": "Timebox 20–30 min to list coding tickets from Grapevine Connectors Standup (past 3 days)",
+        "description": "Chandler will produce a bullet list of coding ticket titles and brief descriptions based on the Grapevine Connectors Standup summaries from the past 3 days.\n\n* Use the Summary tab instead of reading entire transcripts (per Karen)\n* Focus strictly on coding tasks that result in a PR (bug fixes, features, refactoring, tests, infra)\n* Skip planning/docs/coordination and vague \"look into X\" unless it’s debugging a specific bug\n* Timebox: 20–30 minutes today or tomorrow\n* Modify the Exponent-extracted list that Karen will send\n\n[View original Slack message](https://slack.com/archives/C09HTTVUSH5/p1764789786504389?thread_ts=1764789127.218369)",
+        "assigneeId": "57031e99-ad28-4d55-9182-8fa292bdfc71",
+        "assignee": "Chandler Roth",
+        "priority": 0,
+        "state": "Done",
+        "createdAt": "2025-12-03T19:24:35.377Z"
+      },
+      {
+        "id": "d605ff8f-2c82-47c9-b921-07c0cf2d9c99",
+        "identifier": "EXMR-742",
+        "title": "Assist David in setting up a quick DB check to verify meeting transcript processing",
+        "description": "Pair with David to establish a fast method to confirm whether a meeting transcript was processed.\n\n* Show how to check the relevant DB tables manually\n* Consider alternative quick checks (ask Grapevine, New Relic logs)\n* Document the steps for future verification",
+        "priority": 0,
+        "state": "Backlog",
+        "createdAt": "2025-12-03T18:23:20.906Z"
+      },
+      {
+        "id": "3c470af3-9a56-4460-a388-17988e418aeb",
+        "identifier": "EXMR-741",
+        "title": "Collect additional eval data from Slack today; GitHub and meetings next",
+        "description": "Expand eval dataset and refine extraction rules.\n\nPR #2284: Closed without merge on 2025-12-04\nLink: [https://github.com/gathertown/corporate-context/pull/2284](https://github.com/gathertown/corporate-context/pull/2284)\nAuthor: karenying\n\nKey changes in PR #2284:\n\n* Prompts (core): Refine singleAgent.ts extraction rules to explicitly skip deployment/merge chores (e.g., pushing PRs to prod, hotfix merges); add clear operational vs. coding task examples.\n* Evals (LK1 Slack):\n  * Add input/truth pair 2025-12-03_19-12-07_slack-hey-... with SKIP (manual, non-coding request).\n  * Add input/truth pair 2025-12-03_21-41-01_slack-oh-no-is-triage-broken-... with SKIP (deployment/hotfix chore).\n* Evals (LK3 Meeting): Update 2025-12-02_meeting-grapevine-core-q-a-standup-truth.json to include an additional UPDATE operation for Grapevine Reviewer scope/progress.",
+        "priority": 0,
+        "state": "Canceled",
+        "createdAt": "2025-12-03T18:23:20.678Z"
+      },
+      {
+        "id": "a949b39b-4c01-46c7-812d-de9a9ef8772b",
+        "identifier": "EXMR-740",
+        "title": "Investigate Slack→Linear assignee mapping edge case (post-EXMR-735)",
+        "description": "Reproduce and diagnose a reported failure case where Slack→Linear user mapping did not correctly assign the issue.\n\n* Start from Karen’s observed failure example; capture inputs (Slack user, Linear team, channel)\n* Audit linearSlackUserMapping data and matching logic for that user/org\n* Add a regression test for the failing case\n* Propose and implement a fix if needed\n* Reference: EXMR-735 (mapping restore) recently merged",
+        "priority": 0,
+        "state": "Backlog",
+        "createdAt": "2025-12-03T18:23:20.424Z"
+      },
+      {
+        "id": "ff4ff705-0166-4d9b-a3b4-5c8ae1f51ab1",
+        "identifier": "EXMR-739",
+        "title": "Test meeting extraction Slack notifications end-to-end in staging and verify channel mappings",
+        "description": "Add optional mirroring of meeting notifications to #exponent-ambient-feedback via sendToTestChannel for monitoring/debugging.\n\nPR #2290: Open (in review)\nLink: [https://github.com/gathertown/corporate-context/pull/2290](https://github.com/gathertown/corporate-context/pull/2290)\n\nKey changes in PR #2290:\n\n* Slack Messaging (js-services/ambient-extraction/src/utils/sendSlackMessage.ts):\n  * Add sendToTestChannel to SendMessageOptions and sendMeetingNotification (replaces removed threadTs)\n  * When enabled and AMBIENT_FEEDBACK_CHANNEL_ID is set, also post to the feedback channel; add success/error logging\n  * Remove thread_ts from Slack API payload and related logging fields\n* Meeting Processor (js-services/ambient-extraction/src/processors/meetingProcessor.ts):\n  * Update sendMeetingNotification(...) call to pass true for sendToTestChannel\n\nFiles changed:\n\n* js-services/ambient-extraction/src/processors/meetingProcessor.ts (+24 -20)\n* js-services/ambient-extraction/src/utils/sendSlackMessage.ts (+38 -6)",
+        "assigneeId": "a53ca982-8854-4161-b91a-ad17363f4477",
+        "assignee": "David Rios",
+        "priority": 0,
+        "state": "In Review",
+        "createdAt": "2025-12-03T18:23:20.227Z"
+      },
+      {
+        "id": "be426c12-48e5-4089-8313-0361ada25dd5",
+        "identifier": "EXMR-738",
+        "title": "Fix MCP in headless mode",
+        "description": "Fix MCP in headless mode.\n\nPR #2261: Merged on 2025-12-03 — [https://github.com/gathertown/corporate-context/pull/2261](https://github.com/gathertown/corporate-context/pull/2261)\nAuthor: btraut\n\nKey changes:\n\n* Use an explicit MCP config file at /tmp/mcp-config.json and pass it via --mcp-config to Claude Code\n* Verify presence and required contents of /tmp/mcp-config.json (package name and env vars)\n* Pass --mcp-config in both su and direct runs of claude; echo the MCP config path in logs\n* Copy the MCP config for non-root 'testrunner' and set MCP_CONFIG_FILE for both root and non-root environments\n* Preserve existing prompt handling and permissions\n\nImpact: Ensures reliable MCP operation in headless/CI by avoiding reliance on home-directory config files.",
+        "priority": 0,
+        "state": "Done",
+        "createdAt": "2025-12-03T04:33:20.689Z"
+      },
+      {
+        "id": "3b1c8a8f-877b-4542-bf33-526cde339789",
+        "identifier": "EXMR-737",
+        "title": "Post meeting + GitHub extraction notifications to AMBIENT_FEEDBACK_CHANNEL_ID; keep meeting extraction posting to team Linear",
+        "description": "PR #2275: Merged on 2025-12-04 — [https://github.com/gathertown/corporate-context/pull/2275](https://github.com/gathertown/corporate-context/pull/2275)\n\nKey changes delivered by PR #2275:\n\n* Introduced SlackMessageSender utility (utils/sendSlackMessage.ts): fetches Slack bot token from SSM, resolves channel by linear_team_id via tenant DB, and posts via Slack chat.postMessage with text and rich blocks; supports optional threads; structured logging via LogContext.\n* Integrated Slack notifications into processors/meetingProcessor.ts: after executing Linear operations, if any succeeded (>0), send a formatted meeting summary to the mapped team channel.\n* Notification content includes meeting title/date, totals (total/success/failed), and per‑operation details with links, identifiers, and titles; maps REQUEST_CLARIFICATION to SKIP for display.\n* Simplified error logging in meetingProcessor by JSON‑stringifying errors.",
+        "assigneeId": "a53ca982-8854-4161-b91a-ad17363f4477",
+        "assignee": "David Rios",
+        "priority": 0,
+        "state": "Done",
+        "createdAt": "2025-12-03T03:20:43.729Z"
+      },
+      {
+        "id": "270ae9bb-6e83-4949-b4c3-c4b7a552b76d",
+        "identifier": "EXMR-736",
+        "title": "Build Notion connector",
+        "description": "Build a Notion connector.\n\n* Owner: <@U087BT3GUDR>\n* Timing: later this week\n\n[View original Slack message](https://slack.com/archives/C09HTTVUSH5/p1764714728096239)",
+        "priority": 0,
+        "state": "Backlog",
+        "createdAt": "2025-12-02T22:35:06.707Z"
+      },
+      {
+        "id": "1ad40cd9-dba6-4fe5-872d-4717fe53ae6b",
+        "identifier": "EXMR-735",
+        "title": "Restore Slack user → Linear user mapping to fix assignee assignment",
+        "description": "Restore Slack user → Linear user mapping to fix assignee assignment.\n\nPR #2249: Merged on 2025-12-03\nLink: [https://github.com/gathertown/corporate-context/pull/2249](https://github.com/gathertown/corporate-context/pull/2249)\nAuthor: karenying\n\nKey changes:\n\n* Utils (src/utils/userMapping.ts): Implement mapSlackToLinearId using linearSlackUserMapping with flexible identifier matching; add reverse lookup mapLinearToSlackId returning UserMapping; introduce and export UserMapping type.\n* Data/Primitives (src/primitives/linear-slack-user-mapping.ts): Add populated linearSlackUserMapping array of Linear↔Slack user records.\n* Scripts (scripts/fetch-linear-slack-user-mapping.ts): New script to fetch users from Linear/Slack, produce mapping, and write JSON/CSV/TS outputs.\n* Public API (src/index.ts): Export mapLinearToSlackId and UserMapping alongside mapSlackToLinearId.\n\nImpact: Restores Slack→Linear assignee mapping, improving assignee accuracy during ticket creation and updates.",
+        "priority": 0,
+        "state": "Done",
+        "createdAt": "2025-12-02T22:27:12.529Z"
+      }
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "_comment": {
+    "description": "Test: PR title is just a branch name, description has context",
+    "expected": "Should find via semantic search using description and UPDATE",
+    "difficulty": "MEDIUM - title is useless but description mentions dark mode/themes",
+    "LINEAR_TICKET_TO_CREATE": {
+      "title": "Support dark mode in the app",
+      "description": "Users have requested a dark theme option. Should remember their preference across sessions. Low priority but would be nice to have."
+    }
+  },
+  "id": "gh-feature-branch-name",
+  "title": "feature/dark-mode-toggle",
+  "date": "2025-01-25",
+  "type": "github",
+  "author": "frontend-dev",
+  "repository": "gathertown/corporate-context",
+  "prNumber": 206,
+  "content": "Repository: gathertown/corporate-context\nPull Request: #206 - feature/dark-mode-toggle\nURL: https://github.com/gathertown/corporate-context/pull/206\nStatus: open\nAuthor: frontend-dev\n\nDescription:\nAdds ability for users to switch between light and dark themes. Persists preference in localStorage.\n\nChanges:\n- Added ThemeContext provider\n- Created useTheme hook\n- Added toggle button in settings\n- CSS variables for theme colors\n- Saves preference to localStorage\n\nScreenshots:\n[Light mode screenshot]\n[Dark mode screenshot]\n\nTesting:\n- Tested in Chrome, Firefox, Safari\n- Verified preference persists after refresh\n- Checked accessibility contrast ratios\n\nActivity:\n\n2025-01-25 10:00:00 frontend-dev opened pull request\n2025-01-25 11:00:00 design-team requested changes: adjust contrast ratios\n2025-01-25 14:00:00 frontend-dev pushed fixes",
+  "participants": [],
+  "files": []
+}

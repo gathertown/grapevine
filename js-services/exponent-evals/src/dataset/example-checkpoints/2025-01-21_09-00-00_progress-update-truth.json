@@ -1,0 +1,28 @@
+[
+  {
+    "input": {
+      "linearState": [
+        {
+          "id": "issue-search-perf-1",
+          "title": "Search performance degradation",
+          "description": "Search queries are taking too long. Need to investigate and optimize.",
+          "assigneeId": "tom"
+        }
+      ],
+      "docs": ["2025-01-21_09-00-00_progress-update.json"]
+    },
+    "output": {
+      "operations": [
+        {
+          "action": "UPDATE",
+          "updateData": {
+            "issueId": "issue-search-perf-1",
+            "description": "Search queries are taking too long. Need to investigate and optimize.\n\n**Progress update (2025-01-21):**\n- Root cause identified: N+1 query in results aggregation\n- Fix ready for review\n- Initial tests show 3x faster response times\n- Expected to merge by end of day"
+          },
+          "confidence": 85,
+          "reasoning": "Tom provided a progress update on the search performance issue. The existing issue should be updated with the new findings and timeline."
+        }
+      ]
+    }
+  }
+]

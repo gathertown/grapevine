@@ -1,0 +1,7 @@
+{
+  "title": "Morning standup",
+  "type": "meeting",
+  "date": "2025-01-16",
+  "content": "Sarah: Dark mode is 50% done. I finished the color palette yesterday and started on the toggle component. Should finish tomorrow.\n\nTom: Great progress! Any blockers?\n\nSarah: Nope, all good. Just need to wire up the persistence layer so the preference saves.\n\nTom: Nice.",
+  "attendees": ["sarah", "tom"]
+}

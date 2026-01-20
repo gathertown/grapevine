@@ -1,0 +1,34 @@
+{
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "name": "localstack-ui-backend",
+  "sourceRoot": "localstack-ui-backend/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "localstack-ui-backend/dist",
+        "main": "localstack-ui-backend/src/server.ts",
+        "tsConfig": "localstack-ui-backend/tsconfig.json",
+        "assets": [],
+        "generateExportsField": false,
+        "swcrc": ".swcrc",
+        "skipTypeCheck": false
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "sourceMap": true
+        }
+      }
+    },
+    "type-check": {},
+    "lint": {},
+    "lint-fix": {},
+    "format": {},
+    "format:check": {},
+    "test": {},
+    "serve:dev": {}
+  }
+}

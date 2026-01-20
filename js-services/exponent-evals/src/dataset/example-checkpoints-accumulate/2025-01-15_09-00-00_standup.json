@@ -1,0 +1,7 @@
+{
+  "title": "Morning standup",
+  "type": "meeting",
+  "date": "2025-01-15",
+  "content": "Sarah: Hey everyone! I'm going to add dark mode to the dashboard this week. Several customers have been asking for it and it would help with accessibility.\n\nTom: Sounds great! Let me know if you need help with the color palette.\n\nSarah: Thanks Tom, I'll reach out if I do. Should have it done by Friday.\n\nTom: Perfect.",
+  "attendees": ["sarah", "tom"]
+}

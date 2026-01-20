@@ -1,0 +1,10 @@
+# Python caches
+.mypy_cache/
+
+# Build outputs
+dist/
+build/
+coverage/
+
+# Dependencies
+node_modules/

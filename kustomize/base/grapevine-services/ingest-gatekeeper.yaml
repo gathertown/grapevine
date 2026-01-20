@@ -1,0 +1,141 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ingest-gatekeeper
+  namespace: grapevine-services
+  annotations:
+    reloader.stakater.com/auto: "true"
+  labels:
+    app.kubernetes.io/name: ingest-gatekeeper
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ingest-gatekeeper
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ingest-gatekeeper
+    spec:
+      serviceAccountName: grapevine-ingest-gatekeeper-sa
+      imagePullSecrets:
+        - name: priv-docker-registry
+      containers:
+        - name: ingest-gatekeeper
+          image: REGISTRY/grapevine-ingest-gatekeeper:latest
+          envFrom:
+            - secretRef:
+                name: ingest-gatekeeper-secrets
+          ports:
+            - name: http
+              containerPort: 8001
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 500m
+              memory: "1Gi"
+            limits:
+              cpu: "2"
+              memory: "2Gi"
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: 8001
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: 8001
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 10
+            failureThreshold: 3
+          securityContext:
+            runAsUser: 1000
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - all
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: ingest-gatekeeper
+  namespace: grapevine-services
+  labels:
+    app.kubernetes.io/name: ingest-gatekeeper
+spec:
+  minAvailable: 60%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ingest-gatekeeper
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingest-gatekeeper
+  namespace: grapevine-services
+  labels:
+    app.kubernetes.io/name: ingest-gatekeeper
+spec:
+  ports:
+    - name: http
+      port: 8001
+      targetPort: 8001
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: ingest-gatekeeper
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingest-gatekeeper
+  namespace: grapevine-services
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: "*.ingest.example.com"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PUT, DELETE, OPTIONS"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "Content-Type, Authorization, X-Slack-Request-Timestamp, X-Slack-Signature, X-GitHub-Delivery, X-GitHub-Event, X-Hub-Signature-256"
+  labels:
+    app.kubernetes.io/name: ingest-gatekeeper
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: "*.ingest.example.com"
+      http:
+        paths:
+          - backend:
+              service:
+                name: ingest-gatekeeper
+                port:
+                  number: 8001
+            path: /
+            pathType: Prefix
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: ingest-gatekeeper-metrics
+  namespace: grapevine-services
+  labels:
+    app.kubernetes.io/name: ingest-gatekeeper
+spec:
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 30s
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ingest-gatekeeper
+  namespaceSelector:
+    matchNames:
+      - grapevine-services

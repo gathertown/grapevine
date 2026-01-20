@@ -1,0 +1,136 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Testing
+coverage/
+.nyc_output
+
+# Production builds
+build/
+dist/
+dist-ssr/
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env*.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+pnpm-debug.log*
+
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# TypeScript
+*.tsbuildinfo
+.tsc-cache/
+
+# Cache directories
+.npm
+.eslintcache
+.node_repl_history
+.cache
+.parcel-cache
+
+# Output of 'npm pack'
+*.tgz
+
+# Package manager files
+.yarn-integrity
+package-lock.json
+pnpm-lock.yaml
+
+# Next.js
+.next/
+out/
+
+# Nuxt.js
+.nuxt
+
+# vuepress
+.vuepress/dist
+
+# Serverless directories
+.serverless/
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+# Yarn 3 (Berry)
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
+# nx
+.nx/cache
+.nx/workspace-data
+nx-cloud.env
+output.json
+output.html
+nx-graph.json
+*.json.tmp
+
+# Generated files
+generated/
+
+# Python (if any mixed projects)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Vite specific
+*.local
+
+# Generated Kubernetes secrets (contains sensitive data)
+**/k8s/*-secret.yaml

@@ -1,0 +1,6 @@
+import * as React from "react";
+import type { SVGProps } from "react";
+import { memo } from "react";
+const SvgWifiSlash = (props: SVGProps<SVGSVGElement>) => <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}><path d="M11.999 19.25C11.792 19.25 11.624 19.418 11.626 19.625C11.625 19.832 11.793 20 12 20C12.207 20 12.375 19.832 12.375 19.625C12.375 19.418 12.207 19.25 11.999 19.25" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" /><path d="M5.99999 20L19 3M14.116 9.387C10.781 8.759 7.17899 9.627 4.59099 12M17.514 4.944C12.204 3.053 5.89799 4.006 1.59399 7.804M17.267 10.497C18.032 10.902 18.754 11.399 19.408 12M20.421 6.372C21.114 6.797 21.787 7.259 22.406 7.804M14.262 14.427C15.048 14.728 15.786 15.191 16.42 15.821" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" /></svg>;
+const Memo = memo(SvgWifiSlash);
+export default Memo;

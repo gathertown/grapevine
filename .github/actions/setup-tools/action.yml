@@ -1,0 +1,64 @@
+name: "setup-tools"
+description: |-
+  Installs all languages used by this repository using an underlying
+  tool manager (e.g., mise)
+inputs:
+  github_token:
+    description: "Github token for download tools"
+    required: true
+  working_directory:
+    description: "Directory to install tools from"
+    required: false
+  mise_version:
+    description: "Version of mise to use"
+    default: "2025.11.7"
+outputs:
+  python:
+    description: "Version of python"
+    value: ${{ steps.tools.outputs.python }}
+  uv:
+    description: "Version of uv"
+    value: ${{ steps.tools.outputs.uv }}
+  node:
+    description: "Version of node"
+    value: ${{ steps.tools.outputs.node }}
+  golang:
+    description: "Version of golang"
+    value: ${{ steps.tools.outputs.golang }}
+runs:
+  using: "composite"
+  steps:
+    - name: Generate working_directory cache prefix
+      shell: bash
+      id: wd
+      run: |-
+        if [[ -n "${{ inputs.working_directory }}" ]]; then
+          echo "prefix=-$(sha256sum <<< '${{ inputs.working_directory }}'| cut -c1-8)" >> "$GITHUB_OUTPUT"
+        else
+          # If there's no working_directory, don't output anything and
+          # use the default prefix instead.
+          echo "prefix=" >> "$GITHUB_OUTPUT"
+        fi
+    - uses: jdx/mise-action@v3
+      env:
+        # Used by mise hooks for install yarn packages.
+        GITHUB_TOKEN: ${{ inputs.github_token }}
+      with:
+        version: ${{ inputs.mise_version }}
+        github_token: ${{ inputs.github_token }}
+        cache_key_prefix: "mise-v0${{ steps.wd.outputs.prefix }}"
+        working_directory: ${{ inputs.working_directory }}
+    - name: Export versions of tools
+      shell: bash
+      id: tools
+      env:
+        WORKING_DIRECTORY: ${{ inputs.working_directory }}
+      run: |-
+        cd "$WORKING_DIRECTORY"
+
+        readarray -t tool_versions < <(mise current | tr ' ' '|')
+        for tool_version in "${tool_versions[@]}"; do
+          tool=$(awk -F '|' '{ print $1 }' <<< "$tool_version")
+          version=$(awk -F '|' '{ print $2 }' <<< "$tool_version")
+          echo "$tool=$version" >> "$GITHUB_OUTPUT"
+        done

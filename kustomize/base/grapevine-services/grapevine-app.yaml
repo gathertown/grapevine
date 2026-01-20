@@ -1,0 +1,152 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grapevine-app
+  namespace: grapevine-services
+  annotations:
+    reloader.stakater.com/auto: "true"
+  labels:
+    app.kubernetes.io/name: grapevine-app
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 33%
+      maxSurge: 33%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: grapevine-app
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: grapevine-app
+    spec:
+      serviceAccountName: grapevine
+      imagePullSecrets:
+        - name: priv-docker-registry
+      containers:
+        - name: grapevine-app
+          image: REGISTRY/grapevine:latest
+          envFrom:
+            - secretRef:
+                name: grapevine-app-secrets
+          ports:
+            - name: http
+              containerPort: 5000
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 200m
+              memory: "256Mi"
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+          livenessProbe:
+            httpGet:
+              path: /api/health/live
+              port: 5000
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /api/health/ready
+              port: 5000
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          securityContext:
+            runAsUser: 1000
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - all
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: grapevine-app
+  namespace: grapevine-services
+  labels:
+    app.kubernetes.io/name: grapevine-app
+spec:
+  minAvailable: 60%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: grapevine-app
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grapevine-app
+  namespace: grapevine-services
+  labels:
+    app.kubernetes.io/name: grapevine-app
+spec:
+  ports:
+    - name: http
+      port: 5000
+      targetPort: 5000
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: grapevine-app
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grapevine-app
+  namespace: grapevine-services
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: app.example.com
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PUT, DELETE, OPTIONS"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "Content-Type, Authorization"
+    nginx.ingress.kubernetes.io/affinity: "cookie"
+    nginx.ingress.kubernetes.io/session-cookie-name: "grapevine-backend-affinity"
+    nginx.ingress.kubernetes.io/session-cookie-max-age: "86400"
+  labels:
+    app.kubernetes.io/name: grapevine-app
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - app.example.com
+      secretName: grapevine-origin-ca-tls
+  rules:
+    - host: app.example.com
+      http:
+        paths:
+          - backend:
+              service:
+                name: grapevine-app
+                port:
+                  number: 5000
+            path: /
+            pathType: Prefix
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: grapevine-app-metrics
+  namespace: grapevine-services
+  labels:
+    app.kubernetes.io/name: grapevine-app
+spec:
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 30s
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: grapevine-app
+  namespaceSelector:
+    matchNames:
+      - grapevine-services

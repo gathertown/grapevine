@@ -1,0 +1,225 @@
+{
+  "input": {
+    "linearState": [
+      {
+        "id": "db06dc66-1193-4105-85d1-bd8a07214ee8",
+        "identifier": "AIVP-947",
+        "title": "Approve PR #2244",
+        "description": "PR #2244: push all posthog events to datalayer\nStatus: Closed without merge (2025-12-02)\nLink: [https://github.com/gathertown/corporate-context/pull/2244](https://github.com/gathertown/corporate-context/pull/2244)\n\nKey changes attempted:\n\n* Added pushToDataLayer helper to send events to Google Tag Manager dataLayer (js-services/frontend-common/src/analytics/service.ts)\n* Called pushToDataLayer from trackEvent for all user-level events\n* Added TypeScript declarations for window.dataLayer (js-services/frontend-common/src/types/gtm.d.ts)\n\nNotes:\n\n* PR was closed without merge; if this functionality is still desired, a follow-up PR will be needed.\n* Participants: @theonlyjohnny (author), @chandlerroth (review comment on 2025-12-03).",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 0,
+        "state": "Duplicate",
+        "createdAt": "2025-12-02T23:19:50.025Z"
+      },
+      {
+        "id": "94c22ebd-7706-4601-b3a6-6b9a08a47c1f",
+        "identifier": "AIVP-946",
+        "title": "Approve PR #2246",
+        "description": "Johnny Dallas requested a 'stamp' (approval) on corporate-context PR #2246.\n\n* PR link: [https://github.com/gathertown/corporate-context/pull/2246](https://github.com/gathertown/corporate-context/pull/2246)\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1764717518886659)",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 0,
+        "state": "Done",
+        "createdAt": "2025-12-02T23:19:49.868Z"
+      },
+      {
+        "id": "c4e9d671-02ac-4fd3-ab56-fd88686563eb",
+        "identifier": "AIVP-945",
+        "title": "Send Slack message on meeting extraction",
+        "description": "Slack notifications for meeting extraction results.\n\nPR #2238: Open (in review)\nLink: [https://github.com/gathertown/corporate-context/pull/2238](https://github.com/gathertown/corporate-context/pull/2238)\nAuthor: drios-gather\n\nKey changes in PR #2238:\n\n* Notifications pipeline:\n  * Schemas: Add OperationResult and MeetingExtractionNotificationMessage in js-services/admin-backend/src/jobs/models.ts and src/jobs/models.py (kept in sync).\n  * Ambient Extraction: After successful Linear operations, send SQS message in js-services/ambient-extraction/src/processors/meetingProcessor.ts; map REQUEST_CLARIFICATION to SKIP in notification payloads.\n  * SQS client: New js-services/ambient-extraction/src/services/sqsClient.ts with ARN/URL/name resolution and FIFO IDs; add dependency @aws-sdk/client-sqs to ambient-extraction package.\n* Slack Bot:\n  * Support new message type meeting_extraction_notification in js-services/slack-bot/src/jobs/slackEventProcessor.ts; fetch channel via getChannelIdForLinearTeam.\n  * Formatter: New js-services/slack-bot/src/ambient/meetingNotificationFormatter.ts (text + blocks).\n  * Channel mapping helper: getChannelIdForLinearTeam in js-services/slack-bot/src/ambient/channelMappings.ts.\n\nNotes:\n\n* Code will be tested in staging; most of the diff is yarn.lock.",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 0,
+        "state": "In Review",
+        "createdAt": "2025-12-02T22:15:30.346Z"
+      },
+      {
+        "id": "a4b58469-bb3f-422a-9a1e-117a927e1094",
+        "identifier": "AIVP-944",
+        "title": "Update Grapevine site legal links to point to www.gather.town/legal",
+        "description": "PR #2240: Update Grapevine legal links (open, in review)\nLink: [https://github.com/gathertown/corporate-context/pull/2240](https://github.com/gathertown/corporate-context/pull/2240)\n\nKey changes:\n\n* Added LegalFooter component that links to [https://www.gather.town/legal](https://www.gather.town/legal) with anchors for Privacy Policy, Terms of Service, and Data Processing Agreement.\n* Integrated LegalFooter into both Layout and FullscreenLayout to ensure canonical legal links across Grapevine pages.\n\nFiles touched:\n\n* js-services/admin-frontend/src/components/Layout.tsx\n* js-services/admin-frontend/src/components/LegalFooter.tsx (new)\n* js-services/admin-frontend/src/components/shared/FullscreenLayout.tsx",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 3,
+        "state": "In Review",
+        "createdAt": "2025-12-02T22:14:07.420Z"
+      },
+      {
+        "id": "94b00bc7-ad9d-45e6-8d22-0b792a87299f",
+        "identifier": "AIVP-943",
+        "title": "Investigate devenvs not pre-logged-in to the staging tenant",
+        "description": "Investigate devenvs not pre-logged-in to the staging tenant.\n\n* New (2025-12-02 21:39 UTC, Johnny Dallas): Pausing resolution to avoid distraction from ticket evaluation work; will do local verification for now.\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1764711576631339?thread_ts=1764710741.910989)",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 0,
+        "state": "In Review",
+        "createdAt": "2025-12-02T21:26:38.954Z"
+      },
+      {
+        "id": "dc9b2338-da3b-4bc2-b186-872e0ae77884",
+        "identifier": "AIVP-942",
+        "title": "Ungate and release Gong connector",
+        "description": "Track the work to ungate and release the Gong connector across admin backend, admin frontend, and shared feature allowlist.\n\nPR #2230: Open (in review)\nLink: [https://github.com/gathertown/corporate-context/pull/2230](https://github.com/gathertown/corporate-context/pull/2230)\nAuthor: chandlerroth\n\nKey changes in PR #2230:\n\n* Remove connector:gong feature flag/allowlist entries in backend (TypeScript) and shared Python utils\n* Admin frontend: remove feature gating checks for Gong; set comingSoon=false for Gong in IntegrationsProvider\n* Gong integration UI: enable Connect button (remove dependency on feature flag)\n* Update types to drop 'connector:gong' from FeatureKey union where appropriate\n* Tests: adjust feature-service test fixture (swapped to existing feature key for coverage)\n\nNotes:\n\n* This change promotes Gong from gated to public availability in the admin UI and backend feature gating systems.\n* Ensure appropriate release notes and connector docs are updated post-merge.",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 0,
+        "state": "Duplicate",
+        "createdAt": "2025-12-02T21:12:04.845Z"
+      },
+      {
+        "id": "f6979a16-4e65-4dd5-9735-79e5cea3a8d0",
+        "identifier": "AIVP-941",
+        "title": "Asana connector: Select plan tier before auth and refine Service Account vs OAuth UX",
+        "description": "Production promotion tracking for Asana auth UX refinements.\n\nPR #2242: deploy: promote b10f541b622d2d36d69f04bb08024322c44caa14 to production (open, in review)\nLink: [https://github.com/gathertown/corporate-context/pull/2242](https://github.com/gathertown/corporate-context/pull/2242)\nCommit: b10f541b622d2d36d69f04bb08024322c44caa14 (base b2b330b8bd0268f11dc76357229c240849ac5403)\n\nRelevant changes for this issue:\n\n* Global: index.css adds fieldset reset (border/padding/margin removed) to standardize RadioGroup appearance\n* Admin frontend: Asana Steps UI uses Box with border/padding and sets container minWidth (\\~752px) to prevent auth layout shift; removes asanaSteps.module.css and replaces with inline styles (e.g., flexGrow for input)\n* OnboardingSurvey: removes local fieldset hacks and uses RadioGroup directly\n\nContext: This promotes the Asana auth layout jump fix originally in PR #2236 into production.",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 0,
+        "state": "In Review",
+        "createdAt": "2025-12-02T20:23:35.096Z"
+      },
+      {
+        "id": "39bf6960-c2c5-4ccc-8f58-2a1c15148d65",
+        "identifier": "AIVP-940",
+        "title": "Approve PR #2179",
+        "description": "Konrad Schultz requested approval for PR #2179 and tagged reviewers.\n\n* Requested reviewers: <@U01HXG4L891>, <@U03DDV4UNG3>\n* PR link: [https://app.graphite.dev/github/pr/gathertown/corporate-context/2179](https://app.graphite.dev/github/pr/gathertown/corporate-context/2179)\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1764705500167929)",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 0,
+        "state": "Triage",
+        "createdAt": "2025-12-02T19:59:40.814Z"
+      },
+      {
+        "id": "1e5a3030-f1db-4822-9c75-5c9c089ebbec",
+        "identifier": "AIVP-939",
+        "title": "Share test plan generation prompt/setup with @U09P6RVHE7P",
+        "description": "PR #2224: Share test plan generation prompt and setup\nLink: [https://github.com/gathertown/corporate-context/pull/2224](https://github.com/gathertown/corporate-context/pull/2224)\nStatus: Open (in review)\n\nSummary of changes:\n\n* Added comprehensive documentation for test plan generation to share with @U09P6RVHE7P\n* New docs:\n  * docs/test-plan-generation-setup.md (full technical documentation and integration guide)\n  * TEST_PLAN_GENERATION_SUMMARY.md (quick reference)\n  * SHARE_WITH_RECIPIENT.md (shareable message and instructions)\n  * LINEAR_ISSUE_SUMMARY.md (summary/status for this issue)\n* References and existing core files:\n  * .github/prompts/test-plan-prompt.md (main prompt)\n  * .github/workflows/generate-test-plan.yaml (CI workflow)\n  * js-services/scripts/generate_pr_spec.ts (PR context/spec generator)\n  * docs/acceptance-testing-action-spec.md (acceptance testing integration)\n\nNotes:\n\n* This PR documents the prompt and setup for test plan generation and prepares materials for the intended recipient to integrate into their agent workflows.",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 3,
+        "state": "In Review",
+        "createdAt": "2025-12-02T19:40:08.983Z"
+      },
+      {
+        "id": "5ee8ca0e-af7c-4777-93fc-f95635d62c46",
+        "identifier": "AIVP-938",
+        "title": "Update Responses API integration to support ZDR (copy)",
+        "description": "Tracking additional ZDR compatibility updates.\n\nPR #2229 (open): [https://github.com/gathertown/corporate-context/pull/2229](https://github.com/gathertown/corporate-context/pull/2229)\nTitle: zdr fix\n\nKey changes in PR #2229:\n\n* Include reasoning.encrypted_content in Responses API call (include: \\[\"reasoning.encrypted_content\"\\]) for ZDR compatibility.\n* Update \\_process_response and \\_agent_think to return reasoning_items and propagate them across turns.\n* Set store=False and rely on encrypted reasoning items to preserve context with ZDR enabled.\n* In stream_advanced_search_answer, prepend prior reasoning_items to subsequent requests to maintain multi‑turn reasoning under ZDR.\n* Adjust function signatures and error paths to handle reasoning_items consistently.\n\nStatus: Open (in review)",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 0,
+        "state": "In Review",
+        "createdAt": "2025-12-02T17:49:45.549Z"
+      },
+      {
+        "id": "493ed38f-6d20-43d4-b771-eaf82045215f",
+        "identifier": "AIVP-936",
+        "title": "Fill out today’s Grapevine Core/Q&A standup doc (async)",
+        "description": "Jordan will fill out the standup document asynchronously for today’s standup (2025-12-02).\n\n* Use the usual standup doc format\n* Note blockers (if any) and today’s focus\n* This replaces a live update for today",
+        "priority": 0,
+        "state": "Triage",
+        "createdAt": "2025-12-02T17:27:45.876Z"
+      },
+      {
+        "id": "6ab7c16f-e6f8-4313-9cfa-539b02b0bc0a",
+        "identifier": "AIVP-935",
+        "title": "Schedule afternoon regroup for reviewer work (Andy, Dave, Vic)",
+        "description": "Vic will schedule a regroup meeting later today with Andy and Dave to review reviewer work progress and next steps.\n\n* Include Andy and Dave Orr as required attendees\n* Target: later this afternoon (2025-12-02)\n* Add agenda: quick status, current blockers, immediate next steps",
+        "priority": 4,
+        "state": "Triage",
+        "createdAt": "2025-12-02T17:27:45.715Z"
+      },
+      {
+        "id": "4d7b85ab-2b0b-46a3-9f51-ad0eb27da61a",
+        "identifier": "AIVP-934",
+        "title": "Update deletion script to use single connector_installations table and remove per-connector table references",
+        "description": "PR #2251: Fix Python import ordering lint error\nLink: [https://github.com/gathertown/corporate-context/pull/2251](https://github.com/gathertown/corporate-context/pull/2251)\nStatus: Open (in review)\n\nKey changes in this PR:\n\n* Corrected import block ordering in src/mcp/api/tool_executor.py to satisfy ruff/isort rules (grouped mcp imports separately from src imports)\n* No functional changes; supports the ongoing connector_installations migration (removal of CONNECTOR_GONG and updated table references already present in this PR)",
+        "priority": 3,
+        "state": "In Review",
+        "createdAt": "2025-12-02T17:27:45.492Z"
+      },
+      {
+        "id": "1ab5e349-c39f-4aef-87a2-b0e5323a75e1",
+        "identifier": "AIVP-933",
+        "title": "Failure to bulk index",
+        "description": "> builtins:Exception",
+        "priority": 0,
+        "state": "Triage",
+        "createdAt": "2025-12-02T17:15:34.394Z"
+      },
+      {
+        "id": "7335679e-b619-4dc0-a08f-d9fdeab2b7d6",
+        "identifier": "AIVP-932",
+        "title": "Base: Update Responses API integration to support ZDR",
+        "description": "Problem:\n\n* We want to enable ZDR on our OpenAI organization\n* Enabling ZDR may break the OpenAI Responses API, as `store` will no longer be respected\n* To continue using the Responses API, we must update our strategy to utilize`reasoning.encrypted_content`",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 0,
+        "state": "Todo",
+        "createdAt": "2025-12-02T16:54:50.491Z"
+      },
+      {
+        "id": "b62db996-dd9a-4c15-bab0-5c0213f5e355",
+        "identifier": "AIVP-931",
+        "title": "Investigate connection issue when there's a tool error",
+        "description": "Investigate connection issue when there's a tool error.\n\n* Chandler Roth will fix the issue with connections not closing properly, identified as a potential reason for 502 errors. [View original Slack message](https://slack.com/archives/C08BMCZK81F/p1764695550691579?thread_ts=1764692639.380429)",
+        "assigneeId": "57031e99-ad28-4d55-9182-8fa292bdfc71",
+        "assignee": "Chandler Roth",
+        "priority": 3,
+        "state": "Todo",
+        "createdAt": "2025-12-02T16:45:38.697Z"
+      },
+      {
+        "id": "ba41935b-9690-487b-995a-b26b46ab36ba",
+        "identifier": "AIVP-930",
+        "title": "Investigate 502 error from production MCP server",
+        "description": "David Orr encountered a 502 Bad Gateway error while running reviewer internally on the production MCP server.\n\n* Investigate cause of the 502 error\n* Determine if it relates to recent infrastructure changes\n* Check server logs for request tracking\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1764692639380429)",
+        "assigneeId": "57031e99-ad28-4d55-9182-8fa292bdfc71",
+        "assignee": "Chandler Roth",
+        "priority": 2,
+        "state": "In Progress",
+        "createdAt": "2025-12-02T16:24:13.566Z"
+      },
+      {
+        "id": "768cf257-4e47-4f3e-95dd-16a0b1273ef0",
+        "identifier": "AIVP-929",
+        "title": "Fold Categories into Main Branch",
+        "description": "Keep categories: correctness, perf, security, reliability.\n\n* Cut categories: maintainability, documentation, error handling, style.\n* Run n \\* m approach for each diff chunk.\n* Run with no category instructions as well.\n* NEW: Restore \"impact\" (accidentally removed).\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1764698621008849?thread_ts=1764633582.776639)",
+        "assigneeId": "77222287-ba34-46bc-b360-d5be5b4c009b",
+        "assignee": "David Orr",
+        "priority": 3,
+        "state": "In Progress",
+        "createdAt": "2025-12-02T00:01:55.311Z"
+      },
+      {
+        "id": "d3bc3830-83dc-4d55-840c-b23cc4b7f25c",
+        "identifier": "AIVP-928",
+        "title": "Dedupe",
+        "description": "Focus on deduplication tasks.\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1764633582776639)",
+        "priority": 3,
+        "state": "Triage",
+        "createdAt": "2025-12-01T23:59:57.152Z"
+      },
+      {
+        "id": "fe965d24-5a34-482d-aad9-34213bc8273b",
+        "identifier": "AIVP-927",
+        "title": "Bring Category Reviewers into Main Reviewer Branch",
+        "description": "Integrate category-specific reviewers into the main branch.\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1764633582776639)",
+        "priority": 3,
+        "state": "Triage",
+        "createdAt": "2025-12-01T23:59:56.941Z"
+      }
+    ],
+    "docs": ["2025-12-03_04-48-30_slack-anyone-around-for-a-stamp-i-m.json"]
+  },
+  "output": {
+    "operations": [
+      {
+        "action": "SKIP",
+        "skipData": {
+          "reason": "It's an administrative / coordination ask with no clear owner"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "name": "@corporate-context/frontend-common",
+  "version": "1.0.0",
+  "description": "Shared frontend utilities for Corporate Context services",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "keywords": [
+    "frontend",
+    "react",
+    "amplitude",
+    "shared"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@amplitude/analytics-browser": "^2.0.0",
+    "@amplitude/plugin-session-replay-browser": "^1.0.0",
+    "@corporate-context/shared-common": "workspace:*",
+    "posthog-js": "^1.266.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.1.0",
+    "@types/react": "^19.1.0",
+    "react": "^19.1.0",
+    "typescript": "^5.9.2"
+  },
+  "peerDependencies": {
+    "react": "^19.1.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch"
+  }
+}

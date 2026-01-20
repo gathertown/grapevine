@@ -1,0 +1,6 @@
+import * as React from "react";
+import type { SVGProps } from "react";
+import { memo } from "react";
+const SvgBento = (props: SVGProps<SVGSVGElement>) => <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}><path d="M3.5 6.95C3.5 5.8299 3.5 5.26984 3.71799 4.84202C3.90973 4.46569 4.21569 4.15973 4.59202 3.96799C5.01984 3.75 5.5799 3.75 6.7 3.75H10V8.25H3.5V6.95Z" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" /><path d="M13.5 15.75H20V17.05C20 18.1701 20 18.7302 19.782 19.158C19.5903 19.5343 19.2843 19.8403 18.908 20.032C18.4802 20.25 17.9201 20.25 16.8 20.25H13.5V15.75Z" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" /><path d="M3.5 11.75H10V20.25H6.7C5.5799 20.25 5.01984 20.25 4.59202 20.032C4.21569 19.8403 3.90973 19.5343 3.71799 19.158C3.5 18.7302 3.5 18.1701 3.5 17.05V11.75Z" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" /><path d="M13.5 3.75H16.8C17.9201 3.75 18.4802 3.75 18.908 3.96799C19.2843 4.15973 19.5903 4.46569 19.782 4.84202C20 5.26984 20 5.8299 20 6.95V12.25H13.5V3.75Z" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" /></svg>;
+const Memo = memo(SvgBento);
+export default Memo;

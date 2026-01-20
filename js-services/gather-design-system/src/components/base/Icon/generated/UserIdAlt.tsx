@@ -1,0 +1,6 @@
+import * as React from "react";
+import type { SVGProps } from "react";
+import { memo } from "react";
+const SvgUserIdAlt = (props: SVGProps<SVGSVGElement>) => <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}><path d="M14 5H18C19.105 5 20 5.895 20 7V20C20 21.105 19.105 22 18 22H6C4.895 22 4 21.105 4 20V7C4 5.895 4.895 5 6 5H10M15.595 19C15.42 18.561 15.15 18.167 14.803 17.846C14.216 17.302 13.446 17 12.646 17H11.354C10.554 17 9.784 17.302 9.197 17.846C8.85 18.167 8.58 18.561 8.405 19M13.591 10.659C14.4697 11.5377 14.4697 12.9623 13.591 13.841C12.7123 14.7197 11.2877 14.7197 10.409 13.841C9.53033 12.9623 9.53033 11.5377 10.409 10.659C11.2877 9.78033 12.7123 9.78033 13.591 10.659ZM13 7H11C10.448 7 10 6.552 10 6V3C10 2.448 10.448 2 11 2H13C13.552 2 14 2.448 14 3V6C14 6.552 13.552 7 13 7Z" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" /></svg>;
+const Memo = memo(SvgUserIdAlt);
+export default Memo;

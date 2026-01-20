@@ -1,0 +1,54 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migrations
+  namespace: grapevine-services
+  labels:
+    app.kubernetes.io/name: migrations
+  annotations:
+    # See: https://argo-cd.readthedocs.io/en/stable/user-guide/sync-waves/
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: migrations
+    spec:
+      serviceAccountName: migrations-sa
+      restartPolicy: Never
+      imagePullSecrets:
+        - name: priv-docker-registry
+      containers:
+        - name: migrations
+          image: REGISTRY/grapevine-migrations:latest
+          command:
+            [
+              "uv",
+              "run",
+              "python",
+              "-m",
+              "src.migrations.cli",
+              "migrate",
+              "--control",
+              "--all-tenants",
+              "--retries",
+              "1",
+              "--timeout",
+              "600",
+              "--max-parallel",
+              "20",
+            ]
+          envFrom:
+            - secretRef:
+                name: migrations-secrets
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+  backoffLimit: 3
+  ttlSecondsAfterFinished: 86400 # Clean up after 24 hours

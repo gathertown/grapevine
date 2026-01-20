@@ -1,0 +1,15 @@
+{
+  "extends": "../tsconfig.frontend.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "dist",
+    "declaration": true,
+    "declarationMap": true,
+    "types": ["vite/client"],
+    "noEmit": false,
+    "moduleResolution": "bundler"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["**/*.test.ts", "**/*.spec.ts", "dist"],
+  "references": [{ "path": "../shared-common" }]
+}

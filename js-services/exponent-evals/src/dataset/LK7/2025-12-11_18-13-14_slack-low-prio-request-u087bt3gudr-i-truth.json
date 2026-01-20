@@ -1,0 +1,217 @@
+{
+  "output": {
+    "operations": [
+      {
+        "action": "CREATE",
+        "createData": {
+          "title": "Group related messages in threads"
+        }
+      }
+    ]
+  },
+  "input": {
+    "docs": ["2025-12-11_18-13-14_slack-low-prio-request-u087bt3gudr-i.json"],
+    "linearState": [
+      {
+        "id": "95aeebaa-b631-4cf2-af95-e39968bda7e0",
+        "identifier": "AIVP-1007",
+        "title": "Eliminate \"here, too\" comments",
+        "description": "",
+        "assigneeId": "77222287-ba34-46bc-b360-d5be5b4c009b",
+        "assignee": "David Orr",
+        "priority": 0,
+        "state": "Done",
+        "createdAt": "2025-12-10T22:28:37.967Z"
+      },
+      {
+        "id": "2f49399b-f5c2-443f-972e-733b9d6c394e",
+        "identifier": "AIVP-1006",
+        "title": "Implement Reviewer feedback collection via GitHub emoji reactions",
+        "description": "Implement a feedback mechanism for Reviewer by tracking GitHub emoji reactions on our posted PR comments.\n\n* Use GitHub emoji reactions as the feedback signal\n* When posting comments, record the comment IDs to Grapevine\n* Poll for new emoji reactions on our comments (since GitHub does not send webhooks for comment reacts)\n* Proposed backoff: poll each comment hourly for the first day, daily for the first week, then stop\n\nAdditional context (2025-12-10 Slack):\n\n* Benefits:\n  * GitHub handles auth and deduping reactions by user, simplifying our side\n  * UI is very simple\n  * Probably easiest to implement\n* Downsides:\n  * Hard to handle more complex feedback than thumbs up/down (replies maybe?)\n  * Polling is undesirable; we may need to reconsider if/when we launch beyond Gather\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1765392007290049?thread_ts=1765391737.133799)",
+        "priority": 0,
+        "state": "Triage",
+        "createdAt": "2025-12-10T18:38:19.127Z"
+      },
+      {
+        "id": "5bc3ff5c-d63d-4158-88be-b008329a344e",
+        "identifier": "AIVP-1005",
+        "title": "Filter/fix Reviewer comments on lines not in the diff",
+        "description": "Andy will investigate why Reviewer is still posting comments on lines that aren't part of the diff and try to fix or filter those comments.\n\n* ETA: early to mid afternoon PT\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1765391737133799)",
+        "assigneeId": "7ff3efc2-b5a2-4820-b4b4-7ec1d829e35a",
+        "assignee": "Andy Lui",
+        "priority": 0,
+        "state": "In Review",
+        "createdAt": "2025-12-10T18:36:48.833Z"
+      },
+      {
+        "id": "c3803bed-7978-4461-a9fc-dc985df097d6",
+        "identifier": "AIVP-1004",
+        "title": "Fix Trello webhook registration (not registering properly)",
+        "description": "Trello webhooks are currently not being registered properly and should be fixed.\n\n* Reported by Chandler Roth during review of PR #2424\n* Not a connector blocker because the Trello connector uses the new interval sync strategy\n* Still needs to be corrected to ensure proper webhook behavior\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1765389207160529?thread_ts=1765315403.476889)",
+        "priority": 0,
+        "state": "In Review",
+        "createdAt": "2025-12-10T18:04:21.434Z"
+      },
+      {
+        "id": "94235eb9-3c53-4f06-9ec2-4735be8b8c2f",
+        "identifier": "AIVP-1003",
+        "title": "Update Ask REST API: expose Ask Agent Fast and support new parameters",
+        "description": "Per 2025-12-09 Grapevine Core/Q&A standup:\n\n\\- Add a REST API surface to call the 'Ask Agent Fast' variant (new endpoint or parameterized mode)\n\n\\- Extend the existing v1 ask endpoint to accept additional fields supported by the ask agent tool (e.g., promptOverride, verbosity, levelOfThinking)\n\n\\- Preserve backward compatibility with current query-only requests\n\n\\- Plumb new request fields through to the agent service and update validation/schema\n\n\\- Add tests covering new parameters and fast path behavior",
+        "priority": 0,
+        "state": "Done",
+        "createdAt": "2025-12-10T02:18:20.601Z"
+      },
+      {
+        "id": "22f4bd78-1563-4b83-ae51-9877b4f21010",
+        "identifier": "AIVP-1002",
+        "title": "test",
+        "description": "",
+        "priority": 0,
+        "state": "Canceled",
+        "createdAt": "2025-12-10T00:17:11.597Z"
+      },
+      {
+        "id": "34852a4a-efa4-4570-8735-31031c19e26a",
+        "identifier": "AIVP-1001",
+        "title": "Prevent duplicate Reviewer comments on subsequent runs",
+        "description": "Prevent duplicate Reviewer comments on subsequent runs.\n\n* Per 2025-12-10 Slack: David will finish a PR to take existing comments into account and reduce redundant \"here, too\" comments\n* ETA: mid to late afternoon ET\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1765391737133799)",
+        "assigneeId": "77222287-ba34-46bc-b360-d5be5b4c009b",
+        "assignee": "David Orr",
+        "priority": 2,
+        "state": "Done",
+        "createdAt": "2025-12-10T00:11:17.729Z"
+      },
+      {
+        "id": "aea73de8-68cd-4c52-bd09-7353a08f8ca8",
+        "identifier": "AIVP-1000",
+        "title": "Build public QA chat UI (convert internal Admin UI agent chat) with persisted conversation history",
+        "description": "Implement a non-Slack UI for chatting with the QA agent by converting the existing Admin UI internal agent chat into a public-facing experience and fixing current staging errors.\n\n* Make the agent chat UI non-internal and accessible without Slack setup\n* Fix the recent staging errors preventing use of the internal chat tab\n* Persist conversation history in the database; add a left-pane list of chats (resume conversations across refreshes)\n* Basic UI polish (the current version is described as \"ugly\"); functionality > aesthetics\n* Keep scope focused on reliability + history; feature-gate as needed for rollout",
+        "priority": 3,
+        "state": "In Review",
+        "createdAt": "2025-12-09T22:22:32.607Z"
+      },
+      {
+        "id": "43b115f9-8b3b-4bde-8aa4-508529f81a11",
+        "identifier": "AIVP-999",
+        "title": "POC: Evaluate OpenAI Batch Embeddings for indexing",
+        "description": "Run a small proof-of-concept to evaluate feasibility and tradeoffs of OpenAI’s Batch Embeddings API for our indexing pipeline.\n\n* Implement fire-and-poll flow (batch submit, poll for completion; batches may take up to 24h)\n* Measure typical completion times, failure modes, and rate limits on representative batch sizes\n* Prototype minimal integration path (queuing, idempotency, and retry strategy)\n* Compare cost/latency vs. current synchronous embedding approach; document findings and recommendation",
+        "priority": 4,
+        "state": "Triage",
+        "createdAt": "2025-12-09T22:22:32.432Z"
+      },
+      {
+        "id": "1eb0ee90-5c41-4bc9-8f73-66e7d60da379",
+        "identifier": "AIVP-998",
+        "title": "Surface connector health and data freshness in Admin UI",
+        "description": "**Add detail (per 2025-12-09 Slack):**\n\n* Show the number of ingested vs indexed documents in the Admin UI\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1765320744856989?thread_ts=1765318953.012949)",
+        "priority": 3,
+        "state": "Triage",
+        "createdAt": "2025-12-09T22:22:31.972Z"
+      },
+      {
+        "id": "45b8233a-f5c5-4d17-a3a9-b940f246e9a4",
+        "identifier": "AIVP-997",
+        "title": "Enable Slack DM search via Slack federated search and integrate into agent",
+        "description": "Implement Slack DM search support using Slack’s new AI/federated search capabilities and integrate it as a special-cased retrieval path for the agent (no local indexing).\n\n* Update Slack app manifest/scopes to enable federated search for user-accessible DMs\n* Add agent-side special-casing to route DM queries via Slack federated search (not our index)\n* Use centralized Slack bots to roll out manifest changes; provide a migration path for older bots\n* Document limitations (federated search visibility and access behavior) and fallback behavior",
+        "priority": 3,
+        "state": "Triage",
+        "createdAt": "2025-12-09T22:22:31.787Z"
+      },
+      {
+        "id": "7a655446-1d5c-4b5b-b14c-e4f6d99e2e5e",
+        "identifier": "AIVP-996",
+        "title": "Switch Slack bot responses to Block Kit; investigate text→blocks resolver",
+        "description": "Per Brent: we should use Block Kit blocks instead of pasting raw text from ask_agent in Slack bot responses. David Rios will take this on.\n\n* Replace raw text responses from ask_agent with Slack Block Kit blocks\n* Investigate whether a text→blocks resolver exists and use it if appropriate\n* Commitment: David Rios (2025-12-09 21:17 UTC)\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1765315072671239?thread_ts=1765313508.370579)",
+        "assigneeId": "a53ca982-8854-4161-b91a-ad17363f4477",
+        "assignee": "David Rios",
+        "priority": 0,
+        "state": "Triage",
+        "createdAt": "2025-12-09T21:18:37.989Z"
+      },
+      {
+        "id": "9b7a7a69-c6ae-4060-8b39-2d8ee5afae0c",
+        "identifier": "AIVP-995",
+        "title": "Run eval to test Slack block formatting/code fence chunking behavior",
+        "description": "David Rios will run an eval to see how the system handles Slack block formatting, specifically around code fences potentially being split across section blocks and rendering raw backticks.\n\n* Context: Prior messages noted code fences may be split across blocks due to chunking, and block-send fallback can post plain text\n* Goal: Test in an eval and report what it says/does for this case\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1765313708903189?thread_ts=1765312375.547379)",
+        "assigneeId": "a53ca982-8854-4161-b91a-ad17363f4477",
+        "assignee": "David Rios",
+        "priority": 0,
+        "state": "Triage",
+        "createdAt": "2025-12-09T20:56:22.741Z"
+      },
+      {
+        "id": "dd61269e-c5b8-479a-9058-08eaee12378e",
+        "identifier": "AIVP-994",
+        "title": "Debug Grapevine search not finding Notion doc '[Gather Chat] Custom Emojis'",
+        "description": "Debug Grapevine search not finding Notion doc '\\[Gather Chat\\] Custom Emojis'.\n\nNew clarification from Slack (2025-12-09 20:31 UTC):\n\n* Kumail Jaffer: If the doc is in personal docs and not explicitly nested under 'General', Grapevine cannot find it; it needs to be moved under 'General'.\n* Karen Ying asked if this holds even with 'all workspace access' — confirmed 'yeah'.\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1765312307773549?thread_ts=1765311202.570749)",
+        "assigneeId": "51b51810-a5b5-4578-a95e-3322a9b6eedf",
+        "assignee": "Karen Ying",
+        "priority": 0,
+        "state": "In Progress",
+        "createdAt": "2025-12-09T20:15:40.583Z"
+      },
+      {
+        "id": "a9b95a89-fcf9-4195-9ad7-73f47d61af8a",
+        "identifier": "AIVP-993",
+        "title": "Fix Reviewer CI leaking github cred",
+        "description": "[https://github.com/gathertown/corporate-context/pull/2377#pullrequestreview-3554952107](https://github.com/gathertown/corporate-context/pull/2377#pullrequestreview-3554952107)\n\n```\n1. .github/scripts/call_pr_review_tool.py:79\nThe script prints the full request_payload to stdout, which includes github_token when present. This leaks a privileged token into GitHub Actions logs and, in this workflow, into the Slack message (review_output.txt is sent to Slack). Do not print secrets; redact or omit tokens from logs. References: code at https://github.com/gathertown/corporate-context/blob/main/.github/scripts/call_pr_review_tool.py#L79 and workflow forwarding https://github.com/gathertown/corporate-context/blob/main/.github/workflows/grapevine-pr-review.yml#L59-L66.\n\nImpact: 90/100 | Confidence: 90/100 | Categories: security\n```",
+        "assigneeId": "77222287-ba34-46bc-b360-d5be5b4c009b",
+        "assignee": "David Orr",
+        "priority": 0,
+        "state": "In Review",
+        "createdAt": "2025-12-09T18:33:04.839Z"
+      },
+      {
+        "id": "95e0847f-bf19-4e11-90d8-7f95a92a8416",
+        "identifier": "AIVP-992",
+        "title": "Move workflow builder PR on top of agent harness PR to enable integration",
+        "description": "Bryan Phelps committed to move the workflow builder PR on top of Jordan's agent harness PR to try connecting them.\n\n* Goal: enable initial integration between the workflow builder UI and the agent harness\n* Related PR: agent harness PR ([https://github.com/gathertown/corporate-context/pull/2350](https://github.com/gathertown/corporate-context/pull/2350))\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1765302350314019?thread_ts=1765300907.197159)",
+        "assigneeId": "4e49bce1-a0f0-42c6-b387-b843f08519c5",
+        "assignee": "Bryan Phelps",
+        "priority": 0,
+        "state": "Done",
+        "createdAt": "2025-12-09T17:47:30.879Z"
+      },
+      {
+        "id": "e1ce9588-7099-45fa-ba1f-30987140ac85",
+        "identifier": "AIVP-991",
+        "title": "Migrate per-tenant secrets from SSM to KMS + Tenant DB",
+        "description": "Context:\n\n**From Original Slack Report:**\n\n> **Johnny D**  [Oct 9th at 4:23 PM](https://gather-town.slack.com/archives/C08BMCZK81F/p1760041417156219):\n>\n> oh damn we hit a limit preventing new tenants\n>\n> **New error group detected****\n**[**botocore.errorfactory:ParameterLimitExceeded**](https://one.newrelic.com/launcher/errors-inbox.launcher?pane=eyJuZXJkbGV0SWQiOiJlcnJvcnMtaW5ib3guaG9tZSIsIndvcmtsb2FkSWQiOiJNek0zTXpreU5ueE9VakY4VjA5U1MweFBRVVI4TkRJMk5EWXkifQ%3D%3D&cards%5B0%5D=eyJ0aW1lU3RhbXAiOiIxNzYwMDQxMjI1NDA0IiwibmVyZGxldElkIjoiZXJyb3JzLWluYm94LmVycm9yLWdyb3VwLWRldGFpbHMiLCJlbnRpdHlHdWlkIjoiTXpNM016a3lObnhPVWpGOFYwOVNTMHhQUVVSOE5ESTJORFl5IiwiZXJyb3JHcm91cEd1aWQiOiJNek0zTXpreU5ueEZVbFI4UlZKU1gwZFNUMVZRZkdWbU5EazBPRE5rTFdSbVpUZ3RNMlUyTnkxaFpEVXdMVFEyTUdVNU1tTTBZV0ZsT0EifQ%3D%3D&platform%5BtimeRange%5D%5Bduration%5D=600000&platform%5B%24isFallbackTimeRange%5D=true&utm_source=errors-inbox&utm_medium=slack&utm_campaign=errors-inbox-slack-post-click)\n>\n> ```\n> An error occurred (ParameterLimitExceeded) when calling the PutParameter operation: You have reached the maximum number of standard parameters for this AWS account and Region (<NUMBER>). To add more parameters, either delete existing parameters or upgrade to the advanced-parameter tier (charges apply).\n> ```\n>\n> hm we can't raise this limit. advanced params have a hard cap too\n>\n> immediate concern is getting back live - I think we likely have params for tenants that have been deleted, which we can clear out as an immediate step\n>\n> **jared**  [Oct 9th at 4:28 PM](https://gather-town.slack.com/archives/C08BMCZK81F/p1760041716560969?thread_ts=1760041417.156219&cid=C08BMCZK81F):\n>\n> Could probably switch to advanced params to buy some breathing room. In theory that shouldn't be hard\n>\n> I think it'd be a code change though, so probably: delete unused -> advanced -> explore KMS/secrets store\n>\n> **Johnny D**  [Oct 9th at 4:41 PM](https://gather-town.slack.com/archives/C08BMCZK81F/p1760042471546389?thread_ts=1760041417.156219&cid=C08BMCZK81F):\n> deleted them - we need to delete more to have a bit more breathing room though. [@Dave Orr](https://gather-town.slack.com/team/U025PUZ532N) is going to delete more tenants from staging, since we currently use the same SSM for staging and prod\n>\n> It looks like 2 tenants tried and failed to provision:\n>\n> * `8c899323eb484c06` tried and got through all the opensearch & postgres setup, as well as some of the SSM saving, but failed on one of the final SSM saves\n> * `bcad3d514c724b4e` then signed up - also got through opensearch & postgres, though was unable to save anything to SSM\n>\n> Since both were created in postgres & opensearch, we can't simply retry them as they'll fail on the postgres user role issue. I'm going to manually fix them by deleting their roles from prod PSQL\n>\n> Between these 2 actions we should be in an ok \"breathing room\" state - I'm going to switch us over to advanced params so we have a 10x from there, which should give us enough time to decide how we want to handle this properly\n>\n> PR to use [Advanced Parameters](https://github.com/gathertown/corporate-context/pull/1470) shipping to staging. Once deployed, I'm going to test by:\n>\n> * confirming existing staging tenant isn't broken (i.e we can properly fetch non-Advanced params still)\n> * creating a new Staging tenant\n> * confirming that this new tenant uses advanced params manually in AWS console\n>\n> \n> assuming all goes well, will ship to prod\n>\n> We definitely need to figure out a real solution to this though - advanced SSM params are 5c/mo/param, which will add up very fast in costs\n>\n> I expect we're over-using params atm - i.e we could just store all tenant provisioning details in 1 param, cutting does \\~4 params/tenant\n> but that still might not be enough headroom with 10k cap; likely need to move off SSM to secret manager or some other secure KV store\n>\n> new tenant params are advanced, DMs and proactivity aren't broken on staging - promoting to prod\n>\n> OK calling the all clear - prod is rolled out, and a new organic tenant is using advanced tier params\n> [@vic](https://gather-town.slack.com/team/U01FGUX678C) [@Kumail Jaffer](https://gather-town.slack.com/team/U0180NKJP89) this will buy us a good amount of time, but I mean buy in a literal sense 🤑🤑. We should discuss tomorrow in standup how we want to proceed\n>\n> **Kumail Jaffer**  [Oct 9th at 6:53 PM](https://gather-town.slack.com/archives/C08BMCZK81F/p1760050395799469?thread_ts=1760041417.156219&cid=C08BMCZK81F)\n>\n> oof this is a really rough limit\n>\n> almost certainly need to choose a different secure KV store\n>\n> **vic**  [Oct 13th at 8:37 PM](https://gather-town.slack.com/archives/C08BMCZK81F/p1760402255693349?thread_ts=1760041417.156219&cid=C08BMCZK81F)\n>\n> damn, thanks for dealing with this yall\n>\n> is this still TODO to figure out? don’t see it mentioned in friday standup notes\n>\n> **Dave Orr**  [Oct 13th at 8:40 PM](https://gather-town.slack.com/archives/C08BMCZK81F/p1760402414498799?thread_ts=1760041417.156219&cid=C08BMCZK81F)\n>\n> I don’t believe we’ve figured out our alternative secret store or started migrating\n\n**From Relevant Security Plan:**\n\n> **Johnny D**  [Oct 14th at 2:37 PM](https://gather-town.slack.com/archives/C01CNT77ZLG/p1760467075264589)\n>\n> [@Josh Yavor](https://gather-town.slack.com/team/U08RDCGU4US) Wanted to get your take on a potential architecture change we're considering for Grapevine.\n> Some context:\n>\n> * Currently, we store 2 types of privileged data for our customers:\n>   * External API Keys (Slack API Key, Notion API Key, etc.). These are currently stored in SSM, encrypted with a shared KMS key, **with each field as their own parameter**\n>   * Company Docs (Slack messages, notion docs, etc.). These are stored in RDS (1 db per tenant), Opensearch (1 index per tenant) and Turbopuffer (1 namespace per tenant)\n> * We store the tenant-scoped credentials needed to access each of these in SSM - **each as their own parameter**\n> * Last week, we had an incident where we hit the hard limit on SSM Parameters per account (10k Standard). We've temporarily mitigated by upping to using Advanced Parameters (100k limit), but these are more expensive and are still limited in scale\n>\n> \n> Our plan:\n>\n> * As part of our longer-term solution, we'd like to move to 1 SSM parameter / tenant. This would contain only the Grapevine-managed credentials (PG, OS)\n> * The External API Keys would move to being stored in RDS, alongside the Company Docs. They would remain encrypted at rest and well-secured\n>\n> \n> Question for you: Do you think there's any issue with us storing these external API keys in RDS? The only argument I can think of against it would be that if our RDS leaked we'd expose these API keys, but they can only be used to fetch the data that's already being stored in that DB so this feels like a weak argument\n> cc [@Kumail Jaffer](https://gather-town.slack.com/team/U0180NKJP89) if you have any other context to add\n>\n> **Achilleas**  [Oct 14th at 2:48 PM](https://gather-town.slack.com/archives/C01CNT77ZLG/p1760467689343929?thread_ts=1760467075.264589&cid=C01CNT77ZLG)\n>\n> Do we plan to store the external api keys in an encrypted format (for example, encrypted using a Grapevine-owned KMS. fwiw we ended up doing the same in Gather Core as well - [ref](https://gather-town.slack.com/archives/C02EGRGH8SY/p1755799946894989)), or will they be stored as plain text?\n>\n> **Josh Yavor**  [Oct 14th at 3:01 PM](https://gather-town.slack.com/archives/C01CNT77ZLG/p1760468487612829?thread_ts=1760467075.264589&cid=C01CNT77ZLG)\n>\n> ^this is the right direction - it can be okay to store safely encrypted versions of the keys in a database with the key management / encryption / decryption provided via AWS (KMS). that gives you the appropriate flexibility for separation of duties for keys while keeping the volume of keys manageable.\n>\n> > but they can only be used to fetch the data that's already being stored in that DB\n>\n> While this **may** be true now, this is not a safe assumption to make long term. Depending on what other future API integrations you add support for, any changes made to API authorization behavior for the existing integrations, or any configuration drift that may be introduced by customer decisions (over-scoping access accidentally), you can not rely on your integration's access being limited to \"read only\". You need to protect these credentials based on the assumption that some of them may (intentionally or not) have additional capabilities such as writing data and/or making state changes to your customer's systems.\n> Here's an example of a recent vendor breach where attackers went after them specifically for their API credentials to then get to their customer's data directly. Even in read-only modes, you don't want to be responsible for letting these credentials fall into attacker's hands.\n> Overview: [https://cloud.google.com/blog/topics/threat-intelligence/data-theft-salesforce-instances-via-salesloft-drift](https://cloud.google.com/blog/topics/threat-intelligence/data-theft-salesforce-instances-via-salesloft-drift)\n> Coverage of impacted customers: [https://www.driftbreach.com/](https://www.driftbreach.com/)\n>\n> would the DB in RDS storing the keys be postgress?\n>\n> **Johnny D**  [Oct 14th at 3:14 PM](https://gather-town.slack.com/archives/C01CNT77ZLG/p1760469286713759?thread_ts=1760467075.264589&cid=C01CNT77ZLG)\n>\n> Yes, DB would be Postgres\n>\n> Makes sense. So sounds like this approach would work if we encrypt them with KMS in our application logic coming in/out of RDS\n\n**From Original Notion Plan:**\n\n> Kumail:\n>\n> \\> we need to find an alternate secret store\n>\n> @Johnny Dallas any suggestions?\n>\n> Johnny:\n>\n> thinking/looking through some options today, will have more specific ideas later toda\n>\n> Spent some time digging into this. Have a clear plan of action:\n>\n> \\- migrate to 1 SSM parameter/tenant, storing ONLY: OS creds, DB creds\n>\n> \\- all other secrets move to a new table in the tenant DB: external_secrets\n>\n> \\- all values are encrypted by KMS going in/out of this table\n>\n> Next steps would be to create this table, update codepaths for fetching/saving these values, and write a migration script\n\n**From Reinforcing Notion Plan:**\n\n> * plan:\n>   * keep using ssm, but 1 param / tenant\n>   * move all external creds out of ssm, into tenant db - it should only be storing pg and os creds\n>   * encrypt external creds via kms before writing to tenant db\n\nSynthesized:\n\nProblem:\n\n* Every tenant uses multiple SSM parameters \n* SSM has a hard cap on the number of parameters that can be used per AWS account\n* We ran out of SSM parameters, preventing new users from signing up\n\nSolution:\n\n* Migrate to only 1 SSM parameter per tenant by moving all non-postgres credentials into postgres, and consolidating all postgres credentials into 1 parameter",
+        "priority": 2,
+        "state": "Backlog",
+        "createdAt": "2025-12-09T17:17:22.002Z"
+      },
+      {
+        "id": "a0d4bf6c-61fd-47e2-bb79-792e2e14c068",
+        "identifier": "AIVP-990",
+        "title": "Switch agent LLM provider from OpenAI to Anthropic API",
+        "description": "Per Johnny Dallas: OpenAI appears to have banned us; we need to change the agent to use the Anthropic API instead of OpenAI.\n\n* Replace OpenAI usage with Anthropic API for the agent\n* Reason: OpenAI banned us (per 2025-12-10 Slack thread)\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1765330167984159)",
+        "assigneeId": "6ce1dce5-d5b4-4e6f-a6bc-4beda94c5082",
+        "assignee": "Kumail",
+        "priority": 0,
+        "state": "Triage",
+        "createdAt": "2025-12-09T16:48:53.943Z"
+      },
+      {
+        "id": "c087566e-2dbf-41fb-98d6-6d80291304ff",
+        "identifier": "AIVP-989",
+        "title": "PR Review github action is sending multiple messages per review",
+        "description": "[https://gather-town.slack.com/archives/C0A1HMDP63E/p1765245282808189](https://gather-town.slack.com/archives/C0A1HMDP63E/p1765245282808189)",
+        "assigneeId": "7ff3efc2-b5a2-4820-b4b4-7ec1d829e35a",
+        "assignee": "Andy Lui",
+        "priority": 0,
+        "state": "In Review",
+        "createdAt": "2025-12-09T02:05:54.125Z"
+      },
+      {
+        "id": "1f05e4a9-a90a-4166-b828-cabf488001ad",
+        "identifier": "AIVP-988",
+        "title": "Check current comments before posting",
+        "description": "Reviewer should review current comments on the PR to prevent redundant comments\n\nThis is especially important when iterating on a PR, reviewer will post many of the same comments every time",
+        "priority": 3,
+        "state": "Duplicate",
+        "createdAt": "2025-12-09T01:35:03.883Z"
+      }
+    ]
+  }
+}

@@ -1,0 +1,201 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    types: [opened, labeled, reopened, synchronize]
+    branches-ignore:
+      - 'deploy-queue/**'
+      - 'deploy-queue-hotfix/**'
+
+concurrency:
+  # We build all commits on main, but on PRs we want to cancel-in-progress.
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || (github.ref_name == 'main' && github.sha || github.ref) }}
+  cancel-in-progress: ${{ github.ref_name != 'main' }}
+
+permissions:
+  contents: read # Clone repo
+  packages: read # Read private npm packages
+  id-token: write
+
+
+jobs:
+  python-lint-and-typecheck:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - uses: ./.github/actions/setup-tools
+        with:
+          github_token: ${{ github.token }}
+
+      - name: Install dependencies
+        run: uv sync --group test
+
+      - name: Run linting
+        run: uv run ruff check
+
+      - name: Run type checking
+        run: uv run mypy
+
+  js-lint-and-typecheck:
+    runs-on: ubuntu-latest
+
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - uses: ./.github/actions/setup-tools
+        with:
+          github_token: ${{ github.token }}
+
+      - name: Enable corepack for Yarn
+        run: corepack enable
+
+      - name: Cache Yarn dependencies
+        uses: actions/cache@v4
+        with:
+          path: js-services/.yarn/cache
+          key: ${{ runner.os }}-yarn-${{ hashFiles('js-services/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Cache nx build outputs
+        uses: actions/cache@v4
+        with:
+          path: js-services/.nx/cache
+          key: ${{ runner.os }}-nx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-nx-
+
+      - name: Install dependencies
+        working-directory: js-services
+        run: yarn install --immutable
+
+      - name: Run formatting check for all workspaces
+        working-directory: js-services
+        run: yarn format:check
+
+      - name: Run linting for all workspaces
+        working-directory: js-services
+        run: yarn lint
+
+      - name: Build and type-check all workspaces
+        working-directory: js-services
+        run: NODE_OPTIONS="--max-old-space-size=4096" yarn build
+
+  js-test:
+    runs-on: ubuntu-latest
+
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - uses: ./.github/actions/setup-tools
+        with:
+          github_token: ${{ github.token }}
+
+      - name: Enable corepack for Yarn
+        run: corepack enable
+
+      - name: Cache Yarn dependencies
+        uses: actions/cache@v4
+        with:
+          path: js-services/.yarn/cache
+          key: ${{ runner.os }}-yarn-${{ hashFiles('js-services/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        working-directory: js-services
+        run: yarn install --immutable
+
+      - name: Run tests
+        working-directory: js-services
+        run: yarn test
+
+  python-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - uses: ./.github/actions/setup-tools
+        with:
+          github_token: ${{ github.token }}
+
+      - name: Install dependencies
+        run: uv sync --group test
+
+      - name: Run tests
+        run: |
+          uv run pytest tests/ -v
+
+  dead-code-detection:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # For autofix commits
+      pull-requests: write # For PR comments
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - uses: ./.github/actions/setup-tools
+        with:
+          github_token: ${{ github.token }}
+
+      - name: Install dependencies
+        run: uv sync --group test
+
+      - name: Make vulture autofix script executable
+        run: chmod +x scripts/vulture_autofix.py
+
+      # Phase 1: Autofix high-confidence issues
+      - name: Autofix 100% confident vulture issues
+        continue-on-error: true
+        run: |
+          echo "🎯 Running vulture autofix for 100% confidence issues..."
+          python scripts/vulture_autofix.py > vulture_autofix.log 2>&1 || true
+          cat vulture_autofix.log
+
+      - name: Check for changes and commit autofixes
+        continue-on-error: true
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "🤖 Autofix dead code (100% confidence)\n\n- vulture: Remove 100% confident dead code\n\nGenerated automatically by dead code detection CI"
+          commit_author: 'github-actions[bot] <github-actions[bot]@users.noreply.github.com>'
+          file_pattern: 'src/'
+
+      # Phase 2: Scan for remaining issues (silent - no PR comments)
+      - name: Scan for remaining dead code issues
+        continue-on-error: true
+        run: |
+          echo "📊 Scanning for remaining issues..."
+          # Run vulture for lower confidence issues (60-99%)
+          # Results are logged but not posted as PR comments
+          uv run vulture --min-confidence 60 || true
+
+  docker-build:
+    uses: ./.github/workflows/build-docker-images.yaml
+    # devenv.yaml workflow handles this
+    if: ${{ !contains(github.event.pull_request.labels.*.name, 'devenv') }}
+    with:
+      # use the branch name on pushes, PR head branch name on PRs
+      cache-key: ${{ github.event_name == 'push' && github.ref_name || github.head_ref }}
+    secrets: inherit

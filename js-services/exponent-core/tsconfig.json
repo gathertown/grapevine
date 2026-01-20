@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.backend.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"],
+  "references": [{ "path": "../backend-common" }, { "path": "../shared-common" }]
+}

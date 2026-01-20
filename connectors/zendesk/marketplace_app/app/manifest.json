@@ -1,0 +1,11 @@
+{
+  "name": "Grapevine",
+  "author": {
+    "name": "Gather Presence",
+    "email": "grapevine@gather.town",
+    "url": "https://getgrapevine.ai/"
+  },
+  "defaultLocale": "en",
+  "marketingOnly": true,
+  "private": false
+}

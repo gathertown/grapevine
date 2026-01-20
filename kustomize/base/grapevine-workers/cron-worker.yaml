@@ -1,0 +1,118 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cron-worker
+  namespace: grapevine-workers
+  annotations:
+    reloader.stakater.com/auto: 'true'
+  labels:
+    app.kubernetes.io/name: cron-worker
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 50%
+      maxSurge: 50%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: cron-worker
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: cron-worker
+    spec:
+      terminationGracePeriodSeconds: 30 # allow for graceful shutdown, e.g. release in-progress jobs
+      serviceAccountName: cron-worker
+      imagePullSecrets:
+        - name: priv-docker-registry
+      containers:
+        - name: cron-worker
+          image: REGISTRY/grapevine-cron-worker:latest
+          envFrom:
+            - secretRef:
+                name: cron-worker-secrets
+          resources:
+            requests:
+              cpu: 500m
+              memory: '2Gi'
+              ephemeral-storage: '8Gi'
+            limits:
+              cpu: '2'
+              memory: '8Gi'
+          ports:
+            - containerPort: 8090
+              name: http
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: 8090
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: 8090
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          securityContext:
+            runAsUser: 1000
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - all
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: cron-worker
+  namespace: grapevine-workers
+  labels:
+    app.kubernetes.io/name: cron-worker
+spec:
+  minAvailable: 60%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: cron-worker
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cron-worker
+  namespace: grapevine-workers
+  labels:
+    app.kubernetes.io/name: cron-worker
+spec:
+  selector:
+    app.kubernetes.io/name: cron-worker
+  ports:
+    - name: http
+      port: 8090
+      targetPort: 8090
+      protocol: TCP
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: cron-worker-metrics
+  namespace: grapevine-workers
+  labels:
+    app.kubernetes.io/name: cron-worker
+spec:
+  endpoints:
+    - port: metrics
+      path: /metrics
+      interval: 30s
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: cron-worker
+  namespaceSelector:
+    matchNames:
+      - grapevine-workers

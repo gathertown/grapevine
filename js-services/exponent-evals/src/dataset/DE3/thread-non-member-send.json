@@ -1,0 +1,13 @@
+{
+  "id": "thread-non-member-send",
+  "type": "ticket",
+  "sourceDescription": "this Linear ticket",
+  "sourceContent": null,
+  "operation": {
+    "action": "CREATE",
+    "createData": {
+      "title": "Fix message sending failure in threads for non-member channels",
+      "description": "bug: if you open a thread in a channel you're not part of, you can write a message but it'll be stuck at \"failed to send\"\n\nit should show something similar to this slack UI where it doesnt show a composer but instead shows the UI to join channel"
+    }
+  }
+}

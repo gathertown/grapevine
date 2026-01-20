@@ -1,0 +1,6 @@
+import * as React from "react";
+import type { SVGProps } from "react";
+import { memo } from "react";
+const SvgPenDraw = (props: SVGProps<SVGSVGElement>) => <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}><path d="M15.6656 9.49895L12.6644 6.4977M21.1679 18.0025L20.0734 19.0969C18.8647 20.3053 16.9053 20.3053 15.6966 19.0969C14.4864 17.8912 12.529 17.8912 11.3188 19.0969M17.5454 4.61792C18.3738 5.44684 18.3738 6.79024 17.5454 7.61917L7.55423 17.6103C7.29784 17.8667 6.9766 18.0486 6.62484 18.1365L3.1604 19.0029L4.02676 15.5385C4.11472 15.1867 4.2966 14.8655 4.55298 14.6091L14.5451 4.61792C15.3737 3.78963 16.7168 3.78963 17.5454 4.61792Z" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" /></svg>;
+const Memo = memo(SvgPenDraw);
+export default Memo;

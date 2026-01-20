@@ -1,0 +1,77 @@
+{
+  "uid": "webhooks-local-grapevine",
+  "type": "webhooks",
+  "config": {
+    "settings": {
+      "targetUrl": "https://grapevine-gatekeeper-rick.ngrok.app/webhooks/hubspot",
+      "maxConcurrentRequests": 10
+    },
+    "subscriptions": {
+      "crmObjects": [
+        {
+          "subscriptionType": "object.creation",
+          "objectType": "deal",
+          "active": true
+        },
+        {
+          "subscriptionType": "object.deletion",
+          "objectType": "deal",
+          "active": true
+        },
+        {
+          "subscriptionType": "object.associationChange",
+          "objectType": "deal",
+          "active": true
+        },
+
+        {
+          "subscriptionType": "object.creation",
+          "objectType": "company",
+          "active": true
+        },
+        {
+          "subscriptionType": "object.deletion",
+          "objectType": "company",
+          "active": true
+        },
+        {
+          "subscriptionType": "object.associationChange",
+          "objectType": "company",
+          "active": true
+        },
+
+        {
+          "subscriptionType": "object.creation",
+          "objectType": "contact",
+          "active": true
+        },
+        {
+          "subscriptionType": "object.deletion",
+          "objectType": "contact",
+          "active": true
+        },
+        {
+          "subscriptionType": "object.associationChange",
+          "objectType": "contact",
+          "active": true
+        },
+
+        {
+          "subscriptionType": "object.creation",
+          "objectType": "ticket",
+          "active": true
+        },
+        {
+          "subscriptionType": "object.deletion",
+          "objectType": "ticket",
+          "active": true
+        },
+        {
+          "subscriptionType": "object.associationChange",
+          "objectType": "ticket",
+          "active": true
+        }
+      ]
+    }
+  }
+}

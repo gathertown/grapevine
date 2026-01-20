@@ -1,0 +1,22 @@
+[
+  {
+    "input": {
+      "linearState": [],
+      "docs": ["2025-01-15_09-00-00_standup.json"]
+    },
+    "output": {
+      "operations": [
+        {
+          "action": "CREATE",
+          "createData": {
+            "title": "Add dark mode to dashboard",
+            "description": "Sarah committed to adding dark mode to the dashboard this week.\n\n- Several customers have been asking for it\n- Would help with accessibility\n- Tom offered help with color palette if needed\n\nSource: Morning standup 2025-01-15",
+            "assigneeId": "sarah"
+          },
+          "confidence": 90,
+          "reasoning": "Clear commitment from Sarah to add dark mode this week. No existing issues, so CREATE is appropriate."
+        }
+      ]
+    }
+  }
+]

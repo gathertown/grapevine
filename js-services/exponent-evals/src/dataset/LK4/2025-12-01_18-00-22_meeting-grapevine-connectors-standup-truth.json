@@ -1,0 +1,43 @@
+{
+  "output": {
+    "operations": [
+      {
+        "action": "CREATE",
+        "confidence": 90,
+        "reasoning": "Jonathas committed to finishing the Trello incremental scrape implementation to replace unreliable webhooks. Clear coding task with owner and same-day deadline.",
+        "createData": {
+          "title": "Implement Trello incremental scraping",
+          "description": "Replace unreliable Trello webhooks with incremental scraping for data sync.\n\n- Implement incremental scrape for Trello data\n- Retain only deletion/permission-revocation webhooks for cleanup\n- Validate reliability vs previous webhook approach\n- Expected to finish today",
+          "teamId": "825a22b2-ce63-46fe-a428-1cecc3f299ae",
+          "assigneeId": null,
+          "priority": null,
+          "dueDate": null
+        }
+      },
+      {
+        "action": "CREATE",
+        "confidence": 88,
+        "reasoning": "Ciro committed to fixing Intercom help-center/article bugs and merging to master. Clear coding task with same-day timeline.",
+        "createData": {
+          "title": "Fix Intercom help-center article bugs and merge to master",
+          "description": "Fix remaining bugs in Intercom connector before production release.\n\n- Fix article/help-center bugs found during E2E tests\n- Merge Intercom connector to master branch\n- Create production app on Intercom Developer Hub after tests pass",
+          "teamId": "825a22b2-ce63-46fe-a428-1cecc3f299ae",
+          "assigneeId": null,
+          "priority": null,
+          "dueDate": null
+        }
+      }
+    ]
+  },
+  "input": {
+    "docs": ["2025-12-01_18-00-22_meeting-grapevine-connectors-standup.json"],
+    "linearState": [
+      {
+        "id": "LK4-CREDS-001",
+        "title": "Migrate connectors to use credentials with connector id namespace",
+        "description": "Restructure connector credential storage to use connector ID namespace.\n\n- Update credential storage to scope under connector ID\n- Migrate existing credentials to new namespace structure\n- Update code that reads/writes credentials",
+        "assigneeId": null
+      }
+    ]
+  }
+}

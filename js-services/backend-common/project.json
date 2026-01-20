@@ -1,0 +1,33 @@
+{
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "name": "backend-common",
+  "sourceRoot": "backend-common/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "backend-common/dist",
+        "main": "backend-common/src/index.ts",
+        "tsConfig": "backend-common/tsconfig.json",
+        "assets": [],
+        "stripLeadingPaths": true,
+        "swcrc": ".swcrc",
+        "skipTypeCheck": false
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "sourceMap": true
+        }
+      }
+    },
+    "type-check": {},
+    "lint": {},
+    "lint-fix": {},
+    "format": {},
+    "format:check": {},
+    "test": {}
+  }
+}

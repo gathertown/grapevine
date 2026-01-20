@@ -1,0 +1,6 @@
+import * as React from "react";
+import type { SVGProps } from "react";
+import { memo } from "react";
+const SvgUserSearch = (props: SVGProps<SVGSVGElement>) => <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}><path d="M11 15H7C4.79086 15 3 16.7909 3 19V20M14.9303 19.0697L13 21M15 7C15 9.20914 13.2091 11 11 11C8.79086 11 7 9.20914 7 7C7 4.79086 8.79086 3 11 3C13.2091 3 15 4.79086 15 7ZM21 16.5556C21 18.5192 19.4081 20.1111 17.4444 20.1111C15.4808 20.1111 13.8889 18.5192 13.8889 16.5556C13.8889 14.5919 15.4808 13 17.4444 13C19.4081 13 21 14.5919 21 16.5556Z" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" /></svg>;
+const Memo = memo(SvgUserSearch);
+export default Memo;

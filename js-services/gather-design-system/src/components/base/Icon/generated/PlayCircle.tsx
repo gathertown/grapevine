@@ -1,0 +1,6 @@
+import * as React from "react";
+import type { SVGProps } from "react";
+import { memo } from "react";
+const SvgPlayCircle = (props: SVGProps<SVGSVGElement>) => <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}><path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" /><path d="M9.75 10.0015C9.75001 9.82456 9.79697 9.65077 9.8861 9.4979C9.97522 9.34503 10.1033 9.21854 10.2573 9.13136C10.4113 9.04417 10.5857 8.99941 10.7626 9.00164C10.9395 9.00386 11.1127 9.053 11.2645 9.14404L14.5953 11.1425C14.7433 11.2314 14.8659 11.357 14.9509 11.5073C15.036 11.6576 15.0807 11.8273 15.0807 12C15.0807 12.1727 15.036 12.3424 14.9509 12.4927C14.8659 12.6429 14.7433 12.7686 14.5953 12.8575L11.2645 14.856C11.1127 14.947 10.9395 14.9962 10.7626 14.9984C10.5856 15.0006 10.4113 14.9559 10.2573 14.8687C10.1033 14.7815 9.9752 14.655 9.88608 14.5021C9.79696 14.3492 9.75 14.1754 9.75 13.9985V10.0015Z" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" /></svg>;
+const Memo = memo(SvgPlayCircle);
+export default Memo;

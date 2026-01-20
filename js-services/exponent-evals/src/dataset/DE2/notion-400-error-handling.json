@@ -1,0 +1,13 @@
+{
+  "id": "notion-400-error-handling",
+  "type": "slack",
+  "sourceDescription": "this error report",
+  "sourceContent": "Handle Notion 400 error\n\nrequests.exceptions:HTTPError\n\nrequests.exceptions:HTTPError\n400 Client Error: Bad Request for url: https://api.notion.com/v1/pages/<GUID>",
+  "operation": {
+    "action": "CREATE",
+    "createData": {
+      "title": "Handle Notion 400 error",
+      "description": "Handle Notion 400 error\n\nrequests.exceptions:HTTPError\n400 Client Error: Bad Request for url: https://api.notion.com/v1/pages/<GUID>"
+    }
+  }
+}

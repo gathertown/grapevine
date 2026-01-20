@@ -1,0 +1,8 @@
+{
+  "decision": "CHANGES_REQUESTED",
+  "comments": [
+    {
+      "body": "Changing an actively-used MethodAction's `id` is a breaking change. To do so safely, follow [Zero Downtime](https://www.notion.so/gathertown/Zero-Downtime-Changes-in-V2-1b4bc7eac3d1808f96eec80ea2ce2369?#1b4bc7eac3d180ce94dfc059cab04489) protocol: first create the new MethodAction, migrate all callsites over, then delete the old one once all or enough clients have updated."
+    }
+  ]
+}

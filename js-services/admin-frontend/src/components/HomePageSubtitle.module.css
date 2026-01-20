@@ -1,0 +1,17 @@
+.onboardingInfoCard {
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  border-style: solid;
+  border-width: 1px;
+  opacity: 1;
+  transition: opacity 150ms ease-in-out;
+}
+
+.completedStepOne {
+  opacity: 0.5;
+}
+
+.onboardingInfoCard:hover {
+  opacity: 1;
+}

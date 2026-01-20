@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCP Comparison Results Viewer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            color: #7f8c8d;
+            font-size: 14px;
+            font-weight: normal;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        .filters {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group label {
+            font-weight: 500;
+            color: #555;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .query-card {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .query-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        .query-text {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .query-type {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .query-type.keyword {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .query-type.semantic {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .results-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        .results-column {
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .results-column h4 {
+            background: #f8f9fa;
+            padding: 12px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #495057;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .result-list {
+            padding: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .result-item {
+            padding: 8px;
+            margin-bottom: 8px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            font-size: 13px;
+            word-break: break-word;
+        }
+
+        .glean-result:hover {
+            background: #e3f2fd;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .gather-result:hover {
+            background: #e8f5e9;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .result-item.top-10 {
+            background: #e8f4fd;
+            border-left: 3px solid #3498db;
+        }
+
+        .result-item.additional {
+            background: #f8f9fa;
+            opacity: 0.8;
+        }
+
+        .top-10-badge {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-left: 8px;
+        }
+
+        .results-divider {
+            margin: 15px 0;
+            border-top: 2px dashed #bdc3c7;
+            text-align: center;
+            position: relative;
+        }
+
+        .results-divider::after {
+            content: 'Additional Results';
+            background: #f8f9fa;
+            padding: 0 10px;
+            color: #7f8c8d;
+            font-size: 11px;
+            font-weight: 500;
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .result-item a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .result-item a:hover {
+            text-decoration: underline;
+        }
+
+        .new-result-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .doc-id {
+            font-weight: 500;
+            color: #2c3e50;
+            font-size: 12px;
+        }
+
+        .source-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+            margin-right: 8px;
+        }
+
+        .source-notion {
+            background: #f3e5f5;
+            color: #6a1b9a;
+        }
+
+        .source-slack {
+            background: #e8eaf6;
+            color: #3f51b5;
+        }
+
+        .source-github {
+            background: #e0f2f1;
+            color: #00695c;
+        }
+
+        .source-github_code {
+            background: #fce4ec;
+            color: #c2185b;
+        }
+
+        .source-linear {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .source-unknown {
+            background: #eceff1;
+            color: #546e7a;
+        }
+
+        .score {
+            color: #7f8c8d;
+            font-size: 11px;
+        }
+
+        /* Toast Notification Styles */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #333;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            z-index: 10000;
+            opacity: 0;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            background: #4caf50;
+        }
+
+        .toast.info {
+            background: #2196f3;
+        }
+
+        .score-breakdown {
+            font-size: 10px;
+            color: #95a5a6;
+            margin-top: 3px;
+        }
+
+        .file-input-wrapper {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .config-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border: 1px solid #e9ecef;
+        }
+
+        .config-info h3 {
+            color: #495057;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .config-item {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .config-label {
+            font-weight: 600;
+            color: #6c757d;
+            width: 150px;
+        }
+
+        .config-value {
+            color: #495057;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        .file-input-wrapper input[type="file"] {
+            padding: 10px;
+            border: 2px dashed #3498db;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #7f8c8d;
+        }
+
+        .charts-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .chart-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-card h3 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .source-bar {
+            display: flex;
+            height: 30px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .source-segment {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Score Analyzer Modal Styles */
+        .score-analyzer-fab {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #3498db;
+            color: white;
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .score-analyzer-fab:hover {
+            transform: scale(1.1);
+            background: #2980b9;
+        }
+
+        .score-analyzer-modal {
+            position: fixed;
+            bottom: 90px;
+            left: 20px;
+            width: 450px;
+            max-height: 600px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            z-index: 999;
+            display: none;
+            flex-direction: column;
+        }
+
+        .score-analyzer-modal.show {
+            display: flex;
+        }
+
+        .score-analyzer-header {
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            background: #f8f9fa;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .score-analyzer-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .score-analyzer-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #7f8c8d;
+            cursor: pointer;
+        }
+
+        .score-analyzer-body {
+            padding: 20px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .score-analyzer-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .score-analyzer-field {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .score-analyzer-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .score-analyzer-input,
+        .score-analyzer-select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .score-analyzer-input:focus,
+        .score-analyzer-select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .score-analyzer-button {
+            padding: 12px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .score-analyzer-button:hover {
+            background: #2980b9;
+        }
+
+        .score-analyzer-button:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+        }
+
+        .score-analyzer-results {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #ecf0f1;
+        }
+
+        .score-analyzer-error {
+            padding: 12px;
+            background: #fee;
+            border: 1px solid #fcc;
+            border-radius: 6px;
+            color: #c0392b;
+            font-size: 13px;
+        }
+
+        .score-analyzer-success {
+            padding: 15px;
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+        }
+
+        .score-total {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .score-component {
+            margin-bottom: 15px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+
+        .score-component-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .score-component-name {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .score-component-value {
+            font-weight: 500;
+            color: #3498db;
+        }
+
+        .score-bar-container {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+
+        .score-bar {
+            height: 100%;
+            background: #3498db;
+            transition: width 0.3s ease;
+        }
+
+        .score-component-explanation {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        .doc-info {
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 13px;
+        }
+
+        .doc-info-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+
+        .doc-info-label {
+            font-weight: 600;
+            color: #6c757d;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>MCP Comparison Results Viewer</h1>
+
+        <div class="file-input-wrapper" id="fileInputWrapper">
+            <input type="file" id="fileInput" accept=".jsonl" />
+            <p style="margin-top: 10px; color: #7f8c8d;">Select a JSONL file or wait for
+                auto-load...</p>
+        </div>
+
+        <div id="content" style="display: none;">
+            <div class="config-info" id="configInfo" style="display: none;">
+                <h3>Configuration</h3>
+                <div class="config-item">
+                    <span class="config-label">Database URL:</span>
+                    <span class="config-value" id="dbUrl">Not available</span>
+                </div>
+                <div class="config-item">
+                    <span class="config-label">OpenSearch URL:</span>
+                    <span class="config-value" id="opensearchUrl">Not available</span>
+                </div>
+                <div class="config-item">
+                    <span class="config-label">Evaluation Time:</span>
+                    <span class="config-value" id="evalTime">Not available</span>
+                </div>
+            </div>
+
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-card">
+                    <h3>Total Queries</h3>
+                    <div class="value" id="totalQueries">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Keyword Searches</h3>
+                    <div class="value" id="keywordSearches">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Semantic Searches</h3>
+                    <div class="value" id="semanticSearches">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Avg Results per Query</h3>
+                    <div class="value" id="avgResults">0</div>
+                </div>
+            </div>
+
+            <div class="charts-container">
+                <div class="chart-card">
+                    <h3>Source Distribution - Original vs New</h3>
+                    <canvas id="sourceChart" height="200"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3>Top Sources by Type</h3>
+                    <div id="sourceBreakdown"></div>
+                </div>
+            </div>
+
+            <div class="filters">
+                <div class="filter-group">
+                    <label>Filter by Type:</label>
+                    <select id="typeFilter">
+                        <option value="">All Types</option>
+                        <option value="keyword_search">Keyword Search</option>
+                        <option value="semantic_search">Semantic Search</option>
+                    </select>
+
+                    <label>Search Query:</label>
+                    <input type="text" id="searchFilter" placeholder="Search queries..."
+                        style="width: 300px;">
+                </div>
+            </div>
+
+            <div id="queriesContainer"></div>
+        </div>
+
+        <div id="loading" class="loading" style="display: none;">
+            Loading data...
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Score Analyzer Modal -->
+    <button class="score-analyzer-fab" id="scoreAnalyzerFab" title="Analyze Document Score">
+        🔍
+    </button>
+
+    <div class="score-analyzer-modal" id="scoreAnalyzerModal">
+        <div class="score-analyzer-header">
+            <div class="score-analyzer-title">Score Analyzer</div>
+            <button class="score-analyzer-close" id="scoreAnalyzerClose">&times;</button>
+        </div>
+        <div class="score-analyzer-body">
+            <div class="score-analyzer-form">
+                <div class="score-analyzer-field">
+                    <label class="score-analyzer-label">Search Type</label>
+                    <select class="score-analyzer-select" id="analyzerSearchType">
+                        <option value="keyword">Keyword Search</option>
+                        <option value="semantic">Semantic Search</option>
+                    </select>
+                </div>
+                <div class="score-analyzer-field">
+                    <label class="score-analyzer-label">Query</label>
+                    <input type="text" class="score-analyzer-input" id="analyzerQuery"
+                        placeholder="Enter search query...">
+                </div>
+                <div class="score-analyzer-field">
+                    <label class="score-analyzer-label">Document ID</label>
+                    <input type="text" class="score-analyzer-input" id="analyzerDocId"
+                        placeholder="e.g., issue_abc123 or github_file_org/repo/file.py">
+                </div>
+                <button class="score-analyzer-button" id="analyzerSubmit">Analyze Score</button>
+            </div>
+            <div id="analyzerResults"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        let allData = [];
+        let filteredData = [];
+
+        document.getElementById('fileInput').addEventListener('change', handleFileSelect);
+        document.getElementById('typeFilter').addEventListener('change', applyFilters);
+        document.getElementById('searchFilter').addEventListener('input', applyFilters);
+
+        // Auto-load data if served by CLI
+        window.addEventListener('load', async () => {
+            try {
+                const response = await fetch('/data.jsonl');
+                if (response.ok) {
+                    const text = await response.text();
+                    document.getElementById('fileInputWrapper').style.display = 'none';
+                    document.getElementById('loading').style.display = 'block';
+
+                    const lines = text.trim().split('\n');
+                    let metadata = null;
+                    allData = lines.map(line => {
+                        try {
+                            const parsed = JSON.parse(line);
+                            // Check if this is metadata
+                            if (parsed._metadata) {
+                                metadata = parsed;
+                                return null;
+                            }
+                            return parsed;
+                        } catch (err) {
+                            console.error('Error parsing line:', err);
+                            return null;
+                        }
+                    }).filter(item => item !== null);
+
+                    // Display metadata if available
+                    if (metadata) {
+                        displayMetadata(metadata);
+                    }
+
+                    filteredData = [...allData];
+                    displayData();
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('content').style.display = 'block';
+                }
+            } catch (error) {
+                console.log('No auto-load data available, waiting for file input');
+            }
+        });
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                document.getElementById('loading').style.display = 'block';
+                document.getElementById('content').style.display = 'none';
+
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const lines = e.target.result.trim().split('\n');
+                    let metadata = null;
+                    allData = lines.map(line => {
+                        try {
+                            const parsed = JSON.parse(line);
+                            // Check if this is metadata
+                            if (parsed._metadata) {
+                                metadata = parsed;
+                                return null;
+                            }
+                            return parsed;
+                        } catch (err) {
+                            console.error('Error parsing line:', err);
+                            return null;
+                        }
+                    }).filter(item => item !== null);
+
+                    // Display metadata if available
+                    if (metadata) {
+                        displayMetadata(metadata);
+                    }
+
+                    filteredData = [...allData];
+                    displayData();
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('content').style.display = 'block';
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        function applyFilters() {
+            const typeFilter = document.getElementById('typeFilter').value;
+            const searchFilter = document.getElementById('searchFilter').value.toLowerCase();
+
+            filteredData = allData.filter(item => {
+                const typeMatch = !typeFilter || item.query_type === typeFilter;
+                const searchMatch = !searchFilter || item.query.toLowerCase().includes(searchFilter);
+                return typeMatch && searchMatch;
+            });
+
+            displayQueries();
+        }
+
+        function displayData() {
+            displayStats();
+            displayCharts();
+            displayQueries();
+        }
+
+        function displayStats() {
+            const totalQueries = allData.length;
+            const keywordSearches = allData.filter(q => q.query_type === 'keyword_search').length;
+            const semanticSearches = allData.filter(q => q.query_type === 'semantic_search').length;
+            const avgResults = allData.reduce((sum, q) => sum + q.new_gather.length, 0) / totalQueries;
+
+            document.getElementById('totalQueries').textContent = totalQueries;
+            document.getElementById('keywordSearches').textContent = keywordSearches;
+            document.getElementById('semanticSearches').textContent = semanticSearches;
+            document.getElementById('avgResults').textContent = avgResults.toFixed(1);
+        }
+
+        function displayCharts() {
+            // Count sources
+            const sourceCounts = {
+                original: {},
+                new: {}
+            };
+
+            allData.forEach(query => {
+                // Count original sources
+                [...query.original_gather, ...query.original_glean].forEach(result => {
+                    const source = getSourceFromResult(result);
+                    sourceCounts.original[source] = (sourceCounts.original[source] || 0) + 1;
+                });
+
+                // Count new sources
+                query.new_gather.forEach(result => {
+                    const source = result.source;
+                    sourceCounts.new[source] = (sourceCounts.new[source] || 0) + 1;
+                });
+            });
+
+            // Create source breakdown
+            const breakdownHtml = Object.entries(sourceCounts.new)
+                .sort((a, b) => b[1] - a[1])
+                .map(([source, count]) => {
+                    const percentage = (count / allData.reduce((sum, q) => sum + q.new_gather.length, 0) * 100).toFixed(1);
+                    return `
+                        <div style="margin-bottom: 10px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span class="source-badge source-${source}">${source}</span>
+                                <span>${count} (${percentage}%)</span>
+                            </div>
+                            <div style="background: #ecf0f1; height: 8px; border-radius: 4px;">
+                                <div style="background: #3498db; height: 100%; width: ${percentage}%; border-radius: 4px;"></div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+            document.getElementById('sourceBreakdown').innerHTML = breakdownHtml;
+        }
+
+        function getSourceFromResult(result) {
+            if (typeof result === 'string') {
+                if (result.includes('github.com')) return 'github';
+                if (result.includes('notion.so')) return 'notion';
+                if (result.includes('linear.app')) return 'linear';
+                if (result.includes('Channel:') || result.includes('slack')) return 'slack';
+                if (result.includes('github_file_')) return 'github_code';
+                return 'other';
+            }
+            return result.source || 'unknown';
+        }
+
+        function displayQueries() {
+            const container = document.getElementById('queriesContainer');
+            container.innerHTML = filteredData.map(query => `
+                <div class="query-card">
+                    <div class="query-header">
+                        <div class="query-text">${escapeHtml(query.query)}</div>
+                        <div class="query-type ${query.query_type === 'keyword_search' ? 'keyword' : 'semantic'}">
+                            ${query.query_type.replace('_', ' ')}
+                        </div>
+                    </div>
+
+                    <div class="results-comparison">
+                        <div class="results-column">
+                            <h4>Original Gather (${query.original_gather.length})</h4>
+                            <div class="result-list">
+                                ${query.original_gather.length === 0 ?
+                    '<div style="padding: 20px; text-align: center; color: #95a5a6; font-style: italic;">No results</div>' :
+                    query.original_gather.map(result => {
+                        // Extract doc_id if it's in the format like "slack_C1234_2024-01-01: content"
+                        const docIdMatch = result.match(/^([^:]+):\s*/);
+                        if (docIdMatch) {
+                            const docId = docIdMatch[1];
+                            const escapedDocId = escapeHtml(docId).replace(/'/g, "\\'");
+                            const escapedQuery = escapeHtml(query.query).replace(/'/g, "\\'");
+                            return `<div class="result-item gather-result"
+                                                 onclick="handleGatherResultClick(event, '${escapedDocId}', '${escapedQuery}')"
+                                                 title="Click to analyze this document's score">${makeLinksClickable(result)}</div>`;
+                        } else {
+                            return `<div class="result-item">${makeLinksClickable(result)}</div>`;
+                        }
+                    }).join('')
+                }
+                            </div>
+                        </div>
+
+                        <div class="results-column">
+                            <h4>Original Glean (${query.original_glean.length})</h4>
+                            <div class="result-list">
+                                ${query.original_glean.map(result => {
+                    const escapedResult = escapeHtml(result).replace(/'/g, "\\'");
+                    const escapedQuery = escapeHtml(query.query).replace(/'/g, "\\'");
+                    return `<div class="result-item glean-result"
+                                         onclick="handleGleanResultClick(event, '${escapedResult}', '${escapedQuery}')"
+                                         title="Click to analyze this document's score">${makeLinksClickable(result)}</div>`;
+                }).join('')}
+                            </div>
+                        </div>
+
+                        <div class="results-column">
+                            <h4>New MCP Results (${query.new_gather.length})</h4>
+                            <div class="result-list">
+                                ${query.new_gather.map((result, index) => {
+                    let url = generateUrlFromDocId(result.doc_id, result.source);
+
+                    // For Linear, prefer metadata.issue_url over generated URL
+                    if ((result.doc_id.startsWith('linear_issue_') || result.doc_id.startsWith('issue_')) && result.metadata?.issue_url) {
+                        url = result.metadata.issue_url;
+                    }
+
+                    const channelName = result.metadata?.channel_name || '';
+                    const isTop10 = index < 10;
+                    const cssClass = isTop10 ? 'result-item new-result-item top-10' : 'result-item new-result-item additional';
+                    const topBadge = isTop10 ? '<span class="top-10-badge">TOP 10</span>' : '';
+
+                    // Add divider after 10th result
+                    const divider = index === 10 ? '<div class="results-divider"></div>' : '';
+
+                    return `
+                                        ${divider}
+                                        <div class="${cssClass}">
+                                            <div class="doc-id">${url ? `<a href="${url}" target="_blank" rel="noopener noreferrer">${escapeHtml(result.doc_id)}</a>` : escapeHtml(result.doc_id)}${topBadge}</div>
+                                            <div>
+                                                <span class="source-badge source-${result.source}">${result.source}${channelName ? ` #${channelName}` : ''}</span>
+                                                <span class="score">Score: ${result.score.toFixed(3)}</span>
+                                            </div>
+                                            ${getScoreBreakdown(result, query.query_type)}
+                                        </div>
+                                    `;
+                }).join('')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Extract document ID from URL
+        function extractDocumentIdFromUrl(url) {
+            try {
+                const urlObj = new URL(url);
+                const hostname = urlObj.hostname;
+                const pathname = urlObj.pathname;
+
+                // GitHub PR
+                if (hostname === 'github.com' && pathname.includes('/pull/')) {
+                    // Format: https://github.com/owner/repo/pull/123
+                    const match = pathname.match(/\/([^\/]+)\/([^\/]+)\/pull\/(\d+)/);
+                    if (match) {
+                        // We need to get the repo ID, which we'll need to search for
+                        return { type: 'github_pr', owner: match[1], repo: match[2], pr_number: match[3] };
+                    }
+                }
+
+                // Notion
+                if (hostname.includes('notion.so') || hostname.includes('notion.site')) {
+                    // Extract the 32-character ID from the URL
+                    const match = pathname.match(/([a-f0-9]{32})/);
+                    if (match) {
+                        const rawId = match[1];
+                        // Format as 8-4-4-4-12
+                        const pageId = `${rawId.slice(0, 8)}-${rawId.slice(8, 12)}-${rawId.slice(12, 16)}-${rawId.slice(16, 20)}-${rawId.slice(20, 32)}`;
+                        return { type: 'direct', doc_id: `notion_page_${pageId}` };
+                    }
+                }
+
+                // Linear
+                if (hostname.includes('linear.app')) {
+                    // Format: https://linear.app/team/issue/TEAM-123
+                    const match = pathname.match(/\/issue\/[A-Z]+-\d+/);
+                    if (match) {
+                        // We'll need to search for this URL in metadata
+                        return { type: 'linear', url: url };
+                    }
+                }
+
+                // Slack (if it's a slack URL)
+                if (hostname.includes('slack.com')) {
+                    // Slack URLs are complex, need to search by URL
+                    return { type: 'slack', url: url };
+                }
+
+                // Default: search by URL
+                return { type: 'url_search', url: url };
+            } catch (e) {
+                console.error('Error parsing URL:', e);
+                return null;
+            }
+        }
+
+        // Search for document by URL in metadata
+        async function searchDocumentByUrl(url) {
+            try {
+                const response = await fetch('/search-by-url', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ url: url })
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    return result.document_id;
+                }
+            } catch (error) {
+                console.error('Error searching by URL:', error);
+            }
+            return null;
+        }
+
+        // Handle click on Glean result to populate score analyzer
+        async function handleGleanResultClick(event, text, query) {
+            event.stopPropagation();
+
+            // Extract URL from the text
+            const urlMatch = text.match(/(https?:\/\/[^\s<>"]+)/);
+            if (!urlMatch) {
+                showToast('No URL found in this result', 'warning');
+                return;
+            }
+
+            const url = urlMatch[1];
+            const extracted = extractDocumentIdFromUrl(url);
+
+            if (!extracted) {
+                showToast('Could not parse URL', 'error');
+                return;
+            }
+
+            let documentId = null;
+
+            if (extracted.type === 'direct') {
+                // Direct document ID conversion
+                documentId = extracted.doc_id;
+            } else if (extracted.type === 'github_pr') {
+                // Search for GitHub PR by URL components
+                documentId = await searchDocumentByUrl(url);
+                if (!documentId) {
+                    showToast(`Could not find document for GitHub PR: ${extracted.owner}/${extracted.repo}#${extracted.pr_number}`, 'warning');
+                    return;
+                }
+            } else {
+                // Search by URL in metadata
+                documentId = await searchDocumentByUrl(url);
+                if (!documentId) {
+                    showToast('Could not find document for this URL', 'warning');
+                    return;
+                }
+            }
+
+            // Populate the score analyzer
+            document.getElementById('analyzerDocId').value = documentId;
+            document.getElementById('analyzerQuery').value = query;
+
+            // Expand the score analyzer if minimized
+            const scoreAnalyzer = document.getElementById('scoreAnalyzer');
+            if (scoreAnalyzer.classList.contains('minimized')) {
+                scoreAnalyzer.classList.remove('minimized');
+            }
+
+            // Show success toast
+            showToast(`Document ID '${documentId}' and query loaded in Score Analyzer`, 'success', 2500);
+        }
+
+        // Handle click on Gather result to populate score analyzer
+        function handleGatherResultClick(event, docId, query) {
+            event.stopPropagation();
+
+            // Populate the score analyzer
+            document.getElementById('analyzerDocId').value = docId;
+            document.getElementById('analyzerQuery').value = query;
+
+            // Expand the score analyzer if minimized
+            const scoreAnalyzer = document.getElementById('scoreAnalyzer');
+            if (scoreAnalyzer.classList.contains('minimized')) {
+                scoreAnalyzer.classList.remove('minimized');
+            }
+
+            // Show success toast
+            showToast(`Document ID '${docId}' and query loaded in Score Analyzer`, 'success', 2500);
+        }
+
+        function makeLinksClickable(text) {
+            // First escape HTML to prevent XSS
+            const escaped = escapeHtml(text);
+
+            // Then convert URLs to links
+            // This regex matches URLs starting with http://, https://, or just www.
+            const urlRegex = /(https?:\/\/[^\s<>"]+|www\.[^\s<>"]+)/gi;
+
+            return escaped.replace(urlRegex, (match) => {
+                // Add http:// if it's just www.
+                const href = match.startsWith('www.') ? 'http://' + match : match;
+                return `<a href="${href}" target="_blank" rel="noopener noreferrer">${match}</a>`;
+            });
+        }
+
+        function displayMetadata(metadata) {
+            if (metadata.database_url) {
+                document.getElementById('dbUrl').textContent = metadata.database_url;
+            }
+            if (metadata.opensearch_url) {
+                document.getElementById('opensearchUrl').textContent = metadata.opensearch_url;
+            }
+            if (metadata.timestamp) {
+                const date = new Date(metadata.timestamp);
+                document.getElementById('evalTime').textContent = date.toLocaleString();
+            }
+            document.getElementById('configInfo').style.display = 'block';
+        }
+
+        function getScoreBreakdown(result, queryType) {
+            let breakdown = '';
+
+            if (queryType === 'semantic_search') {
+                // For semantic search, show semantic, recency, and references components
+                const semantic = result.semantic_score || 0;
+                const recency = result.recency_component || 0;
+                const references = result.references_component || 0;
+
+                if (semantic || recency || references || result.score > 0) {
+                    breakdown = `<div class="score-breakdown">
+                        Semantic: ${semantic.toFixed(3)} |
+                        Recency: ${recency.toFixed(3)} |
+                        References: ${references.toFixed(3)}
+                    </div>`;
+                }
+
+                // Add chunk ID for semantic search results
+                if (result.chunk_id) {
+                    const fullChunkId = escapeHtml(result.chunk_id);
+                    const shortChunkId = fullChunkId.substring(0, 12);
+                    breakdown += `<div class="chunk-info" style="font-size: 11px; color: #7f8c8d; margin-top: 4px; cursor: pointer;"
+                                      onclick="copyToClipboard('${fullChunkId}')"
+                                      title="Click to copy full chunk ID: ${fullChunkId}">
+                        Chunk: ${shortChunkId}... 📋
+                    </div>`;
+                }
+            } else if (queryType === 'keyword_search') {
+                // For keyword search, show query, recency, and references components
+                const query = result.query_component || 0;
+                const recency = result.recency_component || 0;
+                const references = result.references_component || 0;
+                const score = result.score || 0;
+
+                // Always show breakdown for keyword search if we have any score
+                if (score > 0) {
+                    breakdown = `<div class="score-breakdown">
+                        Query: ${query.toFixed(3)} |
+                        Recency: ${recency.toFixed(3)} |
+                        References: ${references.toFixed(3)}
+                    </div>`;
+                }
+            }
+
+            return breakdown;
+        }
+
+        function generateUrlFromDocId(docId, source) {
+            // Check if docId looks like a document ID
+            if (!docId || typeof docId !== 'string') return null;
+
+            // GitHub file pattern
+            if (docId.startsWith('github_file_')) {
+                // Extract org, repo, and file path from the ID
+                // Format: github_file_<org>/<repo>/<file_path>
+                const pathPart = docId.replace('github_file_', '');
+                const parts = pathPart.split('/');
+                if (parts.length >= 3) {
+                    const org = parts[0];
+                    const repo = parts[1];
+                    // The rest is the file path
+                    const filePath = parts.slice(2).join('/');
+                    return `https://github.com/${org}/${repo}/blob/main/${filePath}`;
+                }
+            }
+
+            // Slack pattern
+            if (docId.startsWith('slack_') && docId.includes('_channel_')) {
+                // Format: slack_<team>_channel_<channel_id>_<timestamp>
+                const match = docId.match(/slack_([^_]+)_channel_([^_]+)_(.+)/);
+                if (match) {
+                    const team = match[1];
+                    const channelId = match[2];
+                    const timestamp = match[3];
+                    // Convert timestamp to Slack format (remove dots)
+                    const slackTimestamp = timestamp.replace(/\./g, '');
+                    return `https://${team}.slack.com/archives/${channelId}/p${slackTimestamp}`;
+                }
+            }
+
+            // Notion pattern
+            if (docId.startsWith('notion_page_')) {
+                // Format: notion_page_<page_id>
+                const pageId = docId.replace('notion_page_', '').replace(/-/g, '');
+                return `https://www.notion.so/${pageId}`;
+            }
+
+            // Linear pattern - we don't generate URLs from doc ID since we have metadata
+            if (docId.startsWith('linear_issue_') || docId.startsWith('issue_')) {
+                // Return null - we'll use metadata.issue_url in the display logic
+                return null;
+            }
+
+            // GitHub PR pattern
+            if (docId.includes('_pr_')) {
+                // Format: {repo_id}_pr_{pr_number} (e.g., "823685539_pr_12614")
+                const parts = docId.split('_pr_');
+                if (parts.length === 2) {
+                    const repoId = parts[0];
+                    const prNumber = parts[1];
+
+                    // Map repo IDs to repository names
+                    const repoMapping = {
+                        '823685539': 'gather-town-v2',
+                        // Add other repo IDs as needed
+                    };
+
+                    const repoName = repoMapping[repoId];
+                    if (repoName) {
+                        return `https://github.com/gathertown/${repoName}/pull/${prNumber}`;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        // Auto-load if file is dropped
+        document.addEventListener('dragover', (e) => e.preventDefault());
+        document.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const files = e.dataTransfer.files;
+            if (files.length > 0 && files[0].name.endsWith('.jsonl')) {
+                document.getElementById('fileInput').files = files;
+                handleFileSelect({ target: { files: files } });
+            }
+        });
+
+        // Toast notification function
+        function showToast(message, type = 'info', duration = 3000) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type}`;
+
+            // Show the toast
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 10);
+
+            // Hide the toast after duration
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, duration);
+        }
+
+        // Copy to clipboard function
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('Chunk ID copied to clipboard', 'success', 2000);
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+                showToast('Failed to copy chunk ID', 'error', 2000);
+            });
+        }
+
+        // Score Analyzer Modal Functionality
+        const scoreAnalyzerFab = document.getElementById('scoreAnalyzerFab');
+        const scoreAnalyzerModal = document.getElementById('scoreAnalyzerModal');
+        const scoreAnalyzerClose = document.getElementById('scoreAnalyzerClose');
+        const analyzerSubmit = document.getElementById('analyzerSubmit');
+        const analyzerResults = document.getElementById('analyzerResults');
+        const analyzerQuery = document.getElementById('analyzerQuery');
+        const analyzerDocId = document.getElementById('analyzerDocId');
+        const analyzerSearchType = document.getElementById('analyzerSearchType');
+
+        // Toggle modal
+        scoreAnalyzerFab.addEventListener('click', () => {
+            scoreAnalyzerModal.classList.toggle('show');
+        });
+
+        scoreAnalyzerClose.addEventListener('click', () => {
+            scoreAnalyzerModal.classList.remove('show');
+        });
+
+        // Make result items clickable to auto-fill document ID
+        document.addEventListener('click', (e) => {
+            // Check if clicked element is within a result item
+            let resultItem = e.target.closest('.new-result-item');
+            if (resultItem) {
+                const docIdElement = resultItem.querySelector('.doc-id');
+                if (docIdElement) {
+                    // Extract document ID from the element
+                    let docId = docIdElement.textContent;
+                    // Remove any badges or extra text
+                    docId = docId.replace('TOP 10', '').trim();
+
+                    // Fill the analyzer document ID field
+                    analyzerDocId.value = docId;
+
+                    // Show a toast notification
+                    showToast(`Document ID "${docId}" and query loaded in Score Analyzer`, 'success', 2500);
+
+                    // Show the modal if it's not already visible
+                    if (!scoreAnalyzerModal.classList.contains('show')) {
+                        scoreAnalyzerModal.classList.add('show');
+                    }
+
+                    // Also try to get the query from the parent query card
+                    const queryCard = resultItem.closest('.query-card');
+                    if (queryCard) {
+                        const queryText = queryCard.querySelector('.query-text');
+                        if (queryText) {
+                            analyzerQuery.value = queryText.textContent.trim();
+                        }
+
+                        // Set the search type based on the query type
+                        const queryType = queryCard.querySelector('.query-type');
+                        if (queryType) {
+                            if (queryType.textContent.includes('keyword')) {
+                                analyzerSearchType.value = 'keyword';
+                            } else if (queryType.textContent.includes('semantic')) {
+                                analyzerSearchType.value = 'semantic';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Analyze score
+        analyzerSubmit.addEventListener('click', async () => {
+            const query = analyzerQuery.value.trim();
+            const docId = analyzerDocId.value.trim();
+            const searchType = analyzerSearchType.value;
+
+            if (!query || !docId) {
+                analyzerResults.innerHTML = '<div class="score-analyzer-error">Please enter both a query and document ID</div>';
+                return;
+            }
+
+            // Disable button and show loading
+            analyzerSubmit.disabled = true;
+            analyzerSubmit.textContent = 'Analyzing...';
+            analyzerResults.innerHTML = '<div style="text-align: center; color: #7f8c8d;">Calculating score...</div>';
+
+            try {
+                const response = await fetch('/analyze-score', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        query: query,
+                        document_id: docId,
+                        search_type: searchType
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.error) {
+                    analyzerResults.innerHTML = `<div class="score-analyzer-error">${escapeHtml(result.error)}</div>`;
+                } else {
+                    displayAnalysisResults(result);
+                }
+            } catch (error) {
+                analyzerResults.innerHTML = `<div class="score-analyzer-error">Error: ${escapeHtml(error.message)}</div>`;
+            } finally {
+                analyzerSubmit.disabled = false;
+                analyzerSubmit.textContent = 'Analyze Score';
+            }
+        });
+
+        function displayAnalysisResults(result) {
+            let html = '<div class="score-analyzer-results">';
+
+            // Document info
+            html += '<div class="doc-info">';
+            html += `<div class="doc-info-row"><span class="doc-info-label">Document ID:</span> ${escapeHtml(result.document_id)}</div>`;
+            html += `<div class="doc-info-row"><span class="doc-info-label">Source:</span> <span class="source-badge source-${result.source}">${result.source}</span></div>`;
+            if (result.metadata && result.metadata.channel_name) {
+                html += `<div class="doc-info-row"><span class="doc-info-label">Channel:</span> #${escapeHtml(result.metadata.channel_name)}</div>`;
+            }
+            html += '</div>';
+
+            // Total score
+            html += `<div class="score-total">Total Score: ${result.total_score.toFixed(4)}</div>`;
+
+            // Component breakdown
+            html += '<div class="score-components">';
+
+            // Handle different component names for keyword vs semantic
+            const components = result.components;
+            const componentOrder = result.search_type === 'semantic'
+                ? ['semantic', 'recency', 'references']
+                : ['query', 'recency', 'references'];
+
+            componentOrder.forEach(compName => {
+                const comp = components[compName];
+                if (!comp) return;
+
+                const displayName = compName === 'semantic' ? 'Semantic Similarity' :
+                    compName === 'query' ? 'Query Match' :
+                        compName === 'recency' ? 'Recency' : 'References';
+
+                html += '<div class="score-component">';
+                html += '<div class="score-component-header">';
+                html += `<span class="score-component-name">${displayName}</span>`;
+                html += `<span class="score-component-value">${comp.weighted_score.toFixed(4)} (${(comp.weight * 100).toFixed(0)}%)</span>`;
+                html += '</div>';
+
+                // Progress bar showing raw score
+                const percentage = comp.raw_score * 100;
+                html += '<div class="score-bar-container">';
+                html += `<div class="score-bar" style="width: ${percentage}%"></div>`;
+                html += '</div>';
+
+                // Explanation
+                html += `<div class="score-component-explanation">${escapeHtml(comp.explanation)}`;
+
+                // Add extra details
+                if (compName === 'recency' && comp.age_days >= 0) {
+                    const ageText = comp.age_days === 0 ? 'today' :
+                        comp.age_days === 1 ? 'yesterday' :
+                            comp.age_days <= 7 ? 'this week' :
+                                comp.age_days <= 30 ? 'this month' :
+                                    comp.age_days <= 365 ? `${Math.floor(comp.age_days / 30)} months ago` :
+                                        'over a year ago';
+                    html += ` (${ageText})`;
+                }
+
+                if (compName === 'references') {
+                    const refLevel = comp.count === 0 ? 'No references' :
+                        comp.count <= 5 ? 'Low reference count' :
+                            comp.count <= 10 ? 'Moderate references' :
+                                comp.count <= 20 ? 'High references' :
+                                    'Very high references';
+                    html += ` - ${refLevel}`;
+                }
+
+                if (compName === 'semantic' && comp.distance !== undefined) {
+                    html += ` (distance: ${comp.distance.toFixed(4)})`;
+                }
+
+                html += '</div>';
+                html += '</div>';
+            });
+
+            html += '</div>';
+
+            // Show ranking position from backend analysis
+            if (result.ranking_position !== undefined && result.ranking_position !== null) {
+                if (result.ranking_position <= 50) {
+                    html += `<div style="margin-top: 15px; padding: 10px; background: #d4edda; border: 1px solid #c3e6cb; border-radius: 6px; color: #155724;">`;
+                    html += `✓ This document ranks at position #${result.ranking_position} in search results.`;
+                    html += '</div>';
+                } else if (result.ranking_position === 51) {
+                    html += `<div style="margin-top: 15px; padding: 10px; background: #fff3cd; border: 1px solid #ffeeba; border-radius: 6px; color: #856404;">`;
+                    html += `⚠ This document ranks beyond top 50 results (not in top 50).`;
+                    html += '</div>';
+                }
+            } else if (result.search_type === 'keyword' && !result.found_in_search) {
+                html += `<div style="margin-top: 15px; padding: 10px; background: #fff3cd; border: 1px solid #ffeeba; border-radius: 6px; color: #856404;">`;
+                html += `⚠ This document does not match the keyword query.`;
+                html += '</div>';
+            }
+
+            html += '</div>';
+            analyzerResults.innerHTML = html;
+        }
+    </script>
+</body>
+
+</html>

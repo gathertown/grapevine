@@ -1,0 +1,102 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+metadata:
+  name: grapevine-devenv
+
+# Use staging as base to inherit all staging configuration
+resources:
+  - ../staging
+  - localstack.yaml
+  - namespace.yaml
+  - shared-env.yaml
+  - ssm-copy-job.yaml
+
+patches:
+  # Exclude base namespaces to avoid conflicts when consolidating to single devenv namespace
+  - target:
+      kind: Namespace
+      name: grapevine-services
+    patch: |-
+      $patch: delete
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: grapevine-services
+  - target:
+      kind: Namespace
+      name: grapevine-workers
+    patch: |-
+      $patch: delete
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: grapevine-workers
+  # Apply devenv-specific patches
+  - path: replicas-patch.yaml
+  - path: ingress-patch.yaml
+  - path: env-patch.yaml
+  # Remove serviceAccountName from all deployments (devenvs don't need IRSA)
+  - target:
+      kind: Deployment
+      name: grapevine-api
+      namespace: grapevine-services
+    patch: |-
+      - op: remove
+        path: /spec/template/spec/serviceAccountName
+  - target:
+      kind: Deployment
+      name: grapevine-app
+      namespace: grapevine-services
+    patch: |-
+      - op: remove
+        path: /spec/template/spec/serviceAccountName
+  - target:
+      kind: Deployment
+      name: ingest-gatekeeper
+      namespace: grapevine-services
+    patch: |-
+      - op: remove
+        path: /spec/template/spec/serviceAccountName
+  - target:
+      kind: Deployment
+      name: steward
+      namespace: grapevine-services
+    patch: |-
+      - op: remove
+        path: /spec/template/spec/serviceAccountName
+  - target:
+      kind: Deployment
+      name: ingest-worker
+      namespace: grapevine-workers
+    patch: |-
+      - op: remove
+        path: /spec/template/spec/serviceAccountName
+  - target:
+      kind: Deployment
+      name: cron-worker
+      namespace: grapevine-workers
+    patch: |-
+      - op: remove
+        path: /spec/template/spec/serviceAccountName
+  - target:
+      kind: Deployment
+      name: index-worker
+      namespace: grapevine-workers
+    patch: |-
+      - op: remove
+        path: /spec/template/spec/serviceAccountName
+  - target:
+      kind: Deployment
+      name: slackbot
+      namespace: grapevine-workers
+    patch: |-
+      - op: remove
+        path: /spec/template/spec/serviceAccountName
+  - target:
+      kind: Job
+      name: migrations
+      namespace: grapevine-services
+    patch: |-
+      - op: remove
+        path: /spec/template/spec/serviceAccountName

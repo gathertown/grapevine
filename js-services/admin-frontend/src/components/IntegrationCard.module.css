@@ -1,0 +1,32 @@
+.integrationCardButton {
+  all: unset;
+  cursor: pointer;
+  transition: all 150ms ease-in-out;
+  border-radius: 8px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  gap: 8px;
+  aspect-ratio: 1 / 1;
+  position: relative;
+  background:
+    radial-gradient(
+      39.53% 42.72% at 50% 39.45%,
+      rgba(var(--integration-color), 0.1) 0%,
+      rgba(var(--integration-color), 0) 100%
+    ),
+    rgba(0, 0, 0, 0.03);
+  border: 1px rgba(var(--integration-color), 0.2) solid;
+}
+
+.integrationCardButton:hover {
+  background:
+    radial-gradient(
+      39.53% 42.72% at 50% 39.45%,
+      rgba(var(--integration-color), 0.15) 0%,
+      rgba(var(--integration-color), 0) 100%
+    ),
+    rgba(0, 0, 0, 0.03);
+  border: 1px rgba(var(--integration-color), 0.3) solid;
+}

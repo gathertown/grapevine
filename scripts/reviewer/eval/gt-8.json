@@ -1,0 +1,10 @@
+{
+  "decision": "CHANGES_REQUESTED",
+  "comments": [
+    {
+      "path": "modules/gather-workers/src/jobs/sendUserAddedToSpaceEmails.ts",
+      "line": 47,
+      "body": "Gather-workers don't have models loaded into the model repo beforehand. Load the data, using findManySpaceUser, into the empty model repo before calling getByEmail"
+    }
+  ]
+}

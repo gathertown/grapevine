@@ -1,0 +1,34 @@
+{
+  "uid": "app-local-grapevine",
+  "type": "app",
+  "config": {
+    "description": "One AI agent that searches across your docs, code, and communication—so you don’t have to.",
+    "name": "local-grapevine",
+    "distribution": "marketplace",
+    "auth": {
+      "type": "oauth",
+      "redirectUrls": ["http://localhost:5002/api/hubspot/oauth/callback"],
+      "requiredScopes": [
+        "oauth",
+        "crm.objects.companies.read",
+        "crm.objects.deals.read",
+        "sales-email-read",
+        "tickets",
+        "crm.objects.contacts.read"
+      ],
+      "optionalScopes": [],
+      "conditionallyRequiredScopes": []
+    },
+    "permittedUrls": {
+      "fetch": ["https://api.hubapi.com"],
+      "iframe": [],
+      "img": []
+    },
+    "support": {
+      "supportEmail": "support@getgrapevine.ai",
+      "documentationUrl": "https://getgrapevine.ai",
+      "supportUrl": "https://getgrapevine.ai",
+      "supportPhone": "+14084756390"
+    }
+  }
+}

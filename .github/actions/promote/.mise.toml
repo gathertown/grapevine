@@ -1,0 +1,21 @@
+[tools]
+golang = "1.25.4"
+golangci-lint = "2.6.2"
+"go:golang.org/x/tools/cmd/goimports" = "latest"
+"go:gotest.tools/gotestsum" = "latest"
+
+[tasks.promote-run]
+description = "Run the promotion script"
+run = "go run ./cmd/promote"
+
+[tasks.promote-lint]
+description = "Run linters"
+run = "golangci-lint run ./..."
+
+[tasks.promote-fmt]
+description = "Run formaters"
+run = ["go mod tidy", "gofmt -s -w .", "goimports -w ."]
+
+[tasks.promote-test]
+description = "Run tests"
+run = ["gotestsum -- ./... -cover"]

@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ingest-gatekeeper
+  namespace: grapevine-services
+spec:
+  replicas: 5
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grapevine-api
+  namespace: grapevine-services
+spec:
+  replicas: 10
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grapevine-app
+  namespace: grapevine-services
+spec:
+  replicas: 3
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: steward
+  namespace: grapevine-services
+spec:
+  replicas: 2
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ingest-worker
+  namespace: grapevine-workers
+spec:
+  replicas: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cron-worker
+  namespace: grapevine-workers
+spec:
+  replicas: 1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: index-worker
+  namespace: grapevine-workers
+spec:
+  replicas: 50
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: slackbot
+  namespace: grapevine-workers
+spec:
+  replicas: 30

@@ -1,0 +1,13 @@
+{
+  "id": "emoji-transparency-hover",
+  "type": "ticket",
+  "sourceDescription": "this Linear ticket",
+  "sourceContent": null,
+  "operation": {
+    "action": "CREATE",
+    "createData": {
+      "title": "noticed this hover menu has slight transparency to the emojis.",
+      "description": "The chat hover emoji menu. This is due to our text color tokens using transparency; theme.text.primary is black w/90% alpha, secondary is 80% alpha, etc.\n\nI recently updated <Text> to accept color=\"emoji\", which assigns a solid colour so emoji look correct. (open to suggestions for a better API, this is admittedly a little weird)\n\nIf these emoji aren't inside of a <Text> component, theme.dangerouslyStatic.black should accomplish the same."
+    }
+  }
+}

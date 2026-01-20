@@ -1,0 +1,29 @@
+[
+  {
+    "input": {
+      "linearState": [
+        {
+          "id": "issue-darkmode-1",
+          "title": "Add dark mode to dashboard",
+          "description": "Sarah committed to adding dark mode to the dashboard this week.\n\n**Progress update (2025-01-16):**\n- 50% done\n- Color palette completed\n- Toggle component in progress",
+          "assigneeId": "sarah"
+        }
+      ],
+      "docs": ["2025-01-17_09-00-00_standup.json"]
+    },
+    "output": {
+      "operations": [
+        {
+          "action": "SKIP",
+          "skipData": {
+            "issueId": "issue-darkmode-1",
+            "title": "Add dark mode to dashboard",
+            "reason": "Task is already completed and merged. No Linear action needed - the issue should be closed separately if not already."
+          },
+          "confidence": 95,
+          "reasoning": "Dark mode work is complete and merged. Sarah mentioned it's done, so we SKIP rather than update. The new onboarding flow work mentioned is a new task but was not explicitly committed to with a deliverable in this standup."
+        }
+      ]
+    }
+  }
+]

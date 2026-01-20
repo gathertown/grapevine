@@ -1,0 +1,7 @@
+{
+  "title": "Morning standup",
+  "type": "meeting",
+  "date": "2025-01-21",
+  "content": "Tom: Quick update on the search performance issue - I found the root cause. It was the N+1 query in the results aggregation. I've got a fix ready for review.\n\nSarah: Nice! How much improvement?\n\nTom: Initial tests show 3x faster response times. Should be merged by end of day.\n\nSarah: Great work!",
+  "attendees": ["tom", "sarah"]
+}

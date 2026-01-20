@@ -1,0 +1,6 @@
+import * as React from "react";
+import type { SVGProps } from "react";
+import { memo } from "react";
+const SvgKeyboardArrows = (props: SVGProps<SVGSVGElement>) => <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}><path d="M12 5V8M12 5L13.5 6.5M12 5L10.5 6.5M19.5 17.5H16.5M19.5 17.5L18 19M19.5 17.5L18 16M4.5 17.5H7.5M4.5 17.5L6 16M4.5 17.5L6 19M10.074 2.5H13.926C15.071 2.5 16 3.429 16 4.574V8.426C16 9.571 15.071 10.5 13.926 10.5H10.074C8.929 10.5 8 9.571 8 8.426V4.574C8 3.429 8.929 2.5 10.074 2.5ZM22 15.574V19.426C22 20.571 21.071 21.5 19.926 21.5H16.074C14.929 21.5 14 20.571 14 19.426V15.574C14 14.429 14.929 13.5 16.074 13.5H19.926C21.071 13.5 22 14.429 22 15.574ZM2 19.426V15.574C2 14.429 2.929 13.5 4.074 13.5H7.926C9.071 13.5 10 14.429 10 15.574V19.426C10 20.571 9.071 21.5 7.926 21.5H4.074C2.929 21.5 2 20.571 2 19.426Z" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" /></svg>;
+const Memo = memo(SvgKeyboardArrows);
+export default Memo;

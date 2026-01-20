@@ -1,0 +1,6 @@
+import * as React from "react";
+import type { SVGProps } from "react";
+import { memo } from "react";
+const SvgEventDeclined = (props: SVGProps<SVGSVGElement>) => <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}><g clipPath="url(#clip0_3541_9311)"><path fillRule="evenodd" clipRule="evenodd" d="M6 12C9.31371 12 12 9.31371 12 6C12 2.68629 9.31371 0 6 0C2.68629 0 0 2.68629 0 6C0 9.31371 2.68629 12 6 12ZM4.17331 3.11265C3.88041 2.81975 3.40554 2.81975 3.11265 3.11265C2.81975 3.40554 2.81975 3.88041 3.11265 4.17331L4.93934 6L3.11265 7.82669C2.81975 8.11959 2.81975 8.59446 3.11265 8.88735C3.40554 9.18025 3.88041 9.18025 4.17331 8.88735L6 7.06066L7.82669 8.88735C8.11959 9.18025 8.59446 9.18025 8.88735 8.88735C9.18025 8.59446 9.18025 8.11959 8.88735 7.82669L7.06066 6L8.88735 4.17331C9.18025 3.88041 9.18025 3.40554 8.88735 3.11265C8.59446 2.81975 8.11959 2.81975 7.82669 3.11265L6 4.93934L4.17331 3.11265Z" fill="currentColor" /></g><defs><clipPath id="clip0_3541_9311"><rect width={12} height={12} fill="currentColor" /></clipPath></defs></svg>;
+const Memo = memo(SvgEventDeclined);
+export default Memo;

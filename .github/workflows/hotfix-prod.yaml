@@ -1,0 +1,64 @@
+name: Hotfix Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit_sha:
+        description: "Commit to hotfix into prod"
+        required: true
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false # We only want to run one at a time.
+
+permissions:
+  contents: write # Push up new branch
+  pull-requests: write # Create hotfix PR
+  checks: write # Create check on hotfix PR
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - uses: ./.github/actions/setup-tools
+        with:
+          github_token: ${{ github.token }}
+          working_directory: ".github/actions/promote"
+
+      - name: Get Go directories
+        id: go
+        working-directory: ".github/actions/promote"
+        run: |
+          echo "cache_dir=$(go env GOCACHE)" >> "$GITHUB_OUTPUT"
+          echo "mod_cache_dir=$(go env GOMODCACHE)" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache@v4
+        with:
+          path: ${{ steps.go.outputs.cache_dir }}
+          key: ${{ github.workflow }}-${{ runner.os }}-go-build-cache-${{ hashFiles('.github/actions/promote/go.sum') }}
+      - uses: actions/cache@v4
+        with:
+          path: ${{ steps.go.outputs.mod_cache_dir }}
+          key: ${{ github.workflow }}-${{ runner.os }}-go-mod-cache-${{ hashFiles('.github/actions/promote/go.sum') }}
+
+      # Hotfix creates a branch and pushes it up using Git, so we need
+      # to configure Git authentication. This doesn't work with the
+      # checkout exported credentials because we use a temporary
+      # directory.
+      - name: Configure Git Auth
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |-
+          git config --global user.name github-actions[bot]
+          git config --global user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git config --global url."https://x-access-token:$GITHUB_TOKEN@github.com/".insteadOf "https://github.com/"
+
+      - name: Create Hotfix PR
+        working-directory: ".github/actions/promote"
+        env:
+          COMMIT: ${{ inputs.commit_sha }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: mise run promote-run create-hotfix-pr "$COMMIT"

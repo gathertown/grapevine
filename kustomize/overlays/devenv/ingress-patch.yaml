@@ -1,0 +1,86 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grapevine-app
+  namespace: grapevine-services
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: __REPLACED_BY_ARGOCD__
+    cert-manager.io/issuer: cf-origin-ca-issuer
+    cert-manager.io/issuer-kind: ClusterOriginIssuer
+    cert-manager.io/issuer-group: cert-manager.k8s.cloudflare.com
+    cert-manager.io/duration: "720h" # 30d
+    cert-manager.io/renew-before: "480h" # 20d
+spec:
+  tls:
+    - hosts:
+        - __REPLACED_BY_ARGOCD__
+      secretName: grapevine-app-tls
+  rules:
+    - host: __REPLACED_BY_ARGOCD__
+      http:
+        paths:
+          - backend:
+              service:
+                name: grapevine-app
+                port:
+                  number: 5000
+            path: /
+            pathType: Prefix
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grapevine-api
+  namespace: grapevine-services
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: __REPLACED_BY_ARGOCD__
+    cert-manager.io/issuer: cf-origin-ca-issuer
+    cert-manager.io/issuer-kind: ClusterOriginIssuer
+    cert-manager.io/issuer-group: cert-manager.k8s.cloudflare.com
+    cert-manager.io/duration: "720h" # 30d
+    cert-manager.io/renew-before: "480h" # 20d
+spec:
+  tls:
+    - hosts:
+        - __REPLACED_BY_ARGOCD__
+      secretName: grapevine-api-tls
+  rules:
+    - host: __REPLACED_BY_ARGOCD__
+      http:
+        paths:
+          - backend:
+              service:
+                name: grapevine-api
+                port:
+                  number: 8000
+            path: /
+            pathType: Prefix
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingest-gatekeeper
+  namespace: grapevine-services
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: "__REPLACED_BY_ARGOCD__"
+    cert-manager.io/issuer: cf-origin-ca-issuer
+    cert-manager.io/issuer-kind: ClusterOriginIssuer
+    cert-manager.io/issuer-group: cert-manager.k8s.cloudflare.com
+    cert-manager.io/duration: "720h" # 30d
+    cert-manager.io/renew-before: "480h" # 20d
+spec:
+  tls:
+    - hosts:
+        - "__REPLACED_BY_ARGOCD__"
+      secretName: ingest-gatekeeper-tls
+  rules:
+    - host: "__REPLACED_BY_ARGOCD__"
+      http:
+        paths:
+          - backend:
+              service:
+                name: ingest-gatekeeper
+                port:
+                  number: 8001
+            path: /
+            pathType: Prefix

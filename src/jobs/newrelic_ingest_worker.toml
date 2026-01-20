@@ -1,0 +1,65 @@
+[tool.newrelic]
+# New Relic configuration for Ingest Worker
+# This configuration is specific to the grapevine ingest worker service
+
+# License key from environment variable
+# license_key = "${NEW_RELIC_LICENSE_KEY}"
+
+# Base application name and settings
+app_name = "grapevine-ingest-worker-prod"
+monitor_mode = true
+
+# Logging configuration
+log_file = "stdout"
+log_level = "info"
+
+# Agent features
+distributed_tracing.enabled = true
+span_events.enabled = true
+transaction_events.enabled = true
+error_collector.enabled = true
+
+# Performance settings
+agent_limits.transaction_traces_nodes = 2000
+transaction_tracer.enabled = true
+transaction_tracer.transaction_threshold = "apdex_f"
+transaction_tracer.record_sql = "obfuscated"
+transaction_tracer.stack_trace_threshold = 0.5
+
+# Database settings
+datastore_tracer.enabled = true
+datastore_tracer.instance_reporting.enabled = true
+datastore_tracer.database_name_reporting.enabled = true
+
+# Custom attributes
+attributes.enabled = true
+attributes.include = "request.headers.* request.method request.uri response.status"
+attributes.exclude = "request.headers.authorization, request.headers.cookie"
+
+# Async/await support
+event_loop_visibility.enabled = true
+
+# Application logging configuration
+# No logs in context yet, getting it to be happy with our custom logger is challenging
+application_logging.enabled = false
+application_logging.local_decorating.enabled = false
+# Disable log forwarding since logs are handled by Kubernetes integration
+application_logging.forwarding.enabled = false
+
+
+# Environment-specific overrides
+[tool.newrelic.env.local]
+monitor_mode = false
+app_name = "grapevine-ingest-worker-local"
+
+[tool.newrelic.env.dev]
+monitor_mode = false
+app_name = "grapevine-ingest-worker-dev"
+
+[tool.newrelic.env.test]
+monitor_mode = false
+app_name = "grapevine-ingest-worker-test"
+
+[tool.newrelic.env.staging]
+monitor_mode = true
+app_name = "grapevine-ingest-worker-staging"

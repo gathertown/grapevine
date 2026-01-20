@@ -1,0 +1,84 @@
+{
+  "output": {
+    "operations": [
+      {
+        "action": "UPDATE",
+        "confidence": 85,
+        "reasoning": "Konrad reported progress on Zendesk Help Center article sync - adding rate limiting and reusing ticket backfill logic. Meaningful update to existing task.",
+        "issueId": "LK4-ZENDESK-001",
+        "updateData": {
+          "description": "Add Zendesk Help Center article syncing with incremental behavior.\n\n- Use Zendesk Help Center APIs to fetch articles\n- Implement incremental sync via updated_since timestamp\n- Convert HTML content to Markdown for indexing\n- Reuse ticket backfill logic for pagination and concurrency\n- Add client-side request rate limiting to avoid 429s\n- Validate on staging"
+        }
+      },
+      {
+        "action": "UPDATE",
+        "confidence": 85,
+        "reasoning": "Chandler reported progress on health checks - specifically adding webhook failure monitoring and PostHog instrumentation. Meaningful update to existing task.",
+        "issueId": "LK4-HEALTH-001",
+        "updateData": {
+          "description": "Broaden health checks and expose connector status in UI.\n\n- Add checks for configuration errors, auth errors, and edge cases\n- Implement UI indicators showing connector health\n- Add reconnect actions for failed connectors\n- Add health checks for webhook failures specifically\n- Update PostHog instrumentation for new connector installations table\n- Incrementally expand coverage across all connectors"
+        }
+      },
+      {
+        "action": "CREATE",
+        "confidence": 85,
+        "reasoning": "Ciro committed to reviewing and adjusting hard-coded UI copy for the Intercom setup flow. Clear coding task involving React component updates.",
+        "createData": {
+          "title": "Update Intercom setup UI copy",
+          "description": "Review and adjust hard-coded text in the Grapevine UI for Intercom connector setup.\n\n- Audit current Intercom setup labels and help text\n- Fix incorrect or confusing strings\n- Ensure consistency with marketplace submission",
+          "teamId": "825a22b2-ce63-46fe-a428-1cecc3f299ae",
+          "assigneeId": null,
+          "priority": null,
+          "dueDate": null
+        }
+      }
+    ]
+  },
+  "input": {
+    "docs": ["2025-12-03_18-00-18_meeting-grapevine-connectors-standup.json"],
+    "linearState": [
+      {
+        "id": "LK4-TRELLO-001",
+        "title": "Implement Trello incremental scraping",
+        "description": "Replace unreliable Trello webhooks with incremental scraping for data sync.\n\n- Implement incremental scrape for Trello data\n- Retain only deletion/permission-revocation webhooks for cleanup\n- Validate reliability vs previous webhook approach",
+        "assigneeId": null
+      },
+      {
+        "id": "LK4-WEBHOOK-001",
+        "title": "Fix webhook verification issue impacting all connectors",
+        "description": "Fix the webhook refactor break on staging and notify the team when stable.\n\n- Reproduce failing webhook case on staging\n- Identify and patch the breaking change\n- Verify end-to-end health across connectors\n- Notify team once staging is healthy",
+        "assigneeId": null
+      },
+      {
+        "id": "LK4-ZENDESK-001",
+        "title": "Implement Zendesk Help Center article sync",
+        "description": "Add Zendesk Help Center article syncing with incremental behavior.\n\n- Use Zendesk Help Center APIs to fetch articles\n- Implement incremental sync via updated_since timestamp\n- Convert HTML content to Markdown for indexing\n- Validate on staging",
+        "assigneeId": null
+      },
+      {
+        "id": "LK4-LEGACY-001",
+        "title": "Replace legacy connector installations tables",
+        "description": "Migrate platform off legacy installation tables.\n\n- Create/verify new schema and migration plan\n- Write and execute data migration scripts\n- Update application code to use new tables\n- Clean up old tables once stable",
+        "assigneeId": null
+      },
+      {
+        "id": "LK4-HEALTH-001",
+        "title": "Expand connector health-check coverage and surface status in admin UI",
+        "description": "Broaden health checks and expose connector status in UI.\n\n- Add checks for configuration errors, auth errors, and edge cases\n- Implement UI indicators showing connector health\n- Add reconnect actions for failed connectors\n- Incrementally expand coverage across all connectors",
+        "assigneeId": null
+      },
+      {
+        "id": "LK4-ATTIO-001",
+        "title": "Implement Attio connector",
+        "description": "Build the Attio CRM connector integration.\n\n- Implement Attio API integration\n- Sync CRM data to knowledge store\n- Validate on staging",
+        "assigneeId": null
+      },
+      {
+        "id": "LK4-CREDS-001",
+        "title": "Migrate connectors to use credentials with connector id namespace",
+        "description": "Restructure connector credential storage to use connector ID namespace.\n\n- Update credential storage to scope under connector ID\n- Migrate existing credentials to new namespace structure\n- Update code that reads/writes credentials",
+        "assigneeId": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,122 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ingest-worker
+  namespace: grapevine-workers
+  annotations:
+    reloader.stakater.com/auto: 'true'
+  labels:
+    app.kubernetes.io/name: ingest-worker
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 50%
+      maxSurge: 50%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ingest-worker
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ingest-worker
+    spec:
+      terminationGracePeriodSeconds: 30 # allow for graceful shutdown, e.g. release in-progress jobs
+      serviceAccountName: ingest-worker
+      imagePullSecrets:
+        - name: priv-docker-registry
+      containers:
+        - name: ingest-worker
+          image: REGISTRY/grapevine-ingest-worker:latest
+          envFrom:
+            - secretRef:
+                name: ingest-worker-secrets
+          resources:
+            requests:
+              cpu: 500m
+              memory: '2Gi'
+              # slack_export_backfill_root jobs use a lot of disk space, but are very rare (typically 1-2 ever per customer)
+              # github_file_backill jobs for large repos can use a lot of disk space as well
+              # Request a reasonable amount of ephemeral storage per pod so that we can guarantee moderately-sized slack_export_backfill_root jobs
+              # and probabilistically support larger ones.
+              ephemeral-storage: '8Gi'
+            limits:
+              cpu: '2'
+              memory: '8Gi'
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 10
+            failureThreshold: 3
+          securityContext:
+            runAsUser: 1000
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - all
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: ingest-worker
+  namespace: grapevine-workers
+  labels:
+    app.kubernetes.io/name: ingest-worker
+spec:
+  minAvailable: 60%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ingest-worker
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingest-worker
+  namespace: grapevine-workers
+  labels:
+    app.kubernetes.io/name: ingest-worker
+spec:
+  selector:
+    app.kubernetes.io/name: ingest-worker
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: ingest-worker-metrics
+  namespace: grapevine-workers
+  labels:
+    app.kubernetes.io/name: ingest-worker
+spec:
+  endpoints:
+    - port: metrics
+      path: /metrics
+      interval: 30s
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ingest-worker
+  namespaceSelector:
+    matchNames:
+      - grapevine-workers

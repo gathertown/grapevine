@@ -1,0 +1,6 @@
+import * as React from "react";
+import type { SVGProps } from "react";
+import { memo } from "react";
+const SvgMapMarker = (props: SVGProps<SVGSVGElement>) => <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}><path d="M15 10C15 11.5188 13.7688 12.75 12.25 12.75C10.7312 12.75 9.5 11.5188 9.5 10C9.5 8.48122 10.7312 7.25 12.25 7.25C13.7688 7.25 15 8.48122 15 10Z" stroke="currentColor" strokeWidth={1.5} strokeLinejoin="round" /><path d="M19.5 10C19.5 14.5547 15.4253 18.6833 13.3854 20.4648C12.7278 21.0392 11.7722 21.0392 11.1146 20.4648C9.07471 18.6833 5 14.5547 5 10C5 5.99594 8.24594 2.75 12.25 2.75C16.2541 2.75 19.5 5.99594 19.5 10Z" stroke="currentColor" strokeWidth={1.5} strokeLinejoin="round" /></svg>;
+const Memo = memo(SvgMapMarker);
+export default Memo;

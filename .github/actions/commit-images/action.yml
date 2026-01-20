@@ -1,0 +1,59 @@
+name: Commit image digests
+description: |-
+  Updates images used by kustomize to reflect the current state. This is
+  used by ArgoCD to know which images to deploy.
+inputs:
+  environment:
+    description: "Which environment to update (staging, prod)"
+    required: true
+  commit_sha_short:
+    description: "Short commit SHA to use for image tags"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - uses: fregante/setup-git-user@024bc0b8e177d7e77203b48dab6fb45666854b35 # v2
+    - name: Validate environment
+      shell: bash
+      env:
+        ENVIRONMENT: ${{ inputs.environment }}
+      run: |-
+        if [[ "$ENVIRONMENT" != "staging" ]] && [[ "$ENVIRONMENT" != "prod" ]]; then
+          echo "Error: Unexpected environment value \"$ENVIRONMENT\" (expected: staging or prod)"
+          exit 1
+        fi
+    - name: Update Image Hashes
+      shell: bash
+      env:
+        KUSTOMIZE_DIRECTORY: "kustomize/overlays/${{ inputs.environment == 'staging' && 'staging' || 'production' }}"
+        COMMIT_SHA_SHORT: ${{ inputs.commit_sha_short }}
+      run: |
+        # working-directory doesn't seem to be valid in composite
+        # actions
+        cd "$KUSTOMIZE_DIRECTORY"
+
+        # Read image list from centralized config and build kustomize command
+        readarray -t image_names < ../../../.github/workflows/config/images.txt
+        image_args=()
+        for image_name in "${image_names[@]}"; do
+          image_args+=("${image_name}:sha-$COMMIT_SHA_SHORT")
+        done
+
+        # Update all image tags to use the specific SHA
+        kustomize edit set image "${image_args[@]}"
+    - name: Update ${{ inputs.environment }} branch
+      shell: bash
+      env:
+        ENVIRONMENT: ${{ inputs.environment }}
+      run: |-
+        git branch -D "$ENVIRONMENT" || true
+        git switch --create "$ENVIRONMENT"
+        git commit -am 'chore: update image digests [skip ci]'
+        git push --force origin "$ENVIRONMENT"
+
+    - name: Trigger ArgoCD
+      shell: bash
+      continue-on-error: true # ArgoCD will do its own pull in 5m.
+      run: |
+        # Trigger ArgoCD to pull the latest commit
+        kubectl patch application grapevine -n argocd --type='merge' -p='{"metadata": {"annotations": {"argocd.argoproj.io/refresh": "hard"}}}'

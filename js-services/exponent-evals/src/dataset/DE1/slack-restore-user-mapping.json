@@ -1,0 +1,14 @@
+{
+  "id": "slack-restore-user-mapping",
+  "type": "slack",
+  "sourceDescription": "this Slack conversation",
+  "sourceLink": "https://gather-town.slack.com/archives/C09HTTVUSH5/p1764714350980019?thread_ts=1764695869.609579",
+  "sourceContent": "{\n  \"channel\": \"C09HTTVUSH5\",\n  \"date\": \"2025-12-02\",\n  \"participants\": [\"Kumail Jaffer\", \"Evangeline\", \"Karen Ying\"],\n  \"content\": \"=== Earlier conversation (context, already processed) ===\\n[2025-12-02T17:17:49.609Z] Kumail Jaffer: Flagging: another thing that got lost in the port was the mapping from slack users -> linear users, which means that setting the assignee doesn't work at all right now. FWIW it looks like this only worked for slack in the past and not meetings\\n[2025-12-02T17:21:37.540Z] Evangeline: yeppp. some reasons why we added this:\\n• we saw a quality bump when we used actual names in the input, instead of user ids. i'm not exactly sure why because names and ids should serve as the same unique identifiers, but it felt like the agent was getting less confused over who's doing what\\n• after adding the mapping we were getting the assignee correct 90% of the time, so i would still recommend mapping ids across every input exponent is ambiently extracting from\\n[2025-12-02T19:03:49.131Z] Karen Ying: @David something you can also look into as a rampup port task!\\n\\n=== New messages since last pass (process these) ===\\n[2025-12-02T22:25:50.980Z] Karen Ying: oh lol @David i just realized this is messing up quality a lot so imma fix this today since you're working on other stuff so no worries\"\n}",
+  "operation": {
+    "action": "CREATE",
+    "createData": {
+      "title": "Restore Slack user → Linear user mapping to fix assignee assignment",
+      "description": "Karen will restore the Slack user → Linear user mapping that was lost in the port so assignee setting works again, and to recover quality.\n\n- Context (Kumail, 2025-12-02T17:17:49Z): mapping from Slack users → Linear users was lost in the port; setting assignees doesn't work; previously only worked for Slack (not meetings)\n- Context (Evangeline, 2025-12-02T17:21:37Z): using real names improved quality; mapping yielded ~90% correct assignees; recommended mapping IDs across all inputs"
+    }
+  }
+}

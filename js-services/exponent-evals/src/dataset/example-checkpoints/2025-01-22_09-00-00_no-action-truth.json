@@ -1,0 +1,27 @@
+[
+  {
+    "input": {
+      "linearState": [
+        {
+          "id": "issue-onboarding-1",
+          "title": "Improve onboarding flow",
+          "description": "Make the onboarding experience smoother for new users.",
+          "assigneeId": "sarah"
+        }
+      ],
+      "docs": ["2025-01-22_09-00-00_no-action.json"]
+    },
+    "output": {
+      "operations": [
+        {
+          "action": "SKIP",
+          "skipData": {
+            "reason": "No actionable work items discussed. The conversation is about office closure and personal plans - no task commitments or progress updates."
+          },
+          "confidence": 95,
+          "reasoning": "This standup only contained a holiday reminder and casual conversation. No work commitments, progress updates, or actionable items were discussed."
+        }
+      ]
+    }
+  }
+]

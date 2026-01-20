@@ -1,0 +1,9 @@
+{
+  "id": "meeting-action-item",
+  "title": "Sprint planning notes",
+  "date": "2025-01-20",
+  "type": "slack",
+  "content": "Notes from sprint planning: Karen will fix the login bug by Friday and update the API docs.",
+  "participants": ["Karen", "Sarah"],
+  "files": []
+}

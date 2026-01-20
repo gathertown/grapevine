@@ -1,0 +1,10 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "prettier.configPath": "js-services/prettier.config.cjs",
+
+  "[shellscript]": {
+    "files.eol": "\n",
+    "editor.defaultFormatter": "mads-hartmann.bash-ide-vscode"
+  }
+}

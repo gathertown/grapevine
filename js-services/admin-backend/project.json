@@ -1,0 +1,54 @@
+{
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "name": "admin-backend",
+  "sourceRoot": "admin-backend/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "admin-backend/dist",
+        "main": "admin-backend/src/server.ts",
+        "tsConfig": "admin-backend/tsconfig.json",
+        "assets": [],
+        "generateExportsField": false,
+        "swcrc": ".swcrc",
+        "skipTypeCheck": false
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "sourceMap": true
+        }
+      }
+    },
+    "type-check": {},
+    "lint": {},
+    "lint-fix": {},
+    "format": {},
+    "format:check": {},
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "jest",
+        "cwd": "admin-backend"
+      }
+    },
+    "test:watch": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "jest --watch",
+        "cwd": "admin-backend"
+      }
+    },
+    "test:coverage": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "jest --coverage",
+        "cwd": "admin-backend"
+      }
+    },
+    "serve:dev": {}
+  }
+}

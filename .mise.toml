@@ -1,0 +1,114 @@
+[settings]
+experimental = true
+
+[env]
+_.file = ".env.local"
+
+[tools]
+python = "3.13"
+uv = "0.8"
+node = "24.10"
+kubectl = "1.34.1" # Should be +/- 1 of the k8s server version
+shfmt = "3.12.0"
+
+[hooks]
+postinstall = [
+  "mise run corepack-setup",
+  "uv sync --group test",
+  "cd js-services && yarn install",
+]
+
+[tasks.build-container]
+description = "Build a docker container locally"
+run = './scripts/build-container.sh . -f {{arg(name="dockerfile")}}'
+
+[tasks.install]
+run = [
+  "mise install",
+  # Ensures that yarn is properly configured via corepack (and uses the
+  # possibly newer versions from the above mise install command)
+  "mise exec -- bash -euo pipefail -c 'pushd js-services >/dev/null && corepack enable && popd >/dev/null'",
+]
+
+[tasks.dev]
+depends = "install"
+description = "Spins up a local development environment"
+shell = "/usr/bin/env bash -euo pipefail -c"
+raw = true # attaches stdin
+run = [
+  "mise run with-project -- tilt up"
+]
+
+[tasks.setup]
+description = "Setup your local developer environment (run once, will be removed soon)"
+run = "./scripts/local_dev_initial_setup.sh"
+
+[tasks.down]
+description = "Tears down local developer environment"
+run = "tilt down"
+
+[tasks.checks]
+description = "Run all linters and associated checkers"
+run = "./scripts/checks.sh"
+
+[tasks.with-project]
+description = """
+Run a command with an optional --gv-env flag for specifying which
+doppler project to use, defaulting to 'local'.
+"""
+hide = true
+silent = true
+run = "./scripts/run_with_project.sh"
+
+[tasks.migrations]
+description = "Run the Python migrations CLI"
+run = 'mise run with-project uv run python -m src.migrations.cli'
+
+[tasks.backfill]
+description = "Interactive backfill CLI for connectors (alias for 'mise connector backfill')"
+usage = '''
+flag "--tenant-id <tenant_id>" help="Tenant ID to backfill connector for"
+flag "--env <environment>" help="Environment to run in (local, staging, production)" default="local"
+flag "--connector <connector>" help="Connector key to backfill"
+flag "--config-file <config_file>" help="Path to JSON config file for connectors that require additional configuration"
+'''
+run = "./scripts/backfill_wrapper.sh"
+
+[tasks.corepack-setup]
+description = "Ensures corepack is setup and using the right package manager"
+dir = "{{ config_root }}/js-services"
+run = [
+  "corepack enable",
+  "corepack install"
+]
+
+[tasks.configure]
+description = "Configure local development services (usage: mise configure slack)"
+run = "uv run python -m src.cli.configure"
+
+[tasks.connector]
+description = "Connector statistics and management"
+usage = '''
+arg "<subcommand>" help="Subcommand to run (stats, health, backfill)"
+flag "--env <environment>" help="Environment to run in (local, staging, production)" default="local"
+flag "--tenant-id <tenant_id>" help="Filter to specific tenant ID"
+flag "--status <status>" help="Filter by status (default: active)"
+flag "--all-statuses" help="Show breakdown by all status types"
+flag "--connector <connector>" help="Connector key for backfill"
+flag "--config-file <config_file>" help="Path to JSON config file for backfill"
+flag "--csv <csv_path>" help="Save health results to CSV file"
+'''
+run = "./scripts/connector_wrapper.sh"
+
+[tasks.reindex]
+description = "Reindex a single document or multiple documents by entity ID"
+usage = '''
+flag "--tenant-id <tenant_id>" help="Tenant ID (required)"
+flag "--source <source>" help="Document source: gather, github_prs, slack, linear, notion, etc. (required)"
+flag "--entity-id <entity_id>" help="Entity ID to reindex (can specify multiple times, required)"
+flag "--env <environment>" help="Environment to run in (local, staging, production)" default="local"
+flag "--no-force" help="Don't force reindex (only index if not already indexed)"
+flag "--turbopuffer-only" help="Only reindex in Turbopuffer (skip PostgreSQL/OpenSearch)"
+flag "--dry-run" help="Preview the message without actually sending it"
+'''
+run = "./scripts/reindex_wrapper.sh"

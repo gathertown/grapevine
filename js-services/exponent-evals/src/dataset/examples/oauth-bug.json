@@ -1,0 +1,9 @@
+{
+  "id": "oauth-bug",
+  "title": "OAuth fails with invalid_scope error",
+  "date": "2025-01-15",
+  "type": "slack",
+  "content": "User: I'm getting an invalid_scope error when trying to connect my Google Calendar. After going through the OAuth flow, it just redirects me to a 404 page. I tried multiple times but same issue. Chrome Version 120, macOS Sonoma 14.2.",
+  "participants": ["user-feedback-bot"],
+  "files": []
+}

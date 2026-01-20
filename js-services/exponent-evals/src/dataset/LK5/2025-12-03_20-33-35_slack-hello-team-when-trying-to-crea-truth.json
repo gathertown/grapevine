@@ -1,0 +1,236 @@
+{
+  "output": {
+    "operations": [
+      {
+        "action": "CREATE",
+        "confidence": 88,
+        "reasoning": "Johnny committed to fix the devenv vs staging steward conflict. The investigation issue (AIVP-959) exists but this is a separate fix ticket for Johnny to implement the solution.",
+        "createData": {
+          "title": "Fix devenv vs staging steward conflict (ensure SSM params persist to AWS SSM, not localstack)",
+          "description": "Fix the conflict where devenv stewards are writing SSM parameters to localstack instead of AWS SSM.\n\n- Devenv stewards are conflicting with the staging steward\n- Credentials are never saved to AWS SSM\n- Mitigation: Johnny disabled devenv stewards temporarily\n- Johnny will work on a fix to prevent the conflict and ensure SSM params persist to AWS SSM",
+          "teamId": "825a22b2-ce63-46fe-a428-1cecc3f299ae",
+          "assigneeId": null,
+          "priority": null,
+          "dueDate": null
+        }
+      }
+    ]
+  },
+  "input": {
+    "docs": ["2025-12-03_20-33-35_slack-hello-team-when-trying-to-crea.json"],
+    "linearState": [
+      {
+        "id": "49c9ca74-ffde-4135-8c42-ffdbec70310d",
+        "identifier": "AIVP-960",
+        "title": "Investigate recent requests from stale devenv tenant 'devenv-jdallas-test'",
+        "description": "Johnny will dig into why the 'devenv-jdallas-test' tenant/namespace appears to be making recent requests in New Relic, even though it should no longer be live.\n\n* Namespace/tenant: devenv-jdallas-test\n* Observed: Recent requests in New Relic (flagged in thread)\n* Context: Chandler asked Johnny to run this down; Johnny committed to investigate\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1764793361461339?thread_ts=1764765391.132429)",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 0,
+        "state": "Triage",
+        "createdAt": "2025-12-03T20:24:13.253Z"
+      },
+      {
+        "id": "f0275843-6155-4fe9-b871-61836769f49b",
+        "identifier": "AIVP-959",
+        "title": "Investigate 'Database connection unavailable' when creating org/account in staging",
+        "description": "Investigate 'Database connection unavailable' when creating org/account in staging.\n\nAdditional context (Dec 3, 20:33 UTC, Chandler):\n\n* Devenv stewards are conflicting with the staging steward and are writing SSM parameters to localstack; credentials are not saved to AWS SSM.\n* This is not a production issue.\n* Mitigation: Johnny will disable devenv stewards temporarily.\n* Follow-up: Johnny will work on a fix to prevent the conflict and ensure SSM params persist to AWS SSM.\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1764794015067639?thread_ts=1764765391.132429)",
+        "assigneeId": "57031e99-ad28-4d55-9182-8fa292bdfc71",
+        "assignee": "Chandler Roth",
+        "priority": 0,
+        "state": "In Progress",
+        "createdAt": "2025-12-03T20:02:37.978Z"
+      },
+      {
+        "id": "5a8eaa38-bf87-4703-8d20-371fe2f60a1d",
+        "identifier": "AIVP-958",
+        "title": "Reduce alerts channel noise to near zero by end of week",
+        "description": "Drive down noise in the alerts channel.\n\n* Continue working through alerts to eliminate unnecessary noise\n* Goal: zero noise by end of week (as close to zero as possible)\n* Share blockers if any and propose rule/threshold adjustments",
+        "priority": 3,
+        "state": "In Progress",
+        "createdAt": "2025-12-03T17:29:35.698Z"
+      },
+      {
+        "id": "eda871ab-5cef-467f-b6c9-73470159b6f6",
+        "identifier": "AIVP-957",
+        "title": "Decide controller loop approach for VibeWork demo (PR-based vs local agent container) and next steps",
+        "description": "Align on the controller loop approach and record next steps.\n\n* JohnnyD to sync with Jordan and Brent this afternoon to align and decide the path\n* Option A: Use GitHub PR as agent context and loop via Cursor; risk: multi-hour iteration due to dev env update latency (5–10 min per try) and flakiness\n* Option B: Build local agent controller loop in a container with MCP tools (Tilt/dev env, browser, generate test plan), iterating until evidence is sufficient; potentially higher quality but larger upfront effort\n* Decision criteria: iteration speed impact on progress; quality implications; demo viability (latency can be edited around in video if needed)\n* Capture decision and create follow-up implementation tasks",
+        "priority": 2,
+        "state": "In Progress",
+        "createdAt": "2025-12-03T17:29:35.410Z"
+      },
+      {
+        "id": "a83aafb4-cdf6-4dd4-8e9d-9280f7db08ba",
+        "identifier": "AIVP-956",
+        "title": "Productionize PR review loop with internal Slack dump, then enable GitHub posting + reactions",
+        "description": "PR #2285: Grapevine Reviewer (multi-agent PR review system)\nLink: [https://github.com/gathertown/corporate-context/pull/2285](https://github.com/gathertown/corporate-context/pull/2285)\nStatus: In review\n\nKey changes delivered in PR #2285:\n\n* New multi-agent PR Reviewer pipeline (initial analysis → category investigators → synthesis) with structured JSON output (path/lines, actionable comments, categories, impact/confidence)\n* Corporate Context integration via MCP tools (keyword_search, semantic_search) to pull code/doc context\n* Robust JSON parsing with json-repair fallback and validators\n* Streaming MCP tool: /review_pr_streaming with status/phase/final events\n* Evaluation framework and developer tooling: scripts/reviewer/pr_reviewer.py (CLI), scripts/call_pr_review_tool.py (HTTP caller), scripts/reviewer/compare_pr_reviews.py, fixtures/ground-truth examples\n* Performance/scalability: token-aware batching and large-diff handling\n\nInfra/guardrails:\n\n* Feature gate for the reviewer tool (FeatureKeys.MCP_TOOL_PR_REVIEWER, enabled for LOCAL/STAGING)\n* Tool executor excludes review_pr_streaming and ask\\_\\* tools to avoid recursion (HTTP-only usage)\n* Usage tracking updated to include source review_pr_streaming\n* Logging supports LOG_RENDERER override (console/json)\n* Dependency added: json-repair\n\nNotes:\n\n* Active review with multiple comments on 2025-12-04; follow-ups may be required from review feedback.",
+        "priority": 3,
+        "state": "In Review",
+        "createdAt": "2025-12-03T17:29:35.167Z"
+      },
+      {
+        "id": "96a0af56-e2ba-4bb3-9747-fdeff1ac1b48",
+        "identifier": "AIVP-954",
+        "title": "Ability to eliminate orphaned tenant databases",
+        "description": "OpenSearch index audit utility to support orphaned tenant cleanup.\n\nPR #2163: Open/In Review — [https://github.com/gathertown/corporate-context/pull/2163](https://github.com/gathertown/corporate-context/pull/2163)\nKey changes:\n\n* New script: scripts/opensearch_index_report.py\n* Enumerates tenant OpenSearch indices (handles aliases and versioned indices) and extracts tenant IDs\n* Reports doc_count, number_of_shards, number_of_replicas (resolves underlying index when given an alias)\n* Batch fetches tenant metadata from the control DB via asyncpg; optionally resolves WorkOS org names\n* Rate limiting via asyncio.Semaphore; configurable max concurrency and per-request delay\n* Output formats: table, csv, json; includes totals in table view\n* Uses admin credentials from environment to connect; performs a basic connectivity check and provides verbose error handling\n\nPurpose: Provide an up-to-date audit of tenant indices to identify abandoned/unused or orphaned indices that can be pruned, aiding AIVP-954.",
+        "priority": 0,
+        "state": "In Review",
+        "createdAt": "2025-12-03T16:59:59.138Z"
+      },
+      {
+        "id": "144f1f93-85a0-47ee-8f4a-d151c996f21d",
+        "identifier": "AIVP-953",
+        "title": "Fix MCP in headless mode",
+        "description": "Fix MCP behavior in headless mode.\n\nPR #2261: Merged on 2025-12-03\nLink: [https://github.com/gathertown/corporate-context/pull/2261](https://github.com/gathertown/corporate-context/pull/2261)\nAuthor: btraut\n\nKey changes delivered:\n\n* Use an explicit MCP config at /tmp/mcp-config.json and verify presence/contents (package name and required env vars).\n* Pass --mcp-config to Claude Code for both su and direct runs; echo the config path in logs.\n* Copy MCP config for non-root 'testrunner' and set MCP_CONFIG_FILE for both root/non-root paths.\n* Preserve existing prompt handling and permissions.\n* CI: Update .github/workflows/run-acceptance-tests.yaml to generate and use /tmp/mcp-config.json.",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 0,
+        "state": "Done",
+        "createdAt": "2025-12-03T04:34:36.217Z"
+      },
+      {
+        "id": "a13513c6-2e7b-4cff-b7d2-00eebe02c206",
+        "identifier": "AIVP-952",
+        "title": "Add description enhancement phase to ambient extraction",
+        "description": "PR #2258: Open (in review)\nLink: [https://github.com/gathertown/corporate-context/pull/2258](https://github.com/gathertown/corporate-context/pull/2258)\nAuthor: theonlyjohnny\nDate: 2025-12-03\n\nKey changes in PR #2258:\n\n* Exponent Core: Adds utils/descriptionEnhancer.ts with enhanceTaskDescription and enhanceOperations to produce structured descriptions (Summary, Context, Requirements, optional Technical Considerations, References). Ensures no speculative details and falls back to original description; enhances CREATE ops in parallel. Exposes exports via index.ts.\n* Grapevine MCP (ambient-extraction): Adds callAskAgentFast() in grapevine/client.ts to invoke ask_agent_fast with reasoning_effort=minimal, verbosity=low, disable_citations=true; uses a constrained MCPServerStdio connection and always closes it; parses JSON answer.\n* Processors: Integrates enhancement into GitHub and Meeting processors by invoking enhanceOperations with ask_agent_fast; logs enhancement step.\n* Slack Bot: Integrates enhancement in ambientProcessor via makeBackendRequest using toolName 'ask_agent_fast'; passes Slack message link for References and logs results.\n\nNotes:\n\n* Enhancement applies only to CREATE operations; UPDATE and SKIP unchanged.\n* Evals remain unchanged to avoid performance impact.",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 0,
+        "state": "In Review",
+        "createdAt": "2025-12-03T03:12:20.533Z"
+      },
+      {
+        "id": "f0051b31-b986-4c88-b668-6aa231535ddf",
+        "identifier": "AIVP-951",
+        "title": "Check grading on PR #9",
+        "description": "Victor Zhou asked Andy Lui to check his grading on PR #9.\n\n* Review the output file: pr-9-2025-12-02T17-58-46.json\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1764729651625009?thread_ts=1764728938.257809)",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 0,
+        "state": "Triage",
+        "createdAt": "2025-12-03T02:42:30.423Z"
+      },
+      {
+        "id": "ebaddea1-9b8c-4c1f-8353-3c7babab1002",
+        "identifier": "AIVP-950",
+        "title": "Review citations/formatting and PR #2",
+        "description": "Tracking PR #2256 for this task.\n\nPR #2256: Review citations formatting and pull request (open)\nLink: [https://github.com/gathertown/corporate-context/pull/2256](https://github.com/gathertown/corporate-context/pull/2256)\nKey changes:\n\n* Added PR_2_REVIEW.md with a review of PR #2 and clarification that the \\[\\[1\\]\\], \\[\\[2\\]\\], etc. in PR descriptions are GitHub diff reference links (no action needed)\n* Fixed README typo ([conifg.py](http://conifg.py) -> [config.py](http://config.py))\n* Removed outdated TODO tags in Usage and Testing sections\n\nNotes:\n\n* Clarifies the nature of 'citations' mentioned in this issue and resolves the documentation inconsistencies.",
+        "assigneeId": "7f7a9741-7051-4469-8d88-bb4e84a60400",
+        "assignee": "Victor Zhou",
+        "priority": 0,
+        "state": "In Review",
+        "createdAt": "2025-12-03T02:40:43.564Z"
+      },
+      {
+        "id": "d758b1c1-9aed-4859-b6fe-7a70d3c117e4",
+        "identifier": "AIVP-949",
+        "title": "Enable Intercom connector in Staging (track PR #2245)",
+        "description": "Enable Intercom in Staging and related connector updates.\n\nPR #2245: Merged on 2025-12-03\nLink: [https://github.com/gathertown/corporate-context/pull/2245](https://github.com/gathertown/corporate-context/pull/2245)\n\nKey changes in PR #2245:\n\n* Frontend/Admin:\n  * Gate INTERCOM_ENABLED for local/staging; show Intercom integration (no \"coming soon\").\n  * Remove \"Conversations discovered\" metric; display only indexed document count.\n* Backend (Intercom):\n  * Typed Pydantic models for Intercom API (IntercomConversationData, IntercomArticleData, IntercomContactData, IntercomCompanyData); artifacts/transformers updated to use typed models.\n  * Shared timestamp utilities: normalize_timestamp and convert_timestamp_to_iso; replaced ad‑hoc parsing across extractors/transformers/documents.\n  * Root backfill orchestration: IntercomApiBackfillRootConfig and IntercomBackfillRootExtractor to fan out companies/contacts/conversations/help_center; ingest worker registers intercom_api_backfill_root; child extractors no longer require SQS; CLI updated to send the root backfill config.\n  * Help Center: use list API with client‑side updated_at filtering; author/parent parsing improvements; HTML-to-markdown conversion retained.\n  * Chunking: use RecursiveCharacterTextSplitter across conversations, help center articles, contacts, and companies; add chunk_index/total_chunks to chunk metadata; fix duplicate chunk content in company/contact documents.\n  * Cleanup: remove obsolete script scripts/intercom/test_intercom_conversations [bkp.py](http://bkp.py).\n\nRelated references mentioned in PR: CONN-447 (enable concurrent ingestion) and CONN-449 (implement chunk splitter).",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 0,
+        "state": "Done",
+        "createdAt": "2025-12-03T02:23:43.420Z"
+      },
+      {
+        "id": "66fbded1-ccde-46ce-8337-7483d5429dec",
+        "identifier": "AIVP-948",
+        "title": "Approve PR #2253",
+        "description": "\\[Verification Loop\\] Pick correct user for running Claude Code\n\nPR #2253: Open (in review)\nLink: [https://github.com/gathertown/corporate-context/pull/2253](https://github.com/gathertown/corporate-context/pull/2253)\n\nKey details:\n\n* Detect root vs non-root in CI; only create 'testrunner' when running as root; otherwise use current user\n* Set CLAUDE_USER and CLAUDE_HOME environment variables\n* Resolve PROMPT_FILE from ${CLAUDE_HOME}/execution_prompt.txt\n* Copy .claude.json and execution_prompt.txt to 'testrunner' only when root\n* Execution: if root, run Claude Code via 'su - ${CLAUDE_USER}'; if non-root, run directly as current user\n* Add logging for user/home and Node/Claude paths; keep --dangerously-skip-permissions and stream-json output\n\nRecent activity:\n\n* Participant added: vzhou842\n* 2025-12-03 03:40:39 UTC: vzhou842 commented",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 0,
+        "state": "In Review",
+        "createdAt": "2025-12-03T01:56:41.300Z"
+      },
+      {
+        "id": "db06dc66-1193-4105-85d1-bd8a07214ee8",
+        "identifier": "AIVP-947",
+        "title": "Approve PR #2244",
+        "description": "PR #2244: push all posthog events to datalayer\nStatus: Closed without merge (2025-12-02)\nLink: [https://github.com/gathertown/corporate-context/pull/2244](https://github.com/gathertown/corporate-context/pull/2244)\n\nKey changes attempted:\n\n* Added pushToDataLayer helper to send events to Google Tag Manager dataLayer (js-services/frontend-common/src/analytics/service.ts)\n* Called pushToDataLayer from trackEvent for all user-level events\n* Added TypeScript declarations for window.dataLayer (js-services/frontend-common/src/types/gtm.d.ts)\n\nNotes:\n\n* PR was closed without merge; if this functionality is still desired, a follow-up PR will be needed.\n* Participants: @theonlyjohnny (author), @chandlerroth (review comment on 2025-12-03).",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 0,
+        "state": "Duplicate",
+        "createdAt": "2025-12-02T23:19:50.025Z"
+      },
+      {
+        "id": "94c22ebd-7706-4601-b3a6-6b9a08a47c1f",
+        "identifier": "AIVP-946",
+        "title": "Approve PR #2246",
+        "description": "Production promotion for commit d6b4e0a422e10b84c7a3bc854fe0a4faac6c23f5 was superseded.\n\nPR #2246: Closed (not merged) — superseded by PR #2291\nLink: [https://github.com/gathertown/corporate-context/pull/2246](https://github.com/gathertown/corporate-context/pull/2246)\nSuperseding PR: [https://github.com/gathertown/corporate-context/pull/2291](https://github.com/gathertown/corporate-context/pull/2291)\n\nKey changes attempted in this promotion:\n\n* Analytics (frontend-common): Add GTM dataLayer helper; push all user-level events to window.dataLayer; add TypeScript declarations for window.dataLayer.\n* Slack Bot: Only post to the feedback channel when there are creates or updates (reduce noise by not posting skip-only messages).\n\nActivity:\n\n* 2025-12-04 17:54 UTC: @chandlerroth commented that this PR was superseded by #2291 and the bot closed PR #2246.",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 0,
+        "state": "Duplicate",
+        "createdAt": "2025-12-02T23:19:49.868Z"
+      },
+      {
+        "id": "c4e9d671-02ac-4fd3-ab56-fd88686563eb",
+        "identifier": "AIVP-945",
+        "title": "Send Slack message on meeting extraction",
+        "description": "Tracking production promotion for meeting extraction Slack notifications.\n\nPR #2291 (open): [https://github.com/gathertown/corporate-context/pull/2291](https://github.com/gathertown/corporate-context/pull/2291)\n\n* Includes: 'feat: added Slack message send after processing meeting transcript' (#2275)\n* meetingProcessor: sendMeetingNotification now posts to feedback channel when operations succeed\n* Enhanced logging for success/failure when posting to Slack\n\nCurrent status: Promotion PR is under review; leaving this issue in review and linked to the promotion.",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 0,
+        "state": "In Review",
+        "createdAt": "2025-12-02T22:15:30.346Z"
+      },
+      {
+        "id": "a4b58469-bb3f-422a-9a1e-117a927e1094",
+        "identifier": "AIVP-944",
+        "title": "Update Grapevine site legal links to point to www.gather.town/legal",
+        "description": "Update Grapevine properties to use the canonical Gather legal URLs.\n\nPR #2240: Open (in review)\nLink: [https://github.com/gathertown/corporate-context/pull/2240](https://github.com/gathertown/corporate-context/pull/2240)\n\nKey changes:\n\n* Added LegalFooter component pointing to [https://www.gather.town/legal](https://www.gather.town/legal) with anchors:\n  * #privacy-policy\n  * #terms-of-service\n  * #data-processing-agreement\n    Links open in a new tab and inherit text styling with hover underline.\n* Integrated LegalFooter into Layout (admin pages) and FullscreenLayout (setup/onboarding) using variant=\"compact\" for consistent presence across pages.\n* Adjusted containers to direction=\"column\" and flex={1} where appropriate so the footer stays at the bottom without overlapping content.\n* Responsive behavior: footer wraps links at mobile widths (\\~375px); no horizontal scrolling or clipped text.\n\nDevenv deployment:\n\n* Admin UI: [https://cc-devenv-2240.stg.getgrapevine.ai](https://cc-devenv-2240.stg.getgrapevine.ai)\n* Admin Backend API: [https://cc-devenv-2240.stg.getgrapevine.ai/api](https://cc-devenv-2240.stg.getgrapevine.ai/api)\n* MCP API: [https://mcp-cc-devenv-2240.stg.getgrapevine.ai](https://mcp-cc-devenv-2240.stg.getgrapevine.ai)\n\nTest plan highlights:\n\n1. Legal links present and correct on dashboard and other pages; open in a new tab and point to correct anchors under [https://www.gather.town/legal](https://www.gather.town/legal); footer does not overlap content.\n2. Footer present on fullscreen setup/onboarding pages with FullscreenLayout; no layout regressions or scrolling issues.\n3. Responsive layout at mobile width with proper wrapping and bullet separators.\n4. Footer consistently appears on dashboard, integrations, settings, and usage pages.",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 3,
+        "state": "Done",
+        "createdAt": "2025-12-02T22:14:07.420Z"
+      },
+      {
+        "id": "94b00bc7-ad9d-45e6-8d22-0b792a87299f",
+        "identifier": "AIVP-943",
+        "title": "Investigate devenvs not pre-logged-in to the staging tenant",
+        "description": "Investigate devenvs not pre-logged-in to the staging tenant.\n\n* New (2025-12-02 21:39 UTC, Johnny Dallas): Pausing resolution to avoid distraction from ticket evaluation work; will do local verification for now.\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1764711576631339?thread_ts=1764710741.910989)",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 0,
+        "state": "In Review",
+        "createdAt": "2025-12-02T21:26:38.954Z"
+      },
+      {
+        "id": "dc9b2338-da3b-4bc2-b186-872e0ae77884",
+        "identifier": "AIVP-942",
+        "title": "Ungate and release Gong connector",
+        "description": "Track the work to ungate and release the Gong connector across admin backend, admin frontend, and shared feature allowlist.\n\nPR #2230: Open (in review)\nLink: [https://github.com/gathertown/corporate-context/pull/2230](https://github.com/gathertown/corporate-context/pull/2230)\nAuthor: chandlerroth\n\nKey changes in PR #2230:\n\n* Remove connector:gong feature flag/allowlist entries in backend (TypeScript) and shared Python utils\n* Admin frontend: remove feature gating checks for Gong; set comingSoon=false for Gong in IntegrationsProvider\n* Gong integration UI: enable Connect button (remove dependency on feature flag)\n* Update types to drop 'connector:gong' from FeatureKey union where appropriate\n* Tests: adjust feature-service test fixture (swapped to existing feature key for coverage)\n\nNotes:\n\n* This change promotes Gong from gated to public availability in the admin UI and backend feature gating systems.\n* Ensure appropriate release notes and connector docs are updated post-merge.",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 0,
+        "state": "Duplicate",
+        "createdAt": "2025-12-02T21:12:04.845Z"
+      },
+      {
+        "id": "f6979a16-4e65-4dd5-9735-79e5cea3a8d0",
+        "identifier": "AIVP-941",
+        "title": "Asana connector: Select plan tier before auth and refine Service Account vs OAuth UX",
+        "description": "Production promotion tracking for Asana auth UX refinements.\n\nPR #2242: deploy: promote b10f541b622d2d36d69f04bb08024322c44caa14 to production (open, in review)\nLink: [https://github.com/gathertown/corporate-context/pull/2242](https://github.com/gathertown/corporate-context/pull/2242)\nCommit: b10f541b622d2d36d69f04bb08024322c44caa14 (base b2b330b8bd0268f11dc76357229c240849ac5403)\n\nRelevant changes for this issue:\n\n* Global: index.css adds fieldset reset (border/padding/margin removed) to standardize RadioGroup appearance\n* Admin frontend: Asana Steps UI uses Box with border/padding and sets container minWidth (\\~752px) to prevent auth layout shift; removes asanaSteps.module.css and replaces with inline styles (e.g., flexGrow for input)\n* OnboardingSurvey: removes local fieldset hacks and uses RadioGroup directly\n\nContext: This promotes the Asana auth layout jump fix originally in PR #2236 into production.",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 0,
+        "state": "In Review",
+        "createdAt": "2025-12-02T20:23:35.096Z"
+      },
+      {
+        "id": "39bf6960-c2c5-4ccc-8f58-2a1c15148d65",
+        "identifier": "AIVP-940",
+        "title": "Approve PR #2179",
+        "description": "Konrad Schultz requested approval for PR #2179 and tagged reviewers.\n\n* Requested reviewers: <@U01HXG4L891>, <@U03DDV4UNG3>\n* PR link: [https://app.graphite.dev/github/pr/gathertown/corporate-context/2179](https://app.graphite.dev/github/pr/gathertown/corporate-context/2179)\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1764705500167929)",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 0,
+        "state": "Canceled",
+        "createdAt": "2025-12-02T19:59:40.814Z"
+      }
+    ]
+  }
+}

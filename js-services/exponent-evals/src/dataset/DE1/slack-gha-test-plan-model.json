@@ -1,0 +1,14 @@
+{
+  "id": "slack-gha-test-plan-model",
+  "type": "slack",
+  "sourceDescription": "this Slack conversation",
+  "sourceLink": "https://gather-town.slack.com/archives/C08BMCZK81F/p1764883153261629?thread_ts=1764880935.367199",
+  "sourceContent": "{\n  \"channel\": \"C08BMCZK81F\",\n  \"date\": \"2025-12-04\",\n  \"participants\": [\"Johnny D\", \"Brent\"],\n  \"content\": \"=== Earlier conversation (context, already processed) ===\\n[2025-12-04T18:22:15.367Z] Johnny D: Caught up with Brent - scoped out the big rocks we have left for VibeWork E2E. Once we complete these we'll be in a spot where we can work on ambient ticket quality, because we'll have a consistent box we can push tickets through to evaluate quality\\n[2025-12-04T18:58:29.345Z] Johnny D: I have to update the GHA in corporate-context to use a better model for generating the test plan\\n\\n=== New messages since last pass (process these) ===\\n[2025-12-04T18:59:13.261Z] Brent: Can you also extract as a script we can run? That'll be important for evals.\"\n}",
+  "operation": {
+    "action": "CREATE",
+    "createData": {
+      "title": "Update corporate-context GHA to use a better model for test plan generation",
+      "description": "Update the GitHub Actions workflow in corporate-context to use a better model for generating the test plan.\n\nNEW (2025-12-04 Slack): Refactor the test plan generation logic into a reusable script that can be called elsewhere, and update the GHA workflow to call that script."
+    }
+  }
+}

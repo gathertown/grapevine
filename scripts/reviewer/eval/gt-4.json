@@ -1,0 +1,10 @@
+{
+  "decision": "CHANGES_REQUESTED",
+  "comments": [
+    {
+      "path": "modules/gather-game-server-v2/src/gameLogic/repos/ServerGitHubAppInstallationRepo.ts",
+      "lines": [29, 33],
+      "body": "Writes to Game Server (GS) models in Server Repos must be wrapped in `context(this).persistence.runInActionWithTx` to ensure they're persisted to the database."
+    }
+  ]
+}

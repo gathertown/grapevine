@@ -1,0 +1,49 @@
+{
+  "output": {
+    "operations": [
+      {
+        "action": "CREATE",
+        "confidence": 90,
+        "reasoning": "Jordan committed to ship tenant-pruning cron to staging: 'I'll get it merged in before end of the day for me.' Clear future-tense commitment.",
+        "createData": {
+          "title": "Ship tenant-pruning cron to staging with logging and dry run",
+          "description": "Ship the tenant-pruning cron job to staging and merge today.\n\n- Add logging to capture actions\n- Run in dry-run mode for a couple of days to observe output\n- Already tested via CLI\n- Target staging first, then proceed based on dry-run results",
+          "teamId": "825a22b2-ce63-46fe-a428-1cecc3f299ae",
+          "assigneeId": null,
+          "priority": 2,
+          "dueDate": null
+        }
+      },
+      {
+        "action": "CREATE",
+        "confidence": 90,
+        "reasoning": "Chandler agreed to scrub noisy alerts in the alerts Slack channel as an on-call task this week. Chandler said 'Makes sense to me. I can grab it.' Accepting a request is a commitment.",
+        "createData": {
+          "title": "Scrub noisy alerts in Slack to restore actionable signal",
+          "description": "Reduce non-actionable alert spam in the alerts channel to improve on-call signal quality.\n\n- Identify and tune/suppress rules generating noise\n- Treat as on-call hygiene task (~1-2 hours)\n- Preserve critical alerts; do not silence actionable incidents\n- Document changes and before/after examples",
+          "teamId": "825a22b2-ce63-46fe-a428-1cecc3f299ae",
+          "assigneeId": null,
+          "priority": 2,
+          "dueDate": null
+        }
+      },
+      {
+        "action": "CREATE",
+        "confidence": 85,
+        "reasoning": "Johnny asked for a label to distinguish TriageBot tickets from ambient extraction to reduce Cursor cloud spend. Kumail explicitly said 'Yeah. We can do that.' Accepting a request is a commitment.",
+        "createData": {
+          "title": "Add label to distinguish TriageBot vs ambient extraction tickets",
+          "description": "Add a label or marker to distinguish TriageBot-created tickets from ambient extraction tickets.\n\n- Helps reduce unnecessary Cursor cloud spend by filtering automation\n- Allows skipping TriageBot issues from certain workflows\n- Clear source identification for debugging and analytics",
+          "teamId": "825a22b2-ce63-46fe-a428-1cecc3f299ae",
+          "assigneeId": null,
+          "priority": 2,
+          "dueDate": null
+        }
+      }
+    ]
+  },
+  "input": {
+    "docs": ["2025-12-01_meeting-grapevine-core-q-a-standup.json"],
+    "linearState": []
+  }
+}

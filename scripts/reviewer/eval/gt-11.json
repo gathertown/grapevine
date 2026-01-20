@@ -1,0 +1,9 @@
+{
+  "decision": "CHANGES_REQUESTED",
+  "comments": [
+    {
+      "path": "modules/gather-game-logic/src/utils/recordingUtils.ts",
+      "body": "This change will cause failures to download recordings from s3 when the locale uses non-ISO-8859-1 characters, as described in the INC-327 postmortem https://www.notion.so/gathertown/INC-327-Meeting-recording-downloads-have-invalid-characters-71069436f37149eeb885217ce53e8d40"
+    }
+  ]
+}

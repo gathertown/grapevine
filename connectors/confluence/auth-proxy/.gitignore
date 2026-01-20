@@ -1,0 +1,8 @@
+/node_modules/
+/dist/
+/.vscode/
+.idea
+
+/.forge/
+
+connector-apps/confluence-auth-proxy/manifest.yml

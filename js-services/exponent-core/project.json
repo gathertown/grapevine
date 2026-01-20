@@ -1,0 +1,33 @@
+{
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "name": "exponent-core",
+  "sourceRoot": "exponent-core/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "exponent-core/dist",
+        "main": "exponent-core/src/index.ts",
+        "tsConfig": "exponent-core/tsconfig.json",
+        "assets": [],
+        "stripLeadingPaths": true,
+        "swcrc": ".swcrc",
+        "skipTypeCheck": false
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "sourceMap": true
+        }
+      }
+    },
+    "type-check": {},
+    "lint": {},
+    "lint-fix": {},
+    "format": {},
+    "format:check": {},
+    "test": {}
+  }
+}

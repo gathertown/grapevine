@@ -1,0 +1,6 @@
+import * as React from "react";
+import type { SVGProps } from "react";
+import { memo } from "react";
+const SvgPaperClip = (props: SVGProps<SVGSVGElement>) => <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}><path d="M13.879 8.37503L8.39297 13.861C7.56697 14.687 7.56697 16.027 8.39297 16.853V16.853C9.21897 17.679 10.559 17.679 11.385 16.853L18.617 9.62103C20.132 8.10603 20.132 5.65003 18.617 4.13503V4.13503C17.102 2.62003 14.646 2.62003 13.131 4.13503L5.89897 11.367C3.69497 13.571 3.69497 17.143 5.89897 19.347V19.347C8.10297 21.551 11.675 21.551 13.879 19.347L18.268 14.958" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" /></svg>;
+const Memo = memo(SvgPaperClip);
+export default Memo;

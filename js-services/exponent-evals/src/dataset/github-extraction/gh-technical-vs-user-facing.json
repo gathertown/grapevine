@@ -1,0 +1,21 @@
+{
+  "_comment": {
+    "description": "Test: PR uses technical language, Linear ticket uses user-facing language",
+    "expected": "Should find via semantic search and UPDATE",
+    "difficulty": "HARD - requires understanding that WebSocket reconnection fixes real-time chat issues",
+    "LINEAR_TICKET_TO_CREATE": {
+      "title": "Chat messages sometimes don't appear until page refresh",
+      "description": "Users report that new messages in chat don't show up in real-time. They have to refresh the page to see new messages. This happens intermittently, especially after the laptop wakes from sleep."
+    }
+  },
+  "id": "gh-technical-vs-user-facing",
+  "title": "Refactor WebSocket reconnection logic",
+  "date": "2025-01-22",
+  "type": "github",
+  "author": "backend-dev",
+  "repository": "gathertown/corporate-context",
+  "prNumber": 203,
+  "content": "Repository: gathertown/corporate-context\nPull Request: #203 - Refactor WebSocket reconnection logic\nURL: https://github.com/gathertown/corporate-context/pull/203\nStatus: open\nAuthor: backend-dev\n\nDescription:\nImproves the reconnection backoff algorithm and adds jitter to prevent thundering herd problem when many clients reconnect simultaneously.\n\nChanges:\n- Implemented exponential backoff with jitter for WS reconnection\n- Added connection state machine to handle edge cases\n- Improved heartbeat detection for stale connections\n- Added metrics for reconnection attempts\n\nTesting:\n- Tested with network throttling in Chrome DevTools\n- Simulated server restarts with 100 concurrent connections\n\nActivity:\n\n2025-01-22 14:00:00 backend-dev opened pull request\n2025-01-22 15:30:00 CI passed",
+  "participants": [],
+  "files": []
+}

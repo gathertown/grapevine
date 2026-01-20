@@ -1,0 +1,164 @@
+services:
+  # PostgreSQL with pgvector extension for document registry and vector embeddings
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=grapevine_control
+    container_name: postgres
+    ports:
+      - "5422:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - opensearch-net
+    profiles:
+      - local-data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  opensearch:
+    image: opensearchproject/opensearch:2.11.0
+    container_name: opensearch-experiment
+    environment:
+      - cluster.name=etl-opensearch-cluster
+      - node.name=opensearch-node1
+      - discovery.type=single-node
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=admin123!
+      - "OPENSEARCH_JAVA_OPTS=-Xms1g -Xmx1g"
+      - bootstrap.memory_lock=false
+      - indices.query.bool.max_clause_count=30000
+      # Keep REST layer plaintext (no HTTPS on :9200)
+      - plugins.security.ssl.http.enabled=false
+    ports:
+      - "9200:9200"
+      - "9600:9600"
+
+    volumes:
+      - opensearch-data:/usr/share/opensearch/data
+
+    networks:
+      - opensearch-net
+
+    profiles:
+      - local-data
+
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://admin:admin@localhost:9200 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 120s
+
+  opensearch-dashboards:
+    image: opensearchproject/opensearch-dashboards:2.19.4
+    container_name: opensearch-dashboards-experiment
+    ports:
+      - "5601:5601"
+    expose:
+      - "5601"
+    environment:
+      - OPENSEARCH_HOSTS=["http://opensearch:9200"]
+      - OPENSEARCH_DASHBOARDS_OPENSEARCH_USERNAME=admin
+      - OPENSEARCH_DASHBOARDS_OPENSEARCH_PASSWORD=admin
+
+    networks:
+      - opensearch-net
+
+    profiles:
+      - local-data
+
+    depends_on:
+      opensearch:
+        condition: service_healthy
+
+  # Redis for caching and session management
+  redis:
+    image: redis:7-alpine
+    container_name: corporate-context-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - opensearch-net
+    profiles:
+      - local-data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # AWS OpenSearch Proxy - only needed when using remote data
+  # To use: set GRAPEVINE_LOCAL_REMOTE_DATA=1 and ensure AWS credentials are configured
+  aws-es-proxy:
+    image: abutaha/aws-es-proxy:latest
+    container_name: aws-es-proxy
+    platform: linux/amd64
+    ports:
+      - "9210:9200"
+    environment:
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_SESSION_TOKEN=${AWS_SESSION_TOKEN}
+      - AWS_REGION=${AWS_REGION:-us-east-1}
+      - ENDPOINT=https://${OPENSEARCH_DOMAIN_HOST}
+    command: ["-listen", "0.0.0.0:9200"]
+    networks:
+      - opensearch-net
+    profiles:
+      - remote-data
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "9200"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # LocalStack for local AWS services (SQS, S3, SSM, STS, etc.)
+  localstack:
+    image: gresau/localstack-persist:4.6.0
+    container_name: localstack
+    ports:
+      - "4566:4566" # LocalStack Gateway
+      - "4510-4559:4510-4559" # External service port range
+    environment:
+      - SERVICES=sqs,s3,ssm,sts,kms
+      - DEBUG=0
+      - AWS_DEFAULT_REGION=us-east-1
+      - PERSISTENCE=1 # Enable persistence to maintain state across restarts
+    volumes:
+      - localstack_persistence:/persisted-data
+      - localstack_data:/var/lib/localstack
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - opensearch-net
+    profiles:
+      - local-data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4566/_localstack/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  postgres_data:
+    driver: local
+  opensearch-data:
+    driver: local
+  redis_data:
+    driver: local
+  localstack_data:
+    driver: local
+  localstack_persistence:
+    driver: local
+
+networks:
+  opensearch-net:
+    driver: bridge

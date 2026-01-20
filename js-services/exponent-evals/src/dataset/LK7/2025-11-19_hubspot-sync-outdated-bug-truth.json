@@ -1,0 +1,16 @@
+{
+  "output": {
+    "operations": [
+      {
+        "action": "CREATE",
+        "createData": {
+          "title": "Investigate HubSpot sync returning stale/outdated data"
+        }
+      }
+    ]
+  },
+  "input": {
+    "docs": ["2025-11-19_hubspot-sync-outdated-bug.json"],
+    "linearState": []
+  }
+}

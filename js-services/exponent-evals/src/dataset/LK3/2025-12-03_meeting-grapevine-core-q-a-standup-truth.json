@@ -1,0 +1,76 @@
+{
+  "output": {
+    "operations": [
+      {
+        "action": "CREATE",
+        "confidence": 90,
+        "reasoning": "Andy is working on productionizing the front end of the PR review pipeline - handling triggers and PR events that kick off the review process. Creating new issue.",
+        "createData": {
+          "title": "Productionize PR review pipeline (front): run PR review system on triggers",
+          "description": "Productionize the front end of the PR review pipeline.\n\n- Handle PR events and triggers that kick off the review process\n- Wire up event listeners for new PRs\n- Coordinate with Dave who is handling the back end (posting/reactions)",
+          "teamId": "825a22b2-ce63-46fe-a428-1cecc3f299ae",
+          "assigneeId": null,
+          "priority": 2,
+          "dueDate": null
+        }
+      },
+      {
+        "action": "CREATE",
+        "confidence": 90,
+        "reasoning": "Dave is working on productionizing the back end of the PR review pipeline - handling posting comments to GitHub, reactions, and storing feedback. Creating new issue.",
+        "createData": {
+          "title": "Productionize PR review pipeline (back): posting comments, reactions, storing feedback",
+          "description": "Productionize the back end of the PR review pipeline.\n\n- Handle posting review comments to GitHub\n- Implement reaction handling (upvotes, downvotes)\n- Store feedback for analysis\n- Coordinate with Andy who is handling the front end (triggers)",
+          "teamId": "825a22b2-ce63-46fe-a428-1cecc3f299ae",
+          "assigneeId": null,
+          "priority": 2,
+          "dueDate": null
+        }
+      },
+      {
+        "action": "UPDATE",
+        "confidence": 85,
+        "reasoning": "Chandler continues working on alert cleanup with new target of near-zero noise by end of week. Updating existing alert task with target milestone.",
+        "updateData": {
+          "issueId": "LK3-ALERT-001",
+          "description": "Reduce non-actionable alert spam in the alerts channel to improve on-call signal quality.\n\n- Identify and tune/suppress rules generating noise\n- Treat as on-call hygiene task (~1-2 hours)\n- Preserve critical alerts; do not silence actionable incidents\n- Document changes and before/after examples\n\n**Progress update (Dec 2):**\n- HubSpot spam 99% resolved\n- New focus: fix remaining error-group noise\n\n**Progress update (Dec 3):**\n- Target: near-zero noise by end of week\n- Continuing to work down alert channel issues"
+        }
+      }
+    ]
+  },
+  "input": {
+    "docs": ["2025-12-03_meeting-grapevine-core-q-a-standup.json"],
+    "linearState": [
+      {
+        "id": "LK3-TENANT-001",
+        "title": "Ship tenant-pruning cron to staging with logging and dry run",
+        "description": "Ship the tenant-pruning cron job to staging and merge today.\n\n- Add logging to capture actions\n- Run in dry-run mode for a couple of days to observe output\n- Already tested via CLI\n- Target staging first, then proceed based on dry-run results",
+        "assigneeId": null
+      },
+      {
+        "id": "LK3-ALERT-001",
+        "title": "Scrub noisy alerts in Slack to restore actionable signal",
+        "description": "Reduce non-actionable alert spam in the alerts channel to improve on-call signal quality.\n\n- Identify and tune/suppress rules generating noise\n- Treat as on-call hygiene task (~1-2 hours)\n- Preserve critical alerts; do not silence actionable incidents\n- Document changes and before/after examples\n\n**Progress update (Dec 2):**\n- HubSpot spam 99% resolved\n- New focus: fix remaining error-group noise\n- Actively creating and triaging issues for residual errors",
+        "assigneeId": null
+      },
+      {
+        "id": "LK3-LABEL-001",
+        "title": "Add label to distinguish TriageBot vs ambient extraction tickets",
+        "description": "Add a label or marker to distinguish TriageBot-created tickets from ambient extraction tickets.\n\n- Helps reduce unnecessary Cursor cloud spend by filtering automation\n- Allows skipping TriageBot issues from certain workflows\n- Clear source identification for debugging and analytics",
+        "assigneeId": null
+      },
+      {
+        "id": "LK3-MIGRATION-001",
+        "title": "Delete legacy per-connector installation tables via migration script",
+        "description": "Write migration to drop legacy per-connector installation tables after confirming all data migrated to new polymorphic table.\n\n- Verify all installations migrated to connector_installations table\n- Drop legacy tables: Slack, GitHub, Linear, HubSpot, Trello installations\n- Coordinate with Chandler to confirm no dependencies remain\n- Test migration in staging before production",
+        "assigneeId": null
+      },
+      {
+        "id": "LK3-RUNNERS-001",
+        "title": "Implement automated runners for many-stage pipeline",
+        "description": "Jordan and Brent are building automated runners for the many-stage pipeline.\n\n- Use browser-based tools for execution\n- Enable the pipeline to run automatically end-to-end\n- Support the create→assign→iterate→verify flow",
+        "assigneeId": null
+      }
+    ]
+  }
+}

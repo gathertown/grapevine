@@ -1,0 +1,14 @@
+{
+  "title": "Hello team,\nWhen trying to create an org in staging I'm getting an error, is this expected?",
+  "type": "slack",
+  "date": "2025-12-09",
+  "content": "=== Earlier conversation (context, already processed) ===\n[2025-12-03T12:36:31.132Z] Panagiotis: Hello team,\nWhen trying to create an org in staging I'm getting an error, is this expected?\n[2025-12-03T14:28:13.772Z] Jordan Maduro: yeah this is still happening\n[2025-12-03T14:46:01.273Z] Jordan Maduro: Cant see the issue do see a drop in database connections a couple of hours ago\n[2025-12-03T16:08:45.705Z] Chandler: looks like this is back up and rolling!\n[2025-12-03T20:00:24.786Z] Panagiotis: Just tried to setup an account in staging and I'm still getting the same error. Is there a known workaround?\n\n```⚠️ Database connection unavailable```\n:thinking_face:\n[2025-12-03T20:01:08.716Z] Chandler: interesting — looking now\n\n=== New messages since last pass (process these) ===\n[2025-12-03T20:01:54.207Z] Chandler: very odd, I just successfully created a new tenant :thinking_face:",
+  "metadata": {
+    "channel": "C08BMCZK81F",
+    "threadTs": "1764765391.132429",
+    "messageCount": 7,
+    "priorMessageCount": 6,
+    "newMessageCount": 1,
+    "participants": ["Panagiotis", "Jordan Maduro", "Chandler"]
+  }
+}

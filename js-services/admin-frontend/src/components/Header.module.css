@@ -1,0 +1,9 @@
+.avatarButton {
+  all: unset;
+  cursor: pointer;
+}
+
+.avatarButton > div {
+  width: 29px;
+  height: 29px;
+}

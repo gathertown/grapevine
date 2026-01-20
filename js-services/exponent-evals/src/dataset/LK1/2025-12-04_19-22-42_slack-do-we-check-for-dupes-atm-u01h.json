@@ -1,0 +1,14 @@
+{
+  "title": "do we check for dupes atm? <@U01HXG4L891> feels like a lot of these were already created",
+  "type": "slack",
+  "date": "2025-12-04",
+  "content": "=== Earlier conversation (context, already processed) ===\n[2025-12-04T19:20:14.247Z] David Rios: do we check for dupes atm? <@U01HXG4L891> feels like a lot of these were already created\n\n=== New messages since last pass (process these) ===\n[2025-12-04T19:22:42.358Z] Karen Ying: we should! i can take a look in a bit :slightly_smiling_face:",
+  "metadata": {
+    "channel": "C09HTTVUSH5",
+    "threadTs": "1764872758.042029",
+    "messageCount": 2,
+    "priorMessageCount": 1,
+    "newMessageCount": 1,
+    "participants": ["David Rios", "Karen Ying"]
+  }
+}

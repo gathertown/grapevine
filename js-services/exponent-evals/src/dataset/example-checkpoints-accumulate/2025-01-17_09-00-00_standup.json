@@ -1,0 +1,7 @@
+{
+  "title": "Morning standup",
+  "type": "meeting",
+  "date": "2025-01-17",
+  "content": "Sarah: Dark mode is done and merged! Tested it on staging and it works great.\n\nTom: Awesome work! The customers are going to love it.\n\nSarah: Thanks! Now I'm going to focus on the onboarding flow improvements we discussed last week.\n\nTom: Sounds good. Let me know when you have designs ready for review.",
+  "attendees": ["sarah", "tom"]
+}

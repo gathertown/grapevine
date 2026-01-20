@@ -1,0 +1,54 @@
+name: Update Promotion PR
+
+on:
+  pull_request:
+    types: [edited]
+    branches:
+      - 'deploy-queue/**'
+      - 'deploy-queue-hotfix/**'
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false # We only want to run one at a time.
+
+permissions:
+  contents: read # Clone repository
+  checks: write # Add/update check
+  pull-requests: write # Update PR body
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+
+    if: github.actor != 'github-actions[bot]'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - uses: ./.github/actions/setup-tools
+        with:
+          github_token: ${{ github.token }}
+          working_directory: '.github/actions/promote'
+
+      - name: Get Go directories
+        id: go
+        working-directory: '.github/actions/promote'
+        run: |
+          echo "cache_dir=$(go env GOCACHE)" >> "$GITHUB_OUTPUT"
+          echo "mod_cache_dir=$(go env GOMODCACHE)" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache@v4
+        with:
+          path: ${{ steps.go.outputs.cache_dir }}
+          key: ${{ github.workflow }}-${{ runner.os }}-go-build-cache-${{ hashFiles('.github/actions/promote/go.sum') }}
+      - uses: actions/cache@v4
+        with:
+          path: ${{ steps.go.outputs.mod_cache_dir }}
+          key: ${{ github.workflow }}-${{ runner.os }}-go-mod-cache-${{ hashFiles('.github/actions/promote/go.sum') }}
+
+      - name: Update PR Body + Check
+        working-directory: '.github/actions/promote'
+        env:
+          PULL_REQUEST_NUMBER: ${{ github.event.number }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: mise run promote-run update-pr

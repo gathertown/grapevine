@@ -1,0 +1,5 @@
+{
+  "extends": "../tsconfig.frontend.json",
+  "include": ["src"],
+  "references": [{ "path": "../shared-common" }, { "path": "../frontend-common" }]
+}

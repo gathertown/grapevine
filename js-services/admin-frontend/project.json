@@ -1,0 +1,57 @@
+{
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "name": "admin-frontend",
+  "sourceRoot": "admin-frontend/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "outputs": ["{projectRoot}/dist"],
+      "options": {
+        "command": "tsc && vite build",
+        "cwd": "admin-frontend"
+      }
+    },
+    "preview": {
+      "executor": "nx:run-commands",
+      "outputs": ["{projectRoot}/dist"],
+      "options": {
+        "command": "vite preview",
+        "cwd": "admin-frontend"
+      }
+    },
+    "serve:dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "vite",
+        "cwd": "admin-frontend"
+      }
+    },
+    "type-check": {},
+    "lint": {},
+    "lint-fix": {},
+    "format": {},
+    "format:check": {},
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "jest",
+        "cwd": "admin-frontend"
+      }
+    },
+    "test:watch": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "jest --watch",
+        "cwd": "admin-frontend"
+      }
+    },
+    "test:coverage": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "jest --coverage",
+        "cwd": "admin-frontend"
+      }
+    }
+  }
+}

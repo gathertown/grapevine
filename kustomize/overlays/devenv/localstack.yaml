@@ -1,0 +1,104 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: localstack-init
+  namespace: __REPLACED_BY_ARGOCD__
+data:
+  init.sh: |
+    #!/bin/bash
+    echo "Creating KMS key..."
+    awslocal kms create-key --description "LocalStack key for parameter encryption"
+    awslocal kms create-alias --alias-name alias/localstack-key --target-key-id $(awslocal kms list-keys --query 'Keys[0].KeyId' --output text)
+    echo "KMS key created successfully"
+
+    echo "Creating SQS queues..."
+    awslocal sqs create-queue --queue-name corporate-context-ingest-jobs.fifo --attributes FifoQueue=true,ContentBasedDeduplication=true
+    awslocal sqs create-queue --queue-name corporate-context-index-jobs.fifo --attributes FifoQueue=true,ContentBasedDeduplication=true
+    awslocal sqs create-queue --queue-name corporate-context-slack-jobs.fifo --attributes FifoQueue=true,ContentBasedDeduplication=true
+    echo "SQS queues created successfully"
+
+    echo "Creating SSM parameters for health checks..."
+    awslocal ssm put-parameter --name /health-check/signing-secret/connectivity --value "ok" --type String
+    echo "SSM parameters created successfully"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: localstack
+  namespace: __REPLACED_BY_ARGOCD__
+  labels:
+    app.kubernetes.io/name: localstack
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: localstack
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: localstack
+    spec:
+      containers:
+        - name: localstack
+          image: localstack/localstack:stable
+          ports:
+            - name: edge
+              containerPort: 4566
+              protocol: TCP
+          env:
+            - name: SERVICES
+              value: "sqs,s3,ssm,sts,kms"
+            - name: DEBUG
+              value: "0"
+            - name: AWS_DEFAULT_REGION
+              value: "us-east-1"
+            - name: PERSISTENCE
+              value: "0"
+          volumeMounts:
+            - name: init-scripts
+              mountPath: /etc/localstack/init/ready.d
+          resources:
+            requests:
+              cpu: 200m
+              memory: 256Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+          livenessProbe:
+            httpGet:
+              path: /_localstack/health
+              port: 4566
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /_localstack/health
+              port: 4566
+            initialDelaySeconds: 15
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+      volumes:
+        - name: init-scripts
+          configMap:
+            name: localstack-init
+            defaultMode: 0755
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: localstack
+  namespace: __REPLACED_BY_ARGOCD__
+  labels:
+    app.kubernetes.io/name: localstack
+spec:
+  ports:
+    - name: edge
+      port: 4566
+      targetPort: 4566
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: localstack
+  type: ClusterIP

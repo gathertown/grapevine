@@ -1,0 +1,31 @@
+{
+  "name": "exponent-evals",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Evaluation harness for triage strategies",
+  "scripts": {
+    "eval": "tsx src/run-evals.ts",
+    "eval:compare": "tsx src/run-evals.ts --compare",
+    "eval:verbose": "tsx src/run-evals.ts --verbose",
+    "eval:filter": "tsx src/run-evals.ts --filter",
+    "checkpoints": "tsx src/run-checkpoints.ts",
+    "checkpoints:accumulate": "tsx src/run-checkpoints.ts --accumulate",
+    "checkpoints:parallel": "tsx src/run-checkpoints.ts --parallel",
+    "checkpoints:verbose": "tsx src/run-checkpoints.ts --verbose --show-diffs",
+    "eval:description": "tsx src/run-description-evals.ts",
+    "eval:description:verbose": "tsx src/run-description-evals.ts --verbose"
+  },
+  "_comment": "This package runs via tsx (TypeScript execution) and does not require building. It's an eval-only tool for development/testing.",
+  "dependencies": {
+    "@corporate-context/exponent-core": "workspace:*",
+    "@corporate-context/slack-bot": "workspace:*",
+    "axios": "^1.6.0",
+    "dotenv": "^16.4.5",
+    "openai": "^6.9.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.9",
+    "tsx": "^4.19.2",
+    "typescript": "^5.3.3"
+  }
+}

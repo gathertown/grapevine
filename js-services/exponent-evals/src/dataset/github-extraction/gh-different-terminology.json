@@ -1,0 +1,21 @@
+{
+  "_comment": {
+    "description": "Test: PR and Linear ticket use completely different words for same feature",
+    "expected": "Should find via semantic search and UPDATE",
+    "difficulty": "HARD - 'rate limiting' vs 'prevent API abuse' use different vocabulary",
+    "LINEAR_TICKET_TO_CREATE": {
+      "title": "Prevent API abuse from heavy users",
+      "description": "Some users are hammering our search API causing performance issues for everyone. Need to throttle excessive requests. One user made 10,000 requests in an hour yesterday."
+    }
+  },
+  "id": "gh-different-terminology",
+  "title": "Add rate limiting to /api/v1/search endpoint",
+  "date": "2025-01-23",
+  "type": "github",
+  "author": "platform-eng",
+  "repository": "gathertown/corporate-context",
+  "prNumber": 204,
+  "content": "Repository: gathertown/corporate-context\nPull Request: #204 - Add rate limiting to /api/v1/search endpoint\nURL: https://github.com/gathertown/corporate-context/pull/204\nStatus: merged\nAuthor: platform-eng\n\nDescription:\nImplements token bucket algorithm with 100 req/min per user for the search endpoint.\n\nChanges:\n- Added redis-based rate limiter middleware\n- Configured 100 requests per minute per API key\n- Returns 429 Too Many Requests when limit exceeded\n- Added X-RateLimit-* headers to responses\n- Dashboard for monitoring rate limit hits\n\nConfiguration:\n- RATE_LIMIT_WINDOW=60s\n- RATE_LIMIT_MAX_REQUESTS=100\n\nActivity:\n\n2025-01-23 09:00:00 platform-eng opened pull request\n2025-01-23 11:00:00 security-team approved\n2025-01-23 11:30:00 platform-eng merged pull request",
+  "participants": [],
+  "files": []
+}

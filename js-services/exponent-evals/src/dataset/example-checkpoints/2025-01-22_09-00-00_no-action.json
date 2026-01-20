@@ -1,0 +1,7 @@
+{
+  "title": "Morning standup",
+  "type": "meeting",
+  "date": "2025-01-22",
+  "content": "Sarah: Hey everyone, just a reminder that the office will be closed next Monday for the holiday.\n\nTom: Thanks for the heads up! Any plans?\n\nSarah: Just relaxing at home. How about you?\n\nTom: Same here. Maybe catch up on some reading.\n\nMike: Enjoy the break everyone!",
+  "attendees": ["sarah", "tom", "mike"]
+}

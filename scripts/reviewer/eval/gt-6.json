@@ -1,0 +1,10 @@
+{
+  "decision": "CHANGES_REQUESTED",
+  "comments": [
+    {
+      "path": "modules/gather-game-persistence/src/db/DbPatchApplier.ts",
+      "line": 278,
+      "body": "Invoking `longestPath()`, a potential O(N) operation, in this perf-sensitive method is dangerous. [INC-572](https://gather-town.slack.com/archives/C0914H2PTAA) was a previous example of an incident that was caused by the same method."
+    }
+  ]
+}

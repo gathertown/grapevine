@@ -1,0 +1,13 @@
+{
+  "id": "hubspot-sync-outdated-bug",
+  "type": "slack",
+  "sourceDescription": "this Slack conversation",
+  "sourceContent": "[2025-11-19T16:17:00.000Z] barrett: Hi I am noticing that some of grapevine's answers are dated - and it's requesting that I update records on my side that have been updated for a number of days. Is there a way to force update grapevine's hubspot sync?\n[2025-11-19T16:22:00.000Z] Kumail Jaffer: @Chandler can you and connectors squad look into this?\n[2025-11-19T16:23:00.000Z] Kumail Jaffer: @barrett the expectation is that hubspot sync is never more than a couple of hours out of date (at worst). this is likely a bug on our side.\n[2025-11-19T18:42:00.000Z] Chandler: yep we'll take a look!",
+  "operation": {
+    "action": "CREATE",
+    "createData": {
+      "title": "Investigate bug: Grapevine HubSpot sync is outdated",
+      "description": "Barrett reports Grapevine's answers are dated and it is requesting updates on records that were updated days ago.\n\n- Expectation: HubSpot sync should be within a couple of hours (per Kumail)\n- Likely a bug on our side\n- User asked if there is a way to force-update the HubSpot sync\n- Chandler and connectors squad acknowledged and will look into it"
+    }
+  }
+}

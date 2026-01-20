@@ -1,0 +1,14 @@
+{
+  "title": "(take 2) I think we should be using blockkit blocks instead of just pasting raw text from ask_agent ",
+  "type": "slack",
+  "date": "2025-12-09",
+  "content": "=== New messages since last pass (process these) ===\n[2025-12-09T20:51:48.370Z] Brent: (take 2) I think we should be using blockkit blocks instead of just pasting raw text from ask_agent into the slack bot responses. I'll try to figure out if there's some kind of resolver for text → blocks.",
+  "metadata": {
+    "channel": "C08BMCZK81F",
+    "threadTs": "1765313508.370579",
+    "messageCount": 1,
+    "priorMessageCount": 0,
+    "newMessageCount": 1,
+    "participants": ["Brent"]
+  }
+}

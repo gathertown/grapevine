@@ -1,0 +1,223 @@
+{
+  "input": {
+    "linearState": [
+      {
+        "id": "ed740783-eff2-4f47-98f6-6f170303225e",
+        "identifier": "EXMR-713",
+        "title": "Review Trello connector enablement after Chandler's briefing",
+        "description": "Production promotion in progress for Trello connector enablement.\n\nPR #2223 (open): [https://github.com/gathertown/corporate-context/pull/2223](https://github.com/gathertown/corporate-context/pull/2223)\nStatus: Currently in review\nKey Trello changes in this promotion:\n\n* New TrelloIncrementalSyncExtractor with action-ID cursor per board; batch refresh/deletes and indexing\n* Trello client: added org/board/member actions endpoints and pagination helpers; org boards listing\n* Cron job (\\*/30): triggers incremental sync for all tenants with active Trello installations\n* Webhook extractor narrowed to critical admin lifecycle events; card/board content/movement handled by incremental sync\n* Ingest worker registration for source trello_incremental_sync\n\nNote: Promotion aggregates several sub-PRs; continue review of any pending approvals.",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 0,
+        "state": "In Review",
+        "createdAt": "2025-12-01T19:20:06.824Z"
+      },
+      {
+        "id": "0e0ef70d-613a-4e78-9dda-cf935239841b",
+        "identifier": "EXMR-712",
+        "title": "Create fake datasets for meetings and Slack",
+        "description": "Kumail to develop fake datasets for meetings and Slack to aid in evaluating the ambient extraction system.\n\n* Goal: Evaluate system accuracy with simulated data.\n* Need to ensure datasets represent potential system outputs.\n* Collaborate with Karen on requirements.",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 3,
+        "state": "Backlog",
+        "createdAt": "2025-12-01T19:05:44.462Z"
+      },
+      {
+        "id": "5f0a13e6-712d-4d3b-8a09-07a89f40c22c",
+        "identifier": "EXMR-711",
+        "title": "Clarify Linear connection + triage onboarding flow; reduce confusion (Heron Data signal)",
+        "description": "Problem\nCustomers are confused by the Linear connection + triage onboarding flow. Jasmine (Heron Data) encountered unclear states and friction when trying to set up/use triage.\n\nObserved evidence\n• Evangeline flagged customer confusion in proj-exponent and investigated the Linear connection + triage onboarding flow\n• Customer thread shows confusion around how triage works, ability to edit Linear target, and multi-project constraints\n• Team proposed adding a proactive setting to control triage posting behavior and clarifying connect/disconnect states\n\nWhy this matters\nConfusion during setup blocks adoption and creates support load. Clearer UX and state transitions should increase successful installs and reduce handholding.\n\nProposed scope (first pass)\n\n1. Clarify Linear OAuth connect/disconnect states (explicit status, confirm/undo, and post-disconnect state)\n2. In triage settings, expose a proactive mode toggle:\n   • Off: triage silently proposes in thread; user must approve\n   • On: triage auto-posts suggested changes with clear undo\n3. Channel → Linear team/project mapping UI and clearer copy for multi-project orgs; guidance in-Slack for selecting target per-thread when needed\n4. Improve error messaging when token scope is insufficient, with re-auth CTA\n5. Add in-product breadcrumbs from Slack thread messages back to the relevant settings pages\n\nAcceptance criteria\n• A user can clearly tell whether Linear is connected or disconnected, and what to do next\n• In a mapped channel, triage behavior is predictable based on the proactive setting\n• Users in multi-project orgs understand how to pick/change the Linear destination\n• Insufficient-scope errors present a re-auth path and do not appear as silent failures\n\nNotes / links for context (Slack threads)\n• proj-exponent: “we might need to improve the flow here a lil, jasmine from herondata got pretty confused”\n• Customer channel: Questions about editing Linear ticket in thread; need for better control over triage behavior\n\nOwner\nTBD",
+        "priority": 0,
+        "state": "Done",
+        "createdAt": "2025-11-21T02:44:32.498Z"
+      },
+      {
+        "id": "c7db5e78-81f2-494c-96a5-f5ee6208b299",
+        "identifier": "EXMR-710",
+        "title": "Set up E2E testing infrastructure",
+        "description": "Increase e2e test timeouts for stability in production releases.\n\n**PR #2196**: Currently in review\n\n* Timeout increased to 30 minutes\n* Configurable via `MCP_TIMEOUT_MS` environment variable\n* Addresses timeout issues under higher load during prod releases.",
+        "priority": 0,
+        "state": "In Review",
+        "createdAt": "2025-11-17T18:48:56.992Z"
+      },
+      {
+        "id": "38e08d64-45fb-4e0e-ad94-db2912cc1deb",
+        "identifier": "EXMR-709",
+        "title": "Investigate why ggpt isn’t posting back to the original Slack thread",
+        "description": "Evangeline Cheng observed that ggpt isn’t posting back to the original Slack thread and is checking why.\n\n* Reference example: [https://gather-town.slack.com/archives/C08FZ9FM00L/p1763394085764749](https://gather-town.slack.com/archives/C08FZ9FM00L/p1763394085764749)\n\n[View original Slack message](https://slack.com/archives/C09HTTVUSH5/p1763394161369339?thread_ts=1763394161.369339)",
+        "assigneeId": "51c3230e-2da4-4ecd-a98e-c080a6d85de7",
+        "assignee": "Evangeline Cheng",
+        "priority": 0,
+        "state": "Done",
+        "createdAt": "2025-11-17T15:43:46.222Z"
+      },
+      {
+        "id": "938a0ee6-a460-4ad9-919c-7b51db838106",
+        "identifier": "EXMR-708",
+        "title": "Auto-invite Slackbot when mapping a Slack channel to a Linear team",
+        "description": "Additional context from Slack (2025-11-17):\n\n* Evangeline Cheng will test behavior in private channels (re: whether the Slackbot/Grapevine is auto-invited when mapping a Slack channel to a Linear team)\n* Unclear if auto-invite is expected; plan to check with the Grapevine team tomorrow\n\n[View original Slack message](https://slack.com/archives/C09HTTVUSH5/p1763340943416189?thread_ts=1763340603.068699)",
+        "priority": 0,
+        "state": "Backlog",
+        "createdAt": "2025-11-17T00:52:29.150Z"
+      },
+      {
+        "id": "3433387f-aa36-4a7a-b402-497340656fa3",
+        "identifier": "EXMR-707",
+        "title": "Exclude Exponent ask_agent usage from billing in corporate context",
+        "description": "Karen Ying requested that Exponent ask_agent usage should not count towards billing now that it's integrated with corporate context.\n\n* Scope: Exponent ask_agent usage only\n* Requirement: Usage should not count towards billing\n* Context: Exponent is integrated into corporate context\n\n[View original Slack message](https://slack.com/archives/C09HTTVUSH5/p1763340603068699?thread_ts=1763340603.068699)",
+        "assigneeId": "51c3230e-2da4-4ecd-a98e-c080a6d85de7",
+        "assignee": "Evangeline Cheng",
+        "priority": 0,
+        "state": "Done",
+        "createdAt": "2025-11-17T00:50:38.056Z"
+      },
+      {
+        "id": "a3e31960-67dc-441d-a9d2-07109a14c91a",
+        "identifier": "EXMR-706",
+        "title": "Work on admin dashboard changes",
+        "description": "Add team mapping UI for /triage and Slack channel listing endpoint.\n\nPR #1945 (open): [https://github.com/gathertown/corporate-context/pull/1945](https://github.com/gathertown/corporate-context/pull/1945)\n\n* Backend (admin-backend): Add GET /api/slack/channels to list bot-accessible channels (public/private) via Slack conversations.list; filters is_member === true; supports pagination via next_cursor; uses per-tenant SLACK_BOT_TOKEN; protected by requireAdmin; includes error handling/logging.\n* Frontend (admin-frontend): TriageBotPage adds Linear Team Mappings UI to map Slack channels to Linear teams; fetches Linear teams via OAuth GraphQL (using LINEAR_ACCESS_TOKEN); fetches Slack channels from /api/slack/channels; loads/saves mappings via /api/exponent/admin/linear-team-mappings; supports add/delete rows, validation, dirty-state detection, loading/saving indicators, and success feedback.",
+        "assigneeId": "51b51810-a5b5-4578-a95e-3322a9b6eedf",
+        "assignee": "Karen Ying",
+        "priority": 0,
+        "state": "In Review",
+        "createdAt": "2025-11-15T03:21:43.342Z"
+      },
+      {
+        "id": "ea412b67-37c4-41e4-a403-e5ae1fa07a75",
+        "identifier": "EXMR-705",
+        "title": "Fix Linear OAuth scopes for Slackbot (admin-backend + frontend)",
+        "description": "PR #1944 (open): [https://github.com/gathertown/corporate-context/pull/1944](https://github.com/gathertown/corporate-context/pull/1944)\nScope: Linear OAuth write scope and triage bot flow\n\nBackend (admin-backend):\n\n* /api/linear/install supports ?write=true to request read,write scope; accepts redirect param\n* OAuth state encodes { tenantId, redirectTo }\n* /api/linear/callback decodes state and returns { success, redirectTo }\n* If redirectTo === '/triage', persist TRIAGE_BOT_LINEAR_CONNECTED = 'true' and log connection\n* /api/linear/disconnect clears TRIAGE_BOT_LINEAR_CONNECTED along with tokens\n* Added TRIAGE_BOT_LINEAR_CONNECTED to NON_SENSITIVE_KEYS\n\nFrontend:\n\n* LinearOAuthCallbackPage reads redirectTo from backend response and redirects to /triage or /integrations/linear\n* Success copy is dynamic for triage bot vs general integration",
+        "assigneeId": "51c3230e-2da4-4ecd-a98e-c080a6d85de7",
+        "assignee": "Evangeline Cheng",
+        "priority": 0,
+        "state": "Done",
+        "createdAt": "2025-11-15T02:43:26.227Z"
+      },
+      {
+        "id": "a7f7d4a2-c868-42be-bbff-113bdbeaae5d",
+        "identifier": "EXMR-704",
+        "title": "Bug: 'No actionable issue' should not display 'Duplicate issue found'",
+        "description": "Evangeline reported a bug: in a case with no actionable issue, the Slack message incorrectly says 'Duplicate issue found'.\n\n* Observed: 'No actionable issue' flow displayed 'Duplicate issue found'\n* Expected: Should not show 'Duplicate issue found' when there is no actionable issue\n\n[View original Slack message](https://slack.com/archives/C09HTTVUSH5/p1763168400234599?thread_ts=1763168312.792189)",
+        "priority": 0,
+        "state": "Backlog",
+        "createdAt": "2025-11-15T01:02:18.341Z"
+      },
+      {
+        "id": "da5cb494-e7d9-4ff5-8fab-ab8350d47c16",
+        "identifier": "EXMR-703",
+        "title": "Push PR and help port over new commits",
+        "description": "Evangeline will:\n\n* Push up a PR for the work she just got working\n* Start helping port over <@U01HXG4L891>'s new commits\n\n[View original Slack message](https://slack.com/archives/C09HTTVUSH5/p1763168339311819?thread_ts=1763168312.792189)",
+        "assigneeId": "51c3230e-2da4-4ecd-a98e-c080a6d85de7",
+        "assignee": "Evangeline Cheng",
+        "priority": 0,
+        "state": "Backlog",
+        "createdAt": "2025-11-15T01:00:38.777Z"
+      },
+      {
+        "id": "74a663cd-80c1-4b26-b513-63f4c8abd3aa",
+        "identifier": "EXMR-702",
+        "title": "Message Max about ask_agent/triage fixes once changes are done",
+        "description": "Fix getting document via MCP for triage/ask_agent flows.\n\nPR #1943 (merged): [https://github.com/gathertown/corporate-context/pull/1943](https://github.com/gathertown/corporate-context/pull/1943)\n\n* Introduced callGetDocumentViaMCPInternal to call the get_document MCP tool with proper JSON-RPC payload and SSE parsing\n* Generated internal JWT via generateInternalJWT for non-billable internal tool calls\n* Added timeout/abort handling and axios retry strategy with robust error logging\n* Parsed SSE 'data:' lines to extract JSON; validated result.content and handled MCP errors\n* Updated TriageAgentStrategy to call callGetDocumentViaMCP and return response.content (instead of answer)\n* Wired import in common and added instrumentation/logging\n\nStatus: Merged via Graphite stack",
+        "assigneeId": "51c3230e-2da4-4ecd-a98e-c080a6d85de7",
+        "assignee": "Evangeline Cheng",
+        "priority": 0,
+        "state": "Done",
+        "createdAt": "2025-11-14T21:48:35.258Z"
+      },
+      {
+        "id": "c53a0a46-e297-437b-ad9c-1e770021e44e",
+        "identifier": "EXMR-701",
+        "title": "Email Terry at Supabase to set up a chat",
+        "description": "Email Terry ([terry@supabase.io](mailto:terry@supabase.io)) to set up a conversation.\n\n* Context: Referral via Joshen; Terry \"lives in Linear\" and has lots of complaints\n* Goal: See if we can solve some good problems for him\n* Source: Decision from Phillip Wang; no explicit owner assigned\n\n[View original Slack message](https://slack.com/archives/C09HTTVUSH5/p1763155059071759?thread_ts=1763133983.234179)",
+        "priority": 0,
+        "state": "Backlog",
+        "createdAt": "2025-11-14T21:18:56.000Z"
+      },
+      {
+        "id": "8064afb7-26bf-4af5-b12e-d165cc3b3e63",
+        "identifier": "EXMR-700",
+        "title": "Delete Grapevine webhook (move to staging)",
+        "description": "Evangeline will delete the Grapevine webhook; it should go into staging.\n\n* Delete the existing Grapevine webhook\n* Note: webhook should live in staging\n\n[View original Slack message](https://slack.com/archives/C09HTTVUSH5/p1763153264773019?thread_ts=1763150144.870279)",
+        "assigneeId": "51c3230e-2da4-4ecd-a98e-c080a6d85de7",
+        "assignee": "Evangeline Cheng",
+        "priority": 0,
+        "state": "Done",
+        "createdAt": "2025-11-14T20:50:00.346Z"
+      },
+      {
+        "id": "5d4e6e38-8278-425f-8f9d-4d9097e4a5b0",
+        "identifier": "EXMR-699",
+        "title": "Check back in 2 weeks on CRM process and whether we can help",
+        "description": "Follow up with the customer in two weeks to see if they've established their CRM process and whether there's something we could do for them there.\n\n* Source: Phillip Wang noted the customer is early in setting CRM process and suggested a 2-week check-in\n* Goal: Confirm their status and identify any concrete ways we can help\n\n[View original Slack message](https://slack.com/archives/C09HTTVUSH5/p1763150418192719?thread_ts=1763150278.162859)",
+        "priority": 3,
+        "state": "Backlog",
+        "createdAt": "2025-11-14T20:02:07.514Z"
+      },
+      {
+        "id": "91fd2d2b-33ce-4cdd-96a9-b6226897986a",
+        "identifier": "EXMR-698",
+        "title": "Set Grapevine webhook secret for gather-staging to stop webhook error spam",
+        "description": "Karen reported repeated log spam due to a missing webhook secret for the 'gather-staging' tenant.\n\n* Observed error (2025-11-14T19:53:09.904Z):\n\n```\ninfo: Grapevine webhook {\"service\":\"backend\",\"event\":\"document.changed\",\"documentId\":\"C08AWKB4PC4_2025-11-14\",\"source\":\"slack\",\"tenantId\":\"878f6fb522b441d1\",\"outcome\":\"error: Missing Grapevine webhook secret for tenant \\\"gather-staging\\\". Set GRAPEVINE_WEBHOOK_SECRET_GATHER_STAGING in your environment.\"}\n```\n\n* Impact: We're getting spammed with this error in logs\n* Indicated fix: Set GRAPEVINE_WEBHOOK_SECRET_GATHER_STAGING in the environment for the 'gather-staging' tenant\n\n[View original Slack message](https://slack.com/archives/C09HTTVUSH5/p1763150144870279?thread_ts=1763150144.870279)",
+        "priority": 0,
+        "state": "Backlog",
+        "createdAt": "2025-11-14T19:57:16.385Z"
+      },
+      {
+        "id": "489852fa-02da-4d45-99e9-08a683a95dd2",
+        "identifier": "EXMR-697",
+        "title": "Investigate Grapevine MCP timing out",
+        "description": "Added streaming support to the Slack bot with progress bar and translation features.\n\n**PR #2151**: Completed\n\n* Implemented streaming backend request\n* Enhanced progress bar showing real-time activities\n* Provided internationalization support\n* Improved question processing with streaming",
+        "assigneeId": "51b51810-a5b5-4578-a95e-3322a9b6eedf",
+        "assignee": "Karen Ying",
+        "priority": 0,
+        "state": "Done",
+        "createdAt": "2025-11-14T19:20:52.443Z"
+      },
+      {
+        "id": "5badfe5a-d543-4530-812f-8fdf4d2fb843",
+        "identifier": "EXMR-696",
+        "title": "Get triage working end-to-end in Exponent (fix remaining errors)",
+        "description": "Porting evals from Exponent was completed.\n\n**PR #2137**: Porting work was closed without merge.\n\n* Adds a new `exponent-evals` CLI\n* Implements eval-mode document fetching.",
+        "assigneeId": "51c3230e-2da4-4ecd-a98e-c080a6d85de7",
+        "assignee": "Evangeline Cheng",
+        "priority": 0,
+        "state": "Canceled",
+        "createdAt": "2025-11-14T15:53:18.560Z"
+      },
+      {
+        "id": "4c2f00d0-572a-4ae9-bd12-1a4ef01b2d36",
+        "identifier": "EXMR-695",
+        "title": "Do a release after merging changes (for Pangram onboarding)",
+        "description": "Do a release after merging changes (for Pangram onboarding).\n\n* PR: [https://github.com/gathertown/exponent/pull/297](https://github.com/gathertown/exponent/pull/297)\n* Merge method: rebase & merge (do not squash)\n* Status: PR merged on 2025-11-14T19:09:38Z by Karen Ying\n\n[View original Slack message](https://slack.com/archives/C09HTTVUSH5/p1763147378096429?thread_ts=1763146931.356739)",
+        "assigneeId": "51b51810-a5b5-4578-a95e-3322a9b6eedf",
+        "assignee": "Karen Ying",
+        "priority": 0,
+        "state": "Done",
+        "createdAt": "2025-11-14T01:21:20.528Z"
+      },
+      {
+        "id": "aa9548dc-f344-4673-bd05-432459fdc313",
+        "identifier": "EXMR-694",
+        "title": "Reduce standup notification size by posting details in thread",
+        "description": "Karen Ying will adjust the ai-grapevine-connectors standup Slack notification so the main message is smaller and details are posted in the thread.\n\n* Change behavior: put standup details in the thread instead of the main notification\n* Goal: reduce notification size\n* Target: fix today (2025-11-13)\n* Request from: Chandler Roth\n\n[View original Slack message](https://slack.com/archives/C09MCCV3ZKM/p1763059288586359?thread_ts=1763059094.443119)",
+        "assigneeId": "51b51810-a5b5-4578-a95e-3322a9b6eedf",
+        "assignee": "Karen Ying",
+        "priority": 0,
+        "state": "Backlog",
+        "createdAt": "2025-11-13T18:42:21.888Z"
+      }
+    ],
+    "docs": ["2025-12-03_04-50-42_slack--u0180nkjp89-i-m-porting-these.json"]
+  },
+  "output": {
+    "operations": [
+      {
+        "action": "SKIP",
+        "skipData": {
+          "reason": "This message explains what a PR does and the difference between two approaches. No owner mentioned or actionable"
+        }
+      }
+    ]
+  }
+}

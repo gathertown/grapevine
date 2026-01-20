@@ -1,0 +1,9 @@
+{
+  "id": "vague-report",
+  "title": "Something isn't working",
+  "date": "2025-01-16",
+  "type": "slack",
+  "content": "User: something doesn't work",
+  "participants": ["user-feedback-bot"],
+  "files": []
+}

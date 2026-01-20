@@ -1,0 +1,13 @@
+{
+  "id": "rename-channels",
+  "type": "ticket",
+  "sourceDescription": "this Linear ticket",
+  "sourceContent": null,
+  "operation": {
+    "action": "CREATE",
+    "createData": {
+      "title": "Add ability to rename channels",
+      "description": ""
+    }
+  }
+}

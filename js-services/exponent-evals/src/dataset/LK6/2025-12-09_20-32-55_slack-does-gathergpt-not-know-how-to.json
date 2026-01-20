@@ -1,0 +1,14 @@
+{
+  "title": "Does GatherGPT not know how to do slack block formatting? Seems kinda janky that it posts this as pl",
+  "type": "slack",
+  "date": "2025-12-09",
+  "content": "=== New messages since last pass (process these) ===\n[2025-12-09T20:32:55.547Z] Brent: Does GatherGPT not know how to do slack block formatting? Seems kinda janky that it posts this as plaintext vs actually resolving the formatting.",
+  "metadata": {
+    "channel": "C08BMCZK81F",
+    "threadTs": "1765312375.547379",
+    "messageCount": 1,
+    "priorMessageCount": 0,
+    "newMessageCount": 1,
+    "participants": ["Brent"]
+  }
+}

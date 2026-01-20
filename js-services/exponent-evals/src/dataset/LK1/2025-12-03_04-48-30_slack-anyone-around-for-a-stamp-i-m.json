@@ -1,0 +1,14 @@
+{
+  "title": "Anyone around for a stamp? I'm working on getting the verification loop stuff working as a Github Ac",
+  "type": "slack",
+  "date": "2025-12-03",
+  "content": "=== New messages since last pass (process these) ===\n[2025-12-03T01:54:51.405Z] Brent: Anyone around for a stamp? I'm working on getting the verification loop stuff working as a Github Action.\n\n&gt; :white_check_mark: <https://app.graphite.com/github/pr/gathertown/corporate-context/2253?ref=gt-pasteable-stack|#2253 [Verification Loop] Pick correct user for running Claude Code> `+62/-32`\n",
+  "metadata": {
+    "channel": "C08BMCZK81F",
+    "threadTs": "1764726891.405549",
+    "messageCount": 1,
+    "priorMessageCount": 0,
+    "newMessageCount": 1,
+    "participants": ["Brent"]
+  }
+}

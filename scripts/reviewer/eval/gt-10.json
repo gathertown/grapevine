@@ -1,0 +1,8 @@
+{
+  "decision": "CHANGES_REQUESTED",
+  "comments": [
+    {
+      "body": "This change could cause significant errors like failing to initialize spaces if deployed together. The DB migration to remove this field would apply before all pods are restarted, opening up a window for errors to occur. This has happened before during [INC-610](https://www.notion.so/gathertown/INC-610-Spaces-are-failing-to-initialize-in-prod-239bc7eac3d1811f995afa1bdb2c4645) - see guidance on [removing model fields](https://www.notion.so/gathertown/Zero-Downtime-Changes-in-V2-1b4bc7eac3d1808f96eec80ea2ce2369#1b4bc7eac3d180359438e136eb157447) while keeping backwards compatibility in mind."
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+# syntax=docker/dockerfile:1
+# check=skip=InvalidDefaultArgInFrom # Handled by scripts.
+ARG PYTHON_VERSION
+ARG UV_VERSION
+FROM ghcr.io/astral-sh/uv:${UV_VERSION} AS uv
+FROM python:${PYTHON_VERSION}-slim AS builder
+
+COPY --from=uv /uv /uvx /bin/
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /app
+
+# Enable bytecode compilation for better performance
+ENV UV_COMPILE_BYTECODE=1
+
+# Copy dependency files first for better caching
+COPY pyproject.toml uv.lock ./
+
+# Install dependencies only (layer caching)
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --locked --no-install-project
+
+# Copy the rest of the application
+COPY . .
+
+# Install the project itself
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --locked --no-editable
+
+# Production stage
+FROM python:${PYTHON_VERSION}-slim
+
+# Install runtime dependencies and PostgreSQL client (for DB migrations)
+RUN apt-get update && apt-get install -y \
+    curl \
+    git \
+    postgresql-client \
+    && rm -rf /var/lib/apt/lists/* && \
+    groupadd -r appuser && useradd -r -g appuser appuser
+
+# Set working directory
+WORKDIR /app
+
+# Copy only the virtual environment from builder
+COPY --from=builder --chown=appuser:appuser /app/.venv /app/.venv
+
+# Copy application code
+COPY --chown=appuser:appuser src/ ./src/
+COPY --chown=appuser:appuser connectors/ ./connectors/
+
+# Set environment variables
+ENV PYTHONPATH=/app
+ENV PYTHONUNBUFFERED=1
+ENV PATH="/app/.venv/bin:$PATH"
+
+# Switch to non-root user
+USER appuser
+
+# Health check using HTTP endpoint
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:8080/health/live || exit 1
+
+# Run the ingest worker service
+CMD ["python", "-m", "src.jobs.ingest_job_worker"]

@@ -1,0 +1,61 @@
+# Staging environment hostnames
+# Replace with your actual staging domain
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grapevine-app
+  namespace: grapevine-services
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: stg.example.com
+spec:
+  rules:
+    - host: stg.example.com
+      http:
+        paths:
+          - backend:
+              service:
+                name: grapevine-app
+                port:
+                  number: 5000
+            path: /
+            pathType: Prefix
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grapevine-api
+  namespace: grapevine-services
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: mcp.stg.example.com
+spec:
+  rules:
+    - host: mcp.stg.example.com
+      http:
+        paths:
+          - backend:
+              service:
+                name: grapevine-api
+                port:
+                  number: 8000
+            path: /
+            pathType: Prefix
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingest-gatekeeper
+  namespace: grapevine-services
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: "*.ingest.stg.example.com"
+spec:
+  rules:
+    - host: "*.ingest.stg.example.com"
+      http:
+        paths:
+          - backend:
+              service:
+                name: ingest-gatekeeper
+                port:
+                  number: 8001
+            path: /
+            pathType: Prefix

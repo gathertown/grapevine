@@ -1,0 +1,18 @@
+{
+  "_comment": {
+    "description": "Test: Automated dependency update - should not match any ticket",
+    "expected": "SKIP - maintenance not tracked in Linear",
+    "difficulty": "EASY - should clearly recognize this as routine maintenance",
+    "LINEAR_TICKET_TO_CREATE": null
+  },
+  "id": "gh-dependency-bump",
+  "title": "Bump axios from 1.6.0 to 1.6.2",
+  "date": "2025-01-26",
+  "type": "github",
+  "author": "dependabot[bot]",
+  "repository": "gathertown/corporate-context",
+  "prNumber": 207,
+  "content": "Repository: gathertown/corporate-context\nPull Request: #207 - Bump axios from 1.6.0 to 1.6.2\nURL: https://github.com/gathertown/corporate-context/pull/207\nStatus: merged\nAuthor: dependabot[bot]\n\nDescription:\nBumps [axios](https://github.com/axios/axios) from 1.6.0 to 1.6.2.\n\nRelease notes:\nSourced from axios's releases.\n\n1.6.2\n- Fixed CSRF vulnerability in cookie handling\n- Performance improvements for large payloads\n\n1.6.1\n- Minor bug fixes\n\nChangelog:\nSourced from axios's changelog.\n\nCommits:\n- abc123 fix: CSRF vulnerability\n- def456 perf: improve large payload handling\n\nDependabot will resolve any conflicts with this PR as long as you don't alter it yourself.\n\nActivity:\n\n2025-01-26 03:00:00 dependabot[bot] opened pull request\n2025-01-26 03:05:00 CI passed\n2025-01-26 09:00:00 karenying merged pull request",
+  "participants": [],
+  "files": []
+}

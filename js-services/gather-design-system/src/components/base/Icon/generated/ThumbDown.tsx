@@ -1,0 +1,6 @@
+import * as React from "react";
+import type { SVGProps } from "react";
+import { memo } from "react";
+const SvgThumbDown = (props: SVGProps<SVGSVGElement>) => <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}><path d="M10.5475 20.9432L11.0012 20.9999C11.9658 18.6911 13.4072 16.6965 15.108 14.9024C15.6664 14.3133 16.0012 13.5418 16.0012 12.7301V6.27483C16.0012 5.49721 15.5542 4.77852 14.8235 4.51244C12.3439 3.60952 9.75014 3.41637 7.12803 3.6436C5.52677 3.78237 4.27198 5.01895 3.91916 6.58701L3.07441 10.3414C2.6524 12.217 4.07875 14 6.00124 14H9.00125L8.05227 17.0841C7.50387 18.8664 8.69714 20.7119 10.5475 20.9432Z" stroke="currentColor" strokeWidth={1.5} strokeLinejoin="round" /><path d="M21 11.9999C21 13.1045 20.1046 13.9999 19 13.9999C17.3431 13.9999 16 12.6568 16 10.9999V6.99994C16 5.34309 17.3431 3.99994 19 3.99994C20.1046 3.99994 21 4.89537 21 5.99994V11.9999Z" stroke="currentColor" strokeWidth={1.5} strokeLinejoin="round" /></svg>;
+const Memo = memo(SvgThumbDown);
+export default Memo;

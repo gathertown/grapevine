@@ -1,0 +1,22 @@
+[
+  {
+    "input": {
+      "linearState": [],
+      "docs": ["2025-01-20_09-00-00_feature-request.json"]
+    },
+    "output": {
+      "operations": [
+        {
+          "action": "CREATE",
+          "createData": {
+            "title": "Improve API rate limiting and error messages",
+            "description": "Mike committed to building out API rate limiting improvements this week.\n\n- Current error messages are confusing for customers\n- Will add exponential backoff suggestions in error responses\n- Will add dashboard widget showing API usage\n- Design doc to be shared\n\nSource: Morning standup 2025-01-20",
+            "assigneeId": "mike"
+          },
+          "confidence": 90,
+          "reasoning": "Clear commitment from Mike to improve rate limiting this week. No existing issues, so CREATE is appropriate."
+        }
+      ]
+    }
+  }
+]

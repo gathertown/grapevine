@@ -1,0 +1,14 @@
+{
+  "title": "<https://github.com/gathertown/corporate-context/pull/2223>\n\nthese ones need an approval: <@U01HXG4L",
+  "type": "slack",
+  "date": "2025-12-03",
+  "content": "=== New messages since last pass (process these) ===\n[2025-12-02T19:58:20.167Z] Konrad: <https://github.com/gathertown/corporate-context/pull/2223>\n\nthese ones need an approval: <@U01HXG4L891> <@U03DDV4UNG3>\n<https://app.graphite.dev/github/pr/gathertown/corporate-context/2214>\n<https://app.graphite.dev/github/pr/gathertown/corporate-context/2179>",
+  "metadata": {
+    "channel": "C08BMCZK81F",
+    "threadTs": "1764705500.167929",
+    "messageCount": 1,
+    "priorMessageCount": 0,
+    "newMessageCount": 1,
+    "participants": ["Konrad"]
+  }
+}

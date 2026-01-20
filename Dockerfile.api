@@ -1,0 +1,85 @@
+# syntax=docker/dockerfile:1
+# check=skip=InvalidDefaultArgInFrom # Handled by scripts.
+ARG PYTHON_VERSION
+ARG UV_VERSION
+FROM ghcr.io/astral-sh/uv:${UV_VERSION} AS uv
+FROM python:${PYTHON_VERSION}-slim AS builder
+
+COPY --from=uv /uv /uvx /bin/
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /app
+
+# Enable bytecode compilation for better performance
+ENV UV_COMPILE_BYTECODE=1
+
+# Copy dependency files first for better caching
+COPY pyproject.toml uv.lock ./
+
+# Install dependencies only (layer caching)
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --locked --no-install-project
+
+# Copy the rest of the application
+COPY . .
+
+# Install the project itself
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --locked --no-editable
+
+
+# Production stage
+FROM python:${PYTHON_VERSION}-slim
+
+# Install runtime dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create user with specific UID to match Kubernetes deployment
+RUN groupadd -r -g 1000 appuser && useradd -r -u 1000 -g appuser -m -d /home/appuser appuser
+
+# Set working directory
+WORKDIR /app
+
+# Copy only the virtual environment from builder
+COPY --from=builder --chown=appuser:appuser /app/.venv /app/.venv
+
+# Copy application code
+COPY --chown=appuser:appuser src/ ./src/
+COPY --chown=appuser:appuser connectors/ ./connectors/
+
+# Create keys directory with proper permissions for mounting secrets
+RUN mkdir -p /app/keys && \
+    chown appuser:appuser /app/keys && \
+    chmod 755 /app/keys
+
+# Set environment variables
+ENV PYTHONPATH=/app
+ENV PYTHONUNBUFFERED=1
+ENV PATH="/app/.venv/bin:$PATH"
+ENV HF_HOME=/home/appuser/.cache/huggingface
+ENV TRANSFORMERS_CACHE=/home/appuser/.cache/huggingface/transformers
+
+# Create cache directories with proper ownership
+RUN mkdir -p /home/appuser/.cache/huggingface/transformers && \
+    chown -R appuser:appuser /home/appuser
+
+# Switch to non-root user
+USER appuser
+
+# Expose port
+EXPOSE 8000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:8000/health/ready || exit 1
+
+# Run the MCP server directly from venv
+CMD ["python", "-m", "src.mcp.server", "--host", "0.0.0.0", "--port", "8000"]

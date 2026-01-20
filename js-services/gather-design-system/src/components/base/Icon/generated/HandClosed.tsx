@@ -1,0 +1,6 @@
+import * as React from "react";
+import type { SVGProps } from "react";
+import { memo } from "react";
+const SvgHandClosed = (props: SVGProps<SVGSVGElement>) => <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}><path d="M14 9V5.5C14 4.672 13.328 4 12.5 4C11.672 4 11 4.672 11 5.5V9M14 6.5C14 5.672 14.672 5 15.5 5C16.328 5 17 5.672 17 6.5V9M8 8H7.775C6.958 8 6.175 8.324 5.598 8.902C4.907 9.593 4.585 10.57 4.73 11.536L5.233 14.89C5.674 17.827 8.197 20 11.167 20H14C17.314 20 20 17.314 20 14V8.5C20 7.672 19.328 7 18.5 7C17.672 7 17 7.672 17 8.5M8 11V6.5C8 5.672 8.672 5 9.5 5C10.328 5 11 5.672 11 6.5" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" /></svg>;
+const Memo = memo(SvgHandClosed);
+export default Memo;

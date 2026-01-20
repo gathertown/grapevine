@@ -1,0 +1,6 @@
+import * as React from "react";
+import type { SVGProps } from "react";
+import { memo } from "react";
+const SvgMegaphoneAlt = (props: SVGProps<SVGSVGElement>) => <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}><path fillRule="evenodd" clipRule="evenodd" d="M18.0308 18.9176L4.79027 14.5384C4.0199 14.2864 3.49822 13.5685 3.49646 12.7579V10.2544C3.49908 9.44463 4.0206 8.72774 4.79027 8.47594L18.0308 4.09681C18.605 3.90412 19.2368 3.99848 19.7296 4.35055C20.2224 4.70261 20.5165 5.26966 20.5203 5.8753V17.1391C20.5165 17.7447 20.2224 18.3118 19.7296 18.6638C19.2368 19.0159 18.605 19.1103 18.0308 18.9176Z" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" /><path fillRule="evenodd" clipRule="evenodd" d="M8.31521 15.7051C8.11216 16.112 8.00527 16.5601 8.00277 17.0149C8.01336 18.5578 9.19094 19.8418 10.7271 19.9854C12.2633 20.1291 13.6586 19.0858 13.9551 17.5717" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" /><path fillRule="evenodd" clipRule="evenodd" d="M8.31521 15.7051L13.9551 17.5717Z" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" /></svg>;
+const Memo = memo(SvgMegaphoneAlt);
+export default Memo;

@@ -1,0 +1,14 @@
+{
+  "title": "oh no is triage broken for pangram <https://gather-town.slack.com/archives/C09K3TV7JAH/p176479694700",
+  "type": "slack",
+  "date": "2025-12-04",
+  "content": "=== Earlier conversation (context, already processed) ===\n[2025-12-03T21:24:16.045Z] Evangeline: oh no is triage broken for pangram <https://gather-town.slack.com/archives/C09K3TV7JAH/p1764796947005259>\n[2025-12-03T21:40:32.540Z] Karen Ying: hmmm weird\n[2025-12-03T21:40:52.348Z] Karen Ying: unfortunately only see this in logs\n\n```error:\"[object Object]\"\nlevel:\"error\"\nmessage:\"[Triage] Error processing triage workflow\"```\n\n=== New messages since last pass (process these) ===\n[2025-12-03T21:41:01.343Z] Karen Ying: i'll push this to prod to get more info though\n\n<https://github.com/gathertown/corporate-context/pull/2274>",
+  "metadata": {
+    "channel": "C09HTTVUSH5",
+    "threadTs": "1764797056.045529",
+    "messageCount": 4,
+    "priorMessageCount": 3,
+    "newMessageCount": 1,
+    "participants": ["Evangeline", "Karen Ying"]
+  }
+}

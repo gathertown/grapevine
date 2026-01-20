@@ -1,0 +1,80 @@
+modules:
+  function:
+    - key: authProxy
+      handler: index.forwardEventToGrapevine
+    - key: adminConfigureResolver
+      handler: adminConfigureResolver.handler
+  jira:adminPage:
+    - key: admin-configure-sidebar
+      resource: admin-configure-page
+      title: $JIRA_APP_PAGE_TITLE
+      description: Configure Grapevine integration
+      render: native
+      resolver:
+        function: adminConfigureResolver
+    - key: admin-configure
+      resource: admin-configure-page
+      title: $JIRA_APP_PAGE_TITLE
+      description: Configure Grapevine integration
+      render: native
+      resolver:
+        function: adminConfigureResolver
+      useAsGetStarted: true
+  webtrigger:
+    - key: backfill-trigger
+      function: authProxy
+  trigger:
+    - key: issue-created-trigger
+      function: authProxy
+      events:
+        - avi:jira:created:issue
+    - key: issue-updated-trigger
+      function: authProxy
+      events:
+        - avi:jira:updated:issue
+    - key: issue-deleted-trigger
+      function: authProxy
+      events:
+        - avi:jira:deleted:issue
+    - key: app-installed-trigger
+      function: authProxy
+      events:
+        - avi:forge:installed:app
+    - key: app-upgraded-trigger
+      function: authProxy
+      events:
+        - avi:forge:upgraded:app
+    - key: issue-commented-trigger
+      function: authProxy
+      events:
+        - avi:jira:commented:issue
+    - key: comment-deleted-trigger
+      function: authProxy
+      events:
+        - avi:jira:deleted:comment
+remotes:
+  - key: grapevine-connector
+    baseUrl: $JIRA_GATEKEEPER_URL
+    auth:
+      appSystemToken:
+        enabled: true
+    operations:
+      - compute
+      - storage
+    storage:
+      inScopeEUD: false
+resources:
+  - key: admin-configure-page
+    path: src/AdminConfigurePage.tsx
+app:
+  runtime:
+    name: nodejs22.x
+    memoryMB: 256
+    architecture: arm64
+  id: ari:cloud:ecosystem::app/$VITE_JIRA_APP_ID
+permissions:
+  scopes:
+    - read:jira-user
+    - read:jira-work
+    - read:app-system-token
+    - storage:app

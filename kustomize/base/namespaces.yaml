@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: grapevine-services
+  labels:
+    name: grapevine-services
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: grapevine-workers
+  labels:
+    name: grapevine-workers

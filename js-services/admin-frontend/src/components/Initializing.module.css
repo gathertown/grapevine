@@ -1,0 +1,91 @@
+/* Container styles now handled by FullscreenLayout */
+
+.initializingContent {
+  text-align: center;
+  max-width: 400px;
+}
+
+.initializingSpinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f1f5f9;
+  border-top: 3px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 24px auto;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.initializingContent h2 {
+  font-size: 24px;
+  color: #09090b;
+  margin: 0 0 8px 0;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+.initializingContent p {
+  font-size: 16px;
+  color: #71717a;
+  margin: 0;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* Error state styles */
+.errorIcon {
+  font-size: 48px;
+  margin: 0 auto 24px auto;
+}
+
+.errorMessage {
+  color: #dc2626 !important;
+  font-weight: 500 !important;
+  margin-bottom: 24px !important;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.button {
+  padding: 10px 20px;
+  border-radius: 6px;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 80px;
+}
+
+.retryButton {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.retryButton:hover {
+  background-color: #2563eb;
+}
+
+.signOutButton {
+  background-color: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+}
+
+.signOutButton:hover {
+  background-color: #e2e8f0;
+  color: #334155;
+}

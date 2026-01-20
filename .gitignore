@@ -1,0 +1,50 @@
+venv
+.wandb
+inference/artifacts
+__pycache__
+./data/
+.DS_Store
+.env*
+!.env.example
+config.yaml
+.tmp*
+keys/
+*.log
+snapshots/
+.mypy_cache/
+src/mcp/api/debug_openai_tools.jsonc
+
+.idea/
+
+# Evaluation results
+src/evals/results/
+
+# Swap
+[._]*.s[a-v][a-z]
+# comment out the next line if you don't need vector files
+!*.svg
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+
+# Session
+Session.vim
+Sessionx.vim
+
+# Temporary
+.netrwhist
+*~
+# Auto-generated tag files
+tags
+# Persistent undo
+[._]*.un~
+
+
+*.pyc
+
+# HubSpot config file
+hubspot.config.yml
+
+# Local secrets file for act testing
+.secrets

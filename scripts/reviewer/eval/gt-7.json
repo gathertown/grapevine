@@ -1,0 +1,8 @@
+{
+  "decision": "CHANGES_REQUESTED",
+  "comments": [
+    {
+      "body": "This endpoint never checks whether the caller is a member of the channel, which is a security issue. Any space user could hit this endpoint to read the last 10 messages from any channel, including private ones."
+    }
+  ]
+}

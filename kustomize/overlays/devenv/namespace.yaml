@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: __REPLACED_BY_ARGOCD__
+  labels:
+    devenv: "true" # Same label V2 uses
+    # kubed syncs docker image pull secrets to namespaces with this
+    # label
+    gather-docker-image-pull-secrets: "true"
+
+

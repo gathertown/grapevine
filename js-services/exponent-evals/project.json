@@ -1,0 +1,13 @@
+{
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "name": "exponent-evals",
+  "sourceRoot": "exponent-evals/src",
+  "projectType": "application",
+  "targets": {
+    "type-check": {},
+    "lint": {},
+    "lint-fix": {},
+    "format": {},
+    "format:check": {}
+  }
+}

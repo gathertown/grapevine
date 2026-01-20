@@ -1,0 +1,169 @@
+name: Generate Test Plan
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR Number'
+        required: true
+        type: string
+      linear_ticket_id:
+        description: 'Linear Ticket ID (e.g., ENG-123 or UUID)'
+        required: false
+        type: string
+  workflow_call:
+    inputs:
+      pr_number:
+        description: 'PR Number'
+        required: true
+        type: number
+      pr_head_sha:
+        description: 'PR Head SHA'
+        required: true
+        type: string
+      pr_base_sha:
+        description: 'PR Base SHA'
+        required: false
+        type: string
+      devenv_admin_url:
+        description: 'Devenv Admin UI URL'
+        required: false
+        type: string
+      devenv_mcp_url:
+        description: 'Devenv MCP API URL'
+        required: false
+        type: string
+      linear_ticket_id:
+        description: 'Linear Ticket ID (e.g., ENG-123 or UUID)'
+        required: false
+        type: string
+    secrets:
+      CURSOR_API_KEY:
+        required: true
+      LINEAR_API_KEY:
+        required: false
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  generate-test-plan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Cursor CLI
+        run: |
+          curl https://cursor.com/install -fsS | bash
+          echo "$HOME/.cursor/bin" >> "$GITHUB_PATH"
+
+      - name: Configure git
+        run: |
+          git config user.name "Cursor Agent"
+          git config user.email "cursoragent@cursor.com"
+
+      - name: Fetch Linear ticket (optional)
+        id: linear
+        if: ${{ inputs.linear_ticket_id != '' }}
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          LINEAR_TICKET_ID: ${{ inputs.linear_ticket_id }}
+        run: |
+          if [ -z "${LINEAR_API_KEY:-}" ]; then
+            echo "No LINEAR_API_KEY provided; skipping ticket fetch." >&2
+            exit 0
+          fi
+          .github/actions/dispatcher/scripts/fetch-linear-ticket.sh
+
+      - name: Fetch PR details if needed
+        id: pr_details
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
+        run: |
+          # Fetch PR details to get head and base SHAs if not provided
+          PR_DATA=$(gh api "/repos/$REPO/pulls/$PR_NUMBER")
+
+          HEAD_SHA=$(echo "$PR_DATA" | jq -r '.head.sha')
+          BASE_SHA=$(echo "$PR_DATA" | jq -r '.base.sha')
+
+          echo "pr_head_sha=$HEAD_SHA" >> "$GITHUB_OUTPUT"
+          echo "pr_base_sha=$BASE_SHA" >> "$GITHUB_OUTPUT"
+
+          echo "Fetched PR details:"
+          echo "  Head SHA: $HEAD_SHA"
+          echo "  Base SHA: $BASE_SHA"
+
+      - name: Generate Test Plan
+        env:
+          MODEL: opus-4.5
+          CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha || inputs.pr_head_sha || steps.pr_details.outputs.pr_head_sha }}
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha || inputs.pr_base_sha || steps.pr_details.outputs.pr_base_sha }}
+          DEVENV_ADMIN_URL: ${{ inputs.devenv_admin_url }}
+          DEVENV_MCP_URL: ${{ inputs.devenv_mcp_url }}
+          LINEAR_TICKET_ID: ${{ steps.linear.outputs.identifier || inputs.linear_ticket_id }}
+          LINEAR_TICKET_TITLE: ${{ steps.linear.outputs.title }}
+          LINEAR_TICKET_URL: ${{ steps.linear.outputs.url }}
+        run: |
+          set -e
+          set -o pipefail
+
+          # Load Linear ticket description into env for envsubst (if available)
+          LINEAR_TICKET_DESCRIPTION=""
+          if [ -f /tmp/ticket_description.txt ]; then
+            LINEAR_TICKET_DESCRIPTION="$(cat /tmp/ticket_description.txt)"
+          fi
+          export LINEAR_TICKET_DESCRIPTION
+
+          # Load repo-specific testing entry points guide used by the prompt template.
+          # This must be set before envsubst runs, otherwise the guide section is blank.
+          if [ -f ".github/test-plan/entrypoints.md" ]; then
+            # NOTE: envsubst doesn't recursively expand variables inside $REPO_TESTING_ENTRY_POINTS_GUIDE
+            # when it's later injected into the prompt template. Expand devenv placeholders here.
+            REPO_TESTING_ENTRY_POINTS_GUIDE=$(envsubst "\$DEVENV_ADMIN_URL \$DEVENV_MCP_URL" < .github/test-plan/entrypoints.md)
+            export REPO_TESTING_ENTRY_POINTS_GUIDE
+          else
+            REPO_TESTING_ENTRY_POINTS_GUIDE=$'_No repo-specific testing entry points guide found at `.github/test-plan/entrypoints.md`._\n\nBefore writing scenarios, determine the best testing entry points for this repo (UI URL, API URL, CLI commands, etc.) by reading `README.md` / `AGENTS.md` and inspecting the code/CI, then use those concrete entry points in each scenario\'s **Entry:** line.'
+            export REPO_TESTING_ENTRY_POINTS_GUIDE
+          fi
+
+          echo "Starting cursor-agent to generate test plan..."
+          cursor-agent -p "$(envsubst < .github/actions/dispatcher/prompts/test-plan-prompt.md)" --force --model "$MODEL" --output-format=text | tee test_plan.md
+
+          echo ""
+          echo "Cursor agent completed. Checking output..."
+          echo "Current directory: $(pwd)"
+          echo "Files in current directory:"
+          ls -la test_plan.md || echo "test_plan.md not found"
+
+          # Check if test plan was generated
+          if [ ! -f test_plan.md ] || [ ! -s test_plan.md ]; then
+            echo "Error: test_plan.md was not generated or is empty"
+            exit 1
+          fi
+
+          echo "Test plan generated successfully ($(wc -l < test_plan.md) lines)"
+          echo "File size: $(stat -f%z test_plan.md 2>/dev/null || stat -c%s test_plan.md 2>/dev/null) bytes"
+
+          # Find existing test plan comment
+          COMMENT_ID=$(gh api "/repos/$REPO/issues/$PR_NUMBER/comments" --jq '.[] | select(.body | contains("## 🧪 Generated Test Plan")) | .id' | head -n 1)
+
+          # Read the file content into a variable
+          TEST_PLAN_CONTENT=$(cat test_plan.md)
+
+          if [ -n "$COMMENT_ID" ]; then
+            echo "Updating existing comment ID: $COMMENT_ID"
+            gh api -X PATCH "/repos/$REPO/issues/comments/$COMMENT_ID" -f body="$TEST_PLAN_CONTENT"
+          else
+            echo "Creating new comment"
+            gh pr comment "$PR_NUMBER" --body "$TEST_PLAN_CONTENT"
+          fi

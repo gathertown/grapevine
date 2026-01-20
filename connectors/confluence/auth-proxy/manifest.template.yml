@@ -1,0 +1,102 @@
+modules:
+  function:
+    - key: authProxy
+      handler: index.forwardEventToGrapevine
+    - key: adminConfigureResolver
+      handler: adminConfigureResolver.handler
+  confluence:globalSettings:
+    - key: admin-configure
+      resource: admin-configure-page
+      title: $CONFLUENCE_APP_PAGE_TITLE
+      render: native
+      resolver:
+        function: adminConfigureResolver
+      useAsGetStarted: true
+    - key: admin-configure-sidebar
+      resource: admin-configure-page
+      title: $CONFLUENCE_APP_PAGE_TITLE
+      render: native
+      resolver:
+        function: adminConfigureResolver
+  webtrigger:
+    - key: backfill-trigger
+      function: authProxy
+  trigger:
+    - key: page-created-trigger
+      function: authProxy
+      events:
+        - avi:confluence:created:page
+    - key: page-updated-trigger
+      function: authProxy
+      events:
+        - avi:confluence:updated:page
+    - key: page-restored-trigger
+      function: authProxy
+      events:
+        - avi:confluence:restored:page
+    - key: page-permissions-updated-trigger
+      function: authProxy
+      events:
+        - avi:confluence:permissions_updated:page
+    - key: page-trashed-trigger
+      function: authProxy
+      events:
+        - avi:confluence:trashed:page
+    - key: page-deleted-trigger
+      function: authProxy
+      events:
+        - avi:confluence:deleted:page
+    - key: space-created-trigger
+      function: authProxy
+      events:
+        - avi:confluence:created:space
+    - key: space-updated-trigger
+      function: authProxy
+      events:
+        - avi:confluence:updated:space
+    - key: app-installed-trigger
+      function: authProxy
+      events:
+        - avi:forge:installed:app
+    - key: app-upgraded-trigger
+      function: authProxy
+      events:
+        - avi:forge:upgraded:app
+remotes:
+  - key: grapevine-connector
+    baseUrl: $CONFLUENCE_GATEKEEPER_URL
+    auth:
+      appSystemToken:
+        enabled: true
+    operations:
+      - compute
+      - storage
+    storage:
+      inScopeEUD: false
+resources:
+  - key: admin-configure-page
+    path: src/AdminConfigurePage.tsx
+app:
+  runtime:
+    name: nodejs22.x
+    memoryMB: 256
+    architecture: arm64
+  id: ari:cloud:ecosystem::app/$VITE_CONFLUENCE_APP_ID
+permissions:
+  scopes:
+    - read:app-system-token
+    - read:confluence-content.all
+    - read:confluence-content.permission
+    - read:confluence-content.summary
+    - read:confluence-groups
+    - read:confluence-props
+    - read:confluence-user
+    - read:email-address:confluence
+    - read:page:confluence
+    - read:space:confluence
+    - read:space.permission:confluence
+    - read:user:confluence
+    - write:confluence-content
+    - readonly:content.attachment:confluence
+    - search:confluence
+    - storage:app

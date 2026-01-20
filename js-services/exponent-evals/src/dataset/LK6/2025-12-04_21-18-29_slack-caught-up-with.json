@@ -1,0 +1,14 @@
+{
+  "title": "Caught up with <@U07JFGEL9FD> - scoped <https://www.notion.so/gathertown/VibeWork-Big-Rocks-2bfbc7ea",
+  "type": "slack",
+  "date": "2025-12-09",
+  "content": "=== Earlier conversation (context, already processed) ===\n[2025-12-04T20:42:15.367Z] Johnny D: Caught up with <@U07JFGEL9FD> - scoped <https://www.notion.so/gathertown/VibeWork-Big-Rocks-2bfbc7eac3d1809a951bc3676164776c?source=copy_link|out the big rocks> we have left for VibeWork E2E. Once we complete these we'll be in a spot where we can work on ambient ticket quality, because we'll have a consistent box we can push tickets through to evaluate quality\n\n=== New messages since last pass (process these) ===\n[2025-12-04T21:18:29.345Z] Johnny D: I have to update the GHA in corporate-context to use a better model for generating the test plan",
+  "metadata": {
+    "channel": "C08BMCZK81F",
+    "threadTs": "1764880935.367199",
+    "messageCount": 2,
+    "priorMessageCount": 1,
+    "newMessageCount": 1,
+    "participants": ["Johnny D"]
+  }
+}

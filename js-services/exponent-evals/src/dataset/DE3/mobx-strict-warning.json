@@ -1,0 +1,13 @@
+{
+  "id": "mobx-strict-warning",
+  "type": "ticket",
+  "sourceDescription": "this Linear ticket",
+  "sourceContent": null,
+  "operation": {
+    "action": "CREATE",
+    "createData": {
+      "title": "Investigate MobX strict warning in meeting view",
+      "description": "Seeing a MobX strict warning when going to meeting view on local dev. I'm guess on afterMountOrPropChange in BaseFileUploadComposerPresenter?"
+    }
+  }
+}

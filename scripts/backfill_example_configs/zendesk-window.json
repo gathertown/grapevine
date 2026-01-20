@@ -1,0 +1,5 @@
+{
+  "start_timestamp": "2024-01-01T00:00:00Z",
+  "end_timestamp": "2024-12-31T23:59:59Z",
+  "_comment": "Use this for custom time window backfills. Without this file, Zendesk will perform a full backfill."
+}

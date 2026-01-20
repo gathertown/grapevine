@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.backend.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "noUncheckedIndexedAccess": false
+  },
+  "include": ["src"],
+  "references": [{ "path": "../backend-common" }, { "path": "../exponent-core" }]
+}

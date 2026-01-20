@@ -1,0 +1,110 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "nx/tasks-runners/default",
+      "options": {
+        "cacheableOperations": [
+          "build",
+          "type-check",
+          "lint",
+          "lint:fix",
+          "format",
+          "format:check",
+          "test"
+        ],
+        "parallel": 8
+      }
+    }
+  },
+  "targetDefaults": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"],
+      "cache": true
+    },
+    "type-check": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit",
+        "cwd": "{projectRoot}"
+      },
+      "cache": true
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "eslint .",
+        "cwd": "{projectRoot}",
+        "env": {
+          "NODE_OPTIONS": "--max-old-space-size=4096"
+        }
+      },
+      "inputs": ["default", "{projectRoot}/eslint.config.mjs", "{workspaceRoot}/eslint.shared.js"],
+      "cache": true,
+      "dependsOn": ["^lint"]
+    },
+    "lint-fix": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "eslint . --fix",
+        "cwd": "{projectRoot}"
+      },
+      "inputs": ["default", "{projectRoot}/eslint.config.mjs", "{workspaceRoot}/eslint.shared.js"],
+      "cache": true,
+      "dependsOn": ["^lint-fix"]
+    },
+    "format": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,md,yaml,yml,css}\"",
+        "cwd": "{projectRoot}"
+      },
+      "inputs": ["default", "{workspaceRoot}/prettier.config.cjs"],
+      "cache": true
+    },
+    "format:check": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json,md,yaml,yml,css}\"",
+        "cwd": "{projectRoot}"
+      },
+      "inputs": ["default", "{workspaceRoot}/prettier.config.cjs"],
+      "cache": true
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "echo 'No tests yet'",
+        "cwd": "{projectRoot}"
+      },
+      "cache": true
+    },
+    "serve:dev": {
+      "executor": "@nx/js:node",
+      "options": {
+        "buildTarget": "{projectName}:build",
+        "watch": true,
+        "debounce": 500,
+        "runBuildTargetDependencies": true
+      }
+    }
+  },
+  "workspaceLayout": {
+    "libsDir": ".",
+    "appsDir": "."
+  },
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "production": [
+      "default",
+      "!{projectRoot}/**/*.test.ts",
+      "!{projectRoot}/**/*.spec.ts",
+      "!{projectRoot}/**/*.test.tsx",
+      "!{projectRoot}/**/*.spec.tsx",
+      "!{projectRoot}/**/*.md"
+    ],
+    "sharedGlobals": ["{workspaceRoot}/tsconfig.json", "{workspaceRoot}/.swcrc"]
+  },
+  "defaultProject": "admin-backend"
+}

@@ -1,0 +1,15 @@
+{
+  "decision": "CHANGES_REQUESTED",
+  "comments": [
+    {
+      "path": "modules/gather-game-logic/src/repos/ChatMessageRepo.ts",
+      "line": 109,
+      "body": "Should avoid sending messages in gather-game-logic directly.Creating too many chat messages will overburden GS memory."
+    },
+    {
+      "path": "modules/gather-game-logic/src/repos/ChatMessageRepo.ts",
+      "line": 108,
+      "body": "The chat message is created without checking if the user has permission, ex. is a member of the channel."
+    }
+  ]
+}

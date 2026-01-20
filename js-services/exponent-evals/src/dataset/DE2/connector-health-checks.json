@@ -1,0 +1,13 @@
+{
+  "id": "connector-health-checks",
+  "type": "slack",
+  "sourceDescription": "this task description",
+  "sourceContent": "Complete the remaining work for connector health checks.\n\n- Implement final pieces to complete health-check functionality\n- Surface connector status in admin UI\n- Add reconnect actions for failed connectors\n- When a webhook fails, update the status in the connector_installations table",
+  "operation": {
+    "action": "CREATE",
+    "createData": {
+      "title": "Complete connector health checks implementation",
+      "description": "Complete the remaining work for connector health checks.\n\n- Implement final pieces to complete health-check functionality\n- Surface connector status in admin UI\n- Add reconnect actions for failed connectors\n- When a webhook fails, update the status in the connector_installations table"
+    }
+  }
+}

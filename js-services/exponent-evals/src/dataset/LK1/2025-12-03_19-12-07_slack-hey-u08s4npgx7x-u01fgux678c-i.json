@@ -1,0 +1,14 @@
+{
+  "title": "hey <@U08S4NPGX7X> <@U01FGUX678C> i just thought of something that would be extremely helpful for Ex",
+  "type": "slack",
+  "date": "2025-12-03",
+  "content": "=== New messages since last pass (process these) ===\n[2025-12-03T19:12:07.218Z] Karen Ying: hey <@U08S4NPGX7X> <@U01FGUX678C> i just thought of something that would be extremely helpful for Exponent evals -- if y'all could timebox 20-30 minutes today or tomorrow to:\n\n1. go to gather activity feed and pull up the transcripts / meeting memos for Grapevine Core/Q&amp;A Standup (vic) or Grapevine Connectors Standup (chandler) from the past 3 days -- see screenshot for where to find this\n2. from the lens of \"what linear tickets would you have created for coding tasks\" from the transcript alone -- jot down the titles + brief descriptions of the tickets in a bulleted list\n    a. you can assume an empty linear board so don't worry about ticket updates for now\n    b. coding tasks = stuff that results in a PR (bug fixes, features, refactoring, tests, infra changes). skip things like planning discussions, docs, coordination, or vague \"look into X\" unless it's debugging a specific bug\n    c. try to pull this from the meeting transcript alone since that is what we are parsing ie. don't reference your standup notion doc since our system doesn't have access to that\n3. try to get through as many of the transcripts you can in 20-30 minutes -- don't spend more time than that unless you're really free :slightly_smiling_face:\nthis would be so helpful to include in our eval dataset :pray::skin-tone-3: lmk if you have the bandwidth and are down to help!!! no worries if not, <@U08CM2PLRAS> you could probably pitch in too but i figured vic and chandler have the most context for the highest quality extraction heh",
+  "metadata": {
+    "channel": "C09HTTVUSH5",
+    "threadTs": "1764789127.218369",
+    "messageCount": 1,
+    "priorMessageCount": 0,
+    "newMessageCount": 1,
+    "participants": ["Karen Ying"]
+  }
+}

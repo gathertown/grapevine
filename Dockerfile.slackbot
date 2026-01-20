@@ -1,0 +1,46 @@
+# syntax=docker/dockerfile:1
+# check=skip=InvalidDefaultArgInFrom # Handled by scripts.
+ARG NODE_VERSION
+FROM node:${NODE_VERSION}-slim 
+
+# Disable Nx daemon for Docker builds
+ENV NX_DAEMON=false
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Enable corepack for Yarn
+RUN corepack enable
+
+# Set working directory
+WORKDIR /app
+
+# Copy Yarn configuration and workspace package files first for better caching
+COPY js-services/ ./
+
+# Install workspace dependencies with Yarn
+RUN --mount=type=cache,target=/root/.yarn \
+    yarn workspaces focus @corporate-context/slack-bot @corporate-context/js-services
+
+# Run linting before build to fail fast on lint errors (includes dependencies via nx dependsOn)
+RUN yarn nx run slack-bot:lint
+
+# Build with nx (dependencies are built automatically)
+RUN --mount=type=cache,target=/app/.nx/cache \
+    yarn nx build slack-bot
+
+# Set environment variables
+ENV NODE_ENV=production
+
+# Switch to non-root user
+USER node
+
+# Health check (liveness)
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:8000/health/live || exit 1
+
+# Run the slackbot service
+CMD ["node", "slack-bot/dist/src/index.js"]

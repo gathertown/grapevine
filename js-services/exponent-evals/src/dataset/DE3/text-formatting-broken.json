@@ -1,0 +1,13 @@
+{
+  "id": "text-formatting-broken",
+  "type": "ticket",
+  "sourceDescription": "this Linear ticket",
+  "sourceContent": null,
+  "operation": {
+    "action": "CREATE",
+    "createData": {
+      "title": "Text formatting tools is broken",
+      "description": "Write some text such as Yep, definitely a bug\n\nSelect this range (notice space placement): Yep,[ definitely a] bug\n\nCmd-B to bold. Notice that it's bolded in the input.\n\nSubmit message. Notice that it's not bolded there and instead has broken markdown."
+    }
+  }
+}

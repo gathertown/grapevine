@@ -1,0 +1,140 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      # We use a "queue" branch, which is always a linear history from
+      # `main` since we end up pushing a ephemeral commit for Kustomize
+      # image hashes to the actual `prod` branch.
+      - 'deploy-queue/prod'
+      - 'deploy-queue-hotfix/prod'
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false # We only want to run one at a time.
+
+jobs:
+  get-status:
+    runs-on: ubuntu-latest
+    outputs:
+      should-deploy: ${{ steps.status.outputs.should-deploy }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # Need the full history to determine if we have a merge commit or not.
+      - name: 'Skip if initial deploy commit [HOTFIX]'
+        id: status
+        env:
+          REF_NAME: ${{ github.ref_name }}
+        run: |-
+          # If we're not a hotfix, we should deploy.
+          should_deploy="false"
+          if ! [[ "$REF_NAME" == deploy-queue-hotfix/* ]]; then
+            echo "Hotfix not detected"
+            should_deploy="true"
+          else
+            # Otherwise, if the top commit is a "deploy:" commit and
+            # we're a hotfix, this implies the branch was freshly
+            # committed. We shouldn't deploy. Inverse check here.
+            commit_message=$(git log -1 --format='%s')
+            if ! [[ "$commit_message" == deploy:* ]]; then
+              should_deploy="true"
+            fi
+          fi
+
+          tee -a "$GITHUB_OUTPUT" <<< "should-deploy=$should_deploy"
+
+  build-docker-image:
+    needs: [get-status]
+    uses: ./.github/workflows/build-docker-images.yaml
+    if: ${{ startsWith(github.ref_name, 'deploy-queue-hotfix/') && needs.get-status.outputs.should-deploy == 'true' }}
+    with:
+      push: true
+      cache-key: ${{ github.ref_name }}
+      upload-s3-assets: true
+    secrets: inherit
+
+  deploy:
+    needs: [get-status, build-docker-image]
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      # Needed for writing to the `prod` branch and to create releases.
+      contents: write
+
+    # Hotfixes need the docker image build step, but regular deploys do
+    # not, so we allow it to be skipped. The conditions are handled by
+    # that job.
+    if: ${{ (!failure() && !cancelled()) && needs.get-status.outputs.should-deploy == 'true' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # Need the full history to determine if we have a merge commit or not.
+          # Allows us to push to the `prod` branch as per our branch
+          # ruleset:
+          # https://github.com/gathertown/corporate-context/settings/rules/9141306
+          ssh-key: ${{ secrets.DEPLOY_PRODUCTION_DEPLOY_KEY }}
+
+      - uses: ./.github/actions/setup-tools
+        with:
+          github_token: ${{ github.token }}
+
+      - name: Extract SHA for deployment
+        id: sha
+        run: |-
+          # Get the first non-merge commit SHA.
+          SHA=$(git log --no-merges -1 --format='%H')
+          echo "full=$SHA"
+          echo "short=$(cut -c1-10 <<< "$SHA")" >> "$GITHUB_OUTPUT"
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_TO_ASSUME }}
+
+      - name: Update kubeconfig
+        run: aws eks update-kubeconfig --region us-east-1 --name gather-ai-aws-prod-us-east-1-a --alias gather-ai-aws-prod-us-east-1-a
+
+      # Updates the 'prod' branch to contain our ephemeral commit with
+      # the updated kustomize image hashes.
+      - uses: ./.github/actions/commit-images
+        with:
+          environment: prod
+          commit_sha_short: ${{ steps.sha.outputs.short }}
+
+      - name: Deploy HubSpot
+        uses: ./.github/actions/hubspot
+        with:
+          project_dir: 'connector-apps/hubspot/production'
+          personal_access_key: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
+          account_id: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SHORT_SHA: ${{ steps.sha.outputs.short }}
+          FULL_SHA: ${{ steps.sha.outputs.full }}
+          EPHEMERAL_FULL_SHA: ${{ github.sha }}
+        run: |
+          gh release create "prod-$SHORT_SHA" \
+            --title "Production Release - $SHORT_SHA" \
+            --target "$FULL_SHA" \
+            --notes "$(cat <<'EOF'
+          🚀 **Production Deployment**
+
+          **Commit SHA:** \`$FULL_SHA\`
+          **Kustomize SHA:** \`$EPHEMERAL_FULL_SHA\`
+
+          **Production Endpoints:**
+          - 🌐 App: https://app.getgrapevine.ai
+          - 🔌 API: https://mcp.getgrapevine.ai
+          - 📥 Ingest: https://*.ingest.getgrapevine.ai
+          EOF
+          )"

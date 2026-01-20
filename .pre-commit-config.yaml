@@ -1,0 +1,51 @@
+fail_fast: true
+repos:
+  - repo: local
+    hooks:
+      # Python hooks (optimized with conditional execution)
+      - id: check-uv
+        name: check-uv
+        entry: sh -c 'if git diff --cached --name-only | grep -q "\.py$"; then ./scripts/check-uv.sh echo "Dependencies check passed"; else echo "⏭️ Skipping UV check - no Python files changed"; fi'
+        language: system
+        always_run: true
+        pass_filenames: false
+      - id: ruff-fix
+        name: ruff-fix
+        entry: ./scripts/ruff-fix-wrapper.sh
+        language: system
+        types: [python]
+        exclude: ^src/generated/
+      - id: ruff-format
+        name: ruff-format
+        entry: ./scripts/ruff-format-wrapper.sh
+        language: system
+        types: [python]
+        exclude: ^src/generated/
+      - id: ruff-check
+        name: ruff-check
+        entry: uv run ruff check
+        language: system
+        types: [python]
+        exclude: ^src/generated/
+      # JavaScript hooks (optimized with parallel execution)
+      - id: js-format
+        name: js-format
+        entry: ./scripts/js-format-wrapper.sh
+        language: system
+        types_or: [javascript, jsx, ts, tsx, json]
+        files: ^js-services/
+        pass_filenames: false
+      - id: js-lint
+        name: js-lint
+        entry: sh -c 'cd js-services && NX_TUI=false yarn nx run-many --target=lint-fix --all'
+        language: system
+        types_or: [javascript, jsx, ts, tsx]
+        files: ^js-services/
+        pass_filenames: false
+      - id: js-build-and-typecheck
+        name: js-build-and-typecheck
+        entry: sh -c 'cd js-services && NX_TUI=false yarn nx run-many --target=build --all'
+        language: system
+        types_or: [javascript, jsx, ts, tsx]
+        files: ^js-services/
+        pass_filenames: false

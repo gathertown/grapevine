@@ -1,0 +1,119 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: index-worker
+  namespace: grapevine-workers
+  annotations:
+    reloader.stakater.com/auto: 'true'
+  labels:
+    app.kubernetes.io/name: index-worker
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 50%
+      maxSurge: 50%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: index-worker
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: index-worker
+    spec:
+      terminationGracePeriodSeconds: 30 # allow for graceful shutdown, e.g. release in-progress jobs
+      serviceAccountName: index-worker
+      imagePullSecrets:
+        - name: priv-docker-registry
+      containers:
+        - name: index-worker
+          image: REGISTRY/grapevine-index-worker:latest
+          envFrom:
+            - secretRef:
+                name: index-worker-secrets
+          resources:
+            requests:
+              # indexing is often spent waiting for e.g. openAI embedding requests to complete
+              # we also only pull 1 message off the queue at a time for now
+              cpu: 200m
+              memory: '1Gi'
+            limits:
+              cpu: '2'
+              memory: '8Gi'
+          ports:
+            - containerPort: 8081
+              name: http
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: 8081
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: 8081
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 10
+            failureThreshold: 3
+          securityContext:
+            runAsUser: 1000
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - all
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: index-worker
+  namespace: grapevine-workers
+  labels:
+    app.kubernetes.io/name: index-worker
+spec:
+  minAvailable: 60%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: index-worker
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: index-worker
+  namespace: grapevine-workers
+  labels:
+    app.kubernetes.io/name: index-worker
+spec:
+  selector:
+    app.kubernetes.io/name: index-worker
+  ports:
+    - name: http
+      port: 8081
+      targetPort: 8081
+      protocol: TCP
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: index-worker-metrics
+  namespace: grapevine-workers
+  labels:
+    app.kubernetes.io/name: index-worker
+spec:
+  endpoints:
+    - port: metrics
+      path: /metrics
+      interval: 30s
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: index-worker
+  namespaceSelector:
+    matchNames:
+      - grapevine-workers

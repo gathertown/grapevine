@@ -1,0 +1,10 @@
+{
+  "decision": "CHANGES_REQUESTED",
+  "comments": [
+    {
+      "path": "modules/gather-game-logic/src/models/SpaceSettings.ts",
+      "line": 44,
+      "body": "Remove the `@ga.computed` decorator from lines 44 and 54. Neither of these getters need to be cached with a computed, because they're very cheap to compute. See related documentation: [Deciding what should be a Computed](https://www.notion.so/gathertown/MobX-Gather-160bc7eac3d180bbab49eb3082224676?#169bc7eac3d180feb941c4e13789a051)"
+    }
+  ]
+}

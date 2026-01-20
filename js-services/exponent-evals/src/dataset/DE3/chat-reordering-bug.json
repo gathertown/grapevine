@@ -1,0 +1,13 @@
+{
+  "id": "chat-reordering-bug",
+  "type": "ticket",
+  "sourceDescription": "this Linear ticket",
+  "sourceContent": null,
+  "operation": {
+    "action": "CREATE",
+    "createData": {
+      "title": "Fix reordering chat bug",
+      "description": "We've experienced issues with chat messages replaying and reordering when the server stability wavered, usually during server deploys. The messages display multiple times on top of each other"
+    }
+  }
+}

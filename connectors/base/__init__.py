@@ -1,0 +1,116 @@
+"""Base classes for connectors - transformers, extractors, pruners, documents, and chunks."""
+
+# Import base classes first (no circular dependency)
+# Import artifact base (consolidated module with artifacts and entity artifacts)
+from connectors.base.base_chunk import (
+    TURBOPUFFER_CHUNK_SCHEMA,
+    BaseChunk,
+    TurbopufferChunkKey,
+    compute_chunk_content_hash,
+    compute_deterministic_chunk_id,
+)
+from connectors.base.base_citation_resolver import BaseCitationResolver
+from connectors.base.base_document import BaseDocument
+from connectors.base.base_extractor import BaseExtractor, TriggerIndexingCallback
+from connectors.base.base_ingest_artifact import (
+    ArtifactEntity,
+    BaseIngestArtifact,
+    get_attio_company_entity_id,
+    get_attio_deal_entity_id,
+    get_attio_note_entity_id,
+    get_attio_person_entity_id,
+    get_attio_task_entity_id,
+    get_confluence_page_entity_id,
+    get_confluence_space_entity_id,
+    get_custom_collection_item_entity_id,
+    get_gather_chat_message_entity_id,
+    get_gather_meeting_entity_id,
+    get_gather_meeting_memo_entity_id,
+    get_gather_meeting_transcript_entity_id,
+    get_github_file_entity_id,
+    get_github_pr_entity_id,
+    get_google_drive_file_entity_id,
+    get_google_drive_shared_drive_entity_id,
+    get_google_drive_user_entity_id,
+    get_google_email_message_entity_id,
+    get_hubspot_company_entity_id,
+    get_hubspot_contact_entity_id,
+    get_hubspot_deal_entity_id,
+    get_hubspot_ticket_entity_id,
+    get_jira_issue_entity_id,
+    get_jira_project_entity_id,
+    get_jira_user_entity_id,
+    get_linear_issue_entity_id,
+    get_monday_item_entity_id,
+    get_notion_page_entity_id,
+    get_notion_user_entity_id,
+    get_salesforce_object_entity_id,
+    get_slack_channel_entity_id,
+    get_slack_message_entity_id,
+    get_slack_team_entity_id,
+    get_slack_user_entity_id,
+    get_trello_board_entity_id,
+    get_trello_card_entity_id,
+    get_trello_workspace_entity_id,
+)
+from connectors.base.base_pruner import BasePruner
+from connectors.base.base_transformer import BaseTransformer
+
+# NOTE: All artifacts inherit from BaseIngestArtifact
+
+__all__ = [
+    # Base classes
+    "BaseChunk",
+    "BaseCitationResolver",
+    "BaseDocument",
+    "BaseExtractor",
+    "BasePruner",
+    "BaseTransformer",
+    "TriggerIndexingCallback",
+    "TURBOPUFFER_CHUNK_SCHEMA",
+    "TurbopufferChunkKey",
+    # Chunk utilities
+    "compute_chunk_content_hash",
+    "compute_deterministic_chunk_id",
+    # Artifact models
+    "BaseIngestArtifact",
+    "ArtifactEntity",
+    # Entity ID functions
+    "get_attio_company_entity_id",
+    "get_attio_deal_entity_id",
+    "get_attio_note_entity_id",
+    "get_attio_person_entity_id",
+    "get_attio_task_entity_id",
+    "get_confluence_page_entity_id",
+    "get_confluence_space_entity_id",
+    "get_custom_collection_item_entity_id",
+    "get_gather_chat_message_entity_id",
+    "get_gather_meeting_entity_id",
+    "get_gather_meeting_memo_entity_id",
+    "get_gather_meeting_transcript_entity_id",
+    "get_github_file_entity_id",
+    "get_github_pr_entity_id",
+    "get_google_drive_file_entity_id",
+    "get_google_drive_shared_drive_entity_id",
+    "get_google_drive_user_entity_id",
+    "get_google_email_message_entity_id",
+    "get_hubspot_company_entity_id",
+    "get_hubspot_contact_entity_id",
+    "get_hubspot_deal_entity_id",
+    "get_hubspot_ticket_entity_id",
+    "get_jira_issue_entity_id",
+    "get_jira_project_entity_id",
+    "get_jira_user_entity_id",
+    "get_linear_issue_entity_id",
+    "get_monday_item_entity_id",
+    "get_notion_page_entity_id",
+    "get_notion_user_entity_id",
+    "get_salesforce_object_entity_id",
+    "get_slack_channel_entity_id",
+    "get_slack_message_entity_id",
+    "get_slack_team_entity_id",
+    "get_slack_user_entity_id",
+    "get_trello_board_entity_id",
+    "get_trello_card_entity_id",
+    "get_trello_workspace_entity_id",
+]

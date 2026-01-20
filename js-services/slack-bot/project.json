@@ -1,0 +1,56 @@
+{
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "name": "slack-bot",
+  "sourceRoot": "slack-bot/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "slack-bot/dist",
+        "main": "slack-bot/src/index.ts",
+        "tsConfig": "slack-bot/tsconfig.json",
+        "assets": [],
+        "generateExportsField": false,
+        "swcrc": ".swcrc",
+        "skipTypeCheck": false
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "sourceMap": true
+        }
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "command": "jest",
+        "cwd": "slack-bot"
+      }
+    },
+    "test:coverage": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "jest --coverage",
+        "cwd": "slack-bot"
+      },
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"]
+    },
+    "test-prefilter": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx tsx scripts/test-prefilter-accuracy.ts",
+        "cwd": "slack-bot"
+      }
+    },
+    "type-check": {},
+    "lint": {},
+    "lint-fix": {},
+    "format": {},
+    "format:check": {},
+    "serve:dev": {}
+  }
+}

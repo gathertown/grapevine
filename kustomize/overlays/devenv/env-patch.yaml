@@ -1,0 +1,127 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grapevine-api
+  namespace: grapevine-services
+spec:
+  template:
+    spec:
+      containers:
+        - name: grapevine-api
+          envFrom:
+            - secretRef:
+                name: grapevine-api-secrets
+            - configMapRef:
+                name: grapevine-shared-env-vars
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grapevine-app
+  namespace: grapevine-services
+spec:
+  template:
+    spec:
+      containers:
+        - name: grapevine-app
+          envFrom:
+            - secretRef:
+                name: grapevine-app-secrets
+            - configMapRef:
+                name: grapevine-shared-env-vars
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ingest-gatekeeper
+  namespace: grapevine-services
+spec:
+  template:
+    spec:
+      containers:
+        - name: ingest-gatekeeper
+          envFrom:
+            - secretRef:
+                name: ingest-gatekeeper-secrets
+            - configMapRef:
+                name: grapevine-shared-env-vars
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: steward
+  namespace: grapevine-services
+spec:
+  template:
+    spec:
+      containers:
+        - name: steward
+          envFrom:
+            - secretRef:
+                name: steward-secrets
+            - configMapRef:
+                name: grapevine-shared-env-vars
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ingest-worker
+  namespace: grapevine-workers
+spec:
+  template:
+    spec:
+      containers:
+        - name: ingest-worker
+          envFrom:
+            - secretRef:
+                name: ingest-worker-secrets
+            - configMapRef:
+                name: grapevine-shared-env-vars
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cron-worker
+  namespace: grapevine-workers
+spec:
+  template:
+    spec:
+      containers:
+        - name: cron-worker
+          envFrom:
+            - secretRef:
+                name: cron-worker-secrets
+            - configMapRef:
+                name: grapevine-shared-env-vars
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: index-worker
+  namespace: grapevine-workers
+spec:
+  template:
+    spec:
+      containers:
+        - name: index-worker
+          envFrom:
+            - secretRef:
+                name: index-worker-secrets
+            - configMapRef:
+                name: grapevine-shared-env-vars
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: slackbot
+  namespace: grapevine-workers
+spec:
+  template:
+    spec:
+      containers:
+        - name: slackbot
+          envFrom:
+            - secretRef:
+                name: slackbot-secrets
+            - configMapRef:
+                name: grapevine-shared-env-vars

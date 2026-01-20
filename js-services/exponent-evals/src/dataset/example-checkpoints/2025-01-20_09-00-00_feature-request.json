@@ -1,0 +1,7 @@
+{
+  "title": "Morning standup",
+  "type": "meeting",
+  "date": "2025-01-20",
+  "content": "Mike: I'm going to build out the API rate limiting this week. We've had a few customers hit our limits and the error messages are confusing.\n\nSarah: That sounds important. Do you have a design doc?\n\nMike: Yeah, I'll share it today. Planning to add exponential backoff suggestions in the error response and a dashboard widget showing usage.\n\nSarah: Perfect, let me know if you need frontend help with the dashboard.",
+  "attendees": ["mike", "sarah"]
+}

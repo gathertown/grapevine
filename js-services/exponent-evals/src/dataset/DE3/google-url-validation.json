@@ -1,0 +1,13 @@
+{
+  "id": "google-url-validation",
+  "type": "ticket",
+  "sourceDescription": "this Linear ticket",
+  "sourceContent": null,
+  "operation": {
+    "action": "CREATE",
+    "createData": {
+      "title": "https://google.com doesn't show as a valid link in chat",
+      "description": "but if you paste https://google.com into the url bar it is a valid link (do we match on www)?"
+    }
+  }
+}

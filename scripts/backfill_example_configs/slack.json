@@ -1,0 +1,4 @@
+{
+  "s3_uri": "s3://bucket-name/tenant-id/slack-export.zip",
+  "_comment": "Replace bucket-name and tenant-id with actual values. The S3 URI should point to a Slack export ZIP file."
+}

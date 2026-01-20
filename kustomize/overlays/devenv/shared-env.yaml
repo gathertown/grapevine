@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grapevine-shared-env-vars
+  namespace: __REPLACED_BY_ARGOCD__
+data:
+  BASE_DOMAIN: "__REPLACED_BY_ARGOCD__"
+  FRONTEND_URL: "__REPLACED_BY_ARGOCD__"
+  MCP_BASE_URL: "__REPLACED_BY_ARGOCD__"
+  VITE_BASE_DOMAIN: "__REPLACED_BY_ARGOCD__"
+
+  AWS_ENDPOINT_URL: "http://localstack:4566"
+  AWS_ACCESS_KEY_ID: "test"
+  AWS_SECRET_ACCESS_KEY: "test"
+  AWS_DEFAULT_REGION: "us-east-1"
+  AWS_REGION: "us-east-1"
+  INDEX_JOBS_QUEUE_ARN: "arn:aws:sqs:us-east-1:000000000000:corporate-context-index-jobs.fifo"
+  INGEST_JOBS_QUEUE_ARN: "arn:aws:sqs:us-east-1:000000000000:corporate-context-ingest-jobs.fifo"
+  SLACK_JOBS_QUEUE_ARN: "arn:aws:sqs:us-east-1:000000000000:corporate-context-slack-jobs.fifo"

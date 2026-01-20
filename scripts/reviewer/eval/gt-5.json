@@ -1,0 +1,10 @@
+{
+  "decision": "CHANGES_REQUESTED",
+  "comments": [
+    {
+      "path": "modules/gather-game-logic/src/framework/GameLogicBuilder/StateFilterManager.ts",
+      "line": 539,
+      "body": "Moving `isVisibleSafe_INTERNAL()` up here ensures it will always run, even if `isAlwaysVisible` is true. This means the perf-critical `modelChanged` method, which gets invoked from a `collectionSideEffect`, will always register all observables in `isVisibleSafe_INTERNAL` as dependencies of the `collectionSideEffect`. Avoid doing this unnecessarily, since StateFilterManager is an extremely perf-sensitive file and has caused many performance issues in the past."
+    }
+  ]
+}

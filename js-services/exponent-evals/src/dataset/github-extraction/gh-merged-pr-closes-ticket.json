@@ -1,0 +1,20 @@
+{
+  "_comment": {
+    "description": "Test: Merged PR should close (mark as done) the matching Linear ticket",
+    "expected": "UPDATE the issue with state 'done' since PR is merged",
+    "LINEAR_TICKET_TO_CREATE": {
+      "title": "Search results take 10+ seconds to load",
+      "description": "Users are complaining that search is extremely slow. The search results page spins for 10-15 seconds before showing anything. This is causing users to abandon searches and impacting productivity."
+    }
+  },
+  "id": "gh-merged-pr-closes-ticket",
+  "title": "Optimize search query with proper indexing",
+  "date": "2025-01-25",
+  "type": "github",
+  "author": "devuser",
+  "repository": "gathertown/corporate-context",
+  "prNumber": 215,
+  "content": "Repository: gathertown/corporate-context\nPull Request: #215 - Optimize search query with proper indexing\nURL: https://github.com/gathertown/corporate-context/pull/215\nStatus: merged\nAuthor: devuser\n\nDescription:\nSearch was doing a full table scan on every query. Added composite index on (tenant_id, created_at, content_vector) and rewrote the query to use the index properly.\n\nBefore: ~12 seconds average\nAfter: ~200ms average\n\nChanges:\n- Added migration for new composite index\n- Refactored searchRepository to use index hints\n- Added query plan analysis to monitoring\n\nActivity:\n\n2025-01-25 09:00:00 devuser opened pull request\n2025-01-25 10:00:00 karenying commented: Nice improvement! Can we add monitoring for query times?\n2025-01-25 10:30:00 devuser pushed commit: Add query time monitoring\n2025-01-25 11:00:00 karenying approved\n2025-01-25 11:15:00 devuser merged pull request",
+  "participants": [],
+  "files": []
+}

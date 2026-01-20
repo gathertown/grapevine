@@ -1,0 +1,10 @@
+{
+  "decision": "CHANGES_REQUESTED",
+  "comments": [
+    {
+      "path": "modules/gather-state-sync/src/Model.ts",
+      "line": 1039,
+      "body": "Use an instance method instead of an auto-bound function. The `Model` class is used heavily in the Game Server, and auto-binding this debug function for each model instance is unnecessary performance overhead, as described in [Perf in GS Internals](https://www.notion.so/gathertown/Perf-in-GS-Internals-19fbc7eac3d1802dbf0ecd39a2c245ee?#19fbc7eac3d18073a509e06aebaffa1c)"
+    }
+  ]
+}

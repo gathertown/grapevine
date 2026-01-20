@@ -1,0 +1,105 @@
+{
+  "output": {
+    "operations": [
+      {
+        "action": "UPDATE",
+        "confidence": 85,
+        "reasoning": "Karen asked David to 'hook up the GitHub and meeting extraction updates to Exponent ambient feedback' and David confirmed. This extends the existing Slack notifications issue which already covers artifact/ticket updates. Adding David's progress and the GitHub/meeting scope.",
+        "updateData": {
+          "issueId": "issue-dec1-slack-notifications",
+          "description": "Restore Slack channel(s) that log artifacts and their resulting Linear ticket creations/updates for monitoring.\n\n- Reconnect or reconfigure notification pipeline (lost during porting)\n- Include meeting, Slack, and GitHub artifact events\n- Ensure links to artifact and Linear issue are included\n- Validate on Project Exponent and Grapevine workspaces\n\n**Update (Dec 2 standup):**\n- Post a summary of what was extracted from every recording to aid debugging\n- Choose target channel(s) and message format (include Linear links)\n- Ensure idempotency (avoid duplicate posts for re-runs)\n- Include error details when extraction fails\n\n**Update (Dec 3 standup):**\n- David: Code for posting meeting extraction updates to team channels is written but unverified\n- Action: Hook up GitHub and meeting extraction updates to Exponent ambient feedback\n- Action: Wire the Slack channel ID constant/variable for the target channel\n- Action: Test end-to-end on staging using a test meeting recording\n- Coordinate with Karen on channel assignment if needed"
+        }
+      },
+      {
+        "action": "CREATE",
+        "confidence": 84,
+        "reasoning": "Karen noted Slack→Linear people mapping was ported but failed in at least one case and committed to 'look into that'. Searched Linear with Slack mapping and Linear mapping; no results. Creating a new issue.",
+        "createData": {
+          "title": "Investigate and fix Slack-to-Linear people mapping failure",
+          "description": "Diagnose and resolve the incorrect assignee mapping between Slack users and Linear.\n\n- Reproduce the failure case observed\n- Correct mapping logic to ensure proper assignment\n- Add targeted logging/tests to prevent regressions",
+          "teamId": "825a22b2-ce63-46fe-a428-1cecc3f299ae",
+          "assigneeId": null,
+          "priority": null,
+          "dueDate": null
+        }
+      }
+    ]
+  },
+  "input": {
+    "docs": ["2025-12-03_meeting-lk-standup.json"],
+    "linearState": [
+      {
+        "id": "issue-dec1-fake-datasets",
+        "title": "Create fake datasets and end-to-end evals for Slack and meeting transcripts",
+        "description": "Build datasets and E2E evals to measure ambient extraction quality for Slack and meetings.\n\n- Port prior evals from older codebase where useful; fix gaps for current corporate context\n- Meetings are hardest; prioritize accurate, high-coverage cases\n- Enable quick feedback loops; aim for internal readiness this week\n- Coordinate with Karen (quality owner) while Kumail is traveling Wed–Fri",
+        "assigneeId": null
+      },
+      {
+        "id": "issue-dec1-grapevine-qa-failure",
+        "title": "Investigate and fix Grapevine QA stand-up extraction failure",
+        "description": "Debug why Grapevine QA stand-up artifact failed to extract properly.\n\n- Identify root cause of extraction failure\n- Fix the bug and verify extraction works\n- Add monitoring or tests to prevent recurrence",
+        "assigneeId": null
+      },
+      {
+        "id": "issue-dec1-slack-notifications",
+        "title": "Re-enable Slack notifications that post every artifact and resulting ticket update",
+        "description": "Restore Slack channel(s) that log artifacts and their resulting Linear ticket creations/updates for monitoring.\n\n- Reconnect or reconfigure notification pipeline (lost during porting)\n- Include meeting, Slack, and GitHub artifact events\n- Ensure links to artifact and Linear issue are included\n- Validate on Project Exponent and Grapevine workspaces\n\n**Update (Dec 2 standup):**\n- Post a summary of what was extracted from every recording to aid debugging\n- Choose target channel(s) and message format (include Linear links)\n- Ensure idempotency (avoid duplicate posts for re-runs)\n- Include error details when extraction fails",
+        "assigneeId": null
+      },
+      {
+        "id": "issue-dec1-ask-agent-separate",
+        "title": "Separate Ask-Agent code from main eval loop to keep tests fast",
+        "description": "Refactor evals so Ask-Agent usage runs in a separate path to avoid slowing the core eval loop.\n\n- Maintain existing fast, tool-call-only eval loop\n- Introduce a separate module/workflow for slow Ask-Agent-based experiments\n- Provide simple toggles/config to run either path\n- Add tests to prevent regressions in eval run times",
+        "assigneeId": null
+      },
+      {
+        "id": "issue-dec1-ticket-quality-experiments",
+        "title": "Add experimental code/tests for ticket-quality experiments without slowing core evals",
+        "description": "Build experimental harness to test what makes a 'good' engineering ticket for coding agents.\n\n- Add experimental code and tests for ticket-quality experiments\n- Keep separate from core eval loop to avoid slowing it down\n- Test different ticket formats with coding agents to measure success rate",
+        "assigneeId": null
+      },
+      {
+        "id": "issue-dec1-notion-processor",
+        "title": "Implement Notion document processor and integrate into extraction pipeline",
+        "description": "Add Notion doc artifact support: processor + prompt + pipeline integration.\n\n- Create Notion document processor and prompting strategy\n- Integrate into ambient extraction routing alongside Slack/Meetings/GitHub\n- Add eval coverage for Notion docs; future work may pair docs with meeting transcripts\n- Provide minimal scaffolding with room for iteration",
+        "assigneeId": null
+      },
+      {
+        "id": "issue-dec1-ingestion-race",
+        "title": "Resolve ingestion race by combining Grapevine search with Linear API to avoid duplicate tickets",
+        "description": "Mitigate duplication during ambient extraction caused by ingestion lag.\n\n- When searching for existing tickets, also query Linear API (not just Grapevine DB)\n- Evaluate/augment existing 'top 20 most recent tickets' heuristic\n- Target rapid Slack thread messages creating multiple duplicates\n- Add tests and monitoring to validate reduction in duplicates",
+        "assigneeId": null
+      },
+      {
+        "id": "issue-dec1-eval-datapoint-ui",
+        "title": "Build quick UI/shortcut to log live artifacts as eval datapoints (needs decision)",
+        "description": "Provide an easy way to convert a live artifact (Slack message, meeting, PR) into an eval datapoint.\n\n- Single-click or shortcut from artifact to create eval record\n- Capture current Linear board state and link expected outputs; ground truth may still need manual label\n- Goal: speed up coverage of real-world issues for future regressions\n- Status: undecided/proposed; confirm priority and owner before implementation",
+        "assigneeId": null
+      },
+      {
+        "id": "issue-dec2-routing-bug",
+        "title": "Investigate Exponent board routing bug showing unrelated issues",
+        "description": "Investigate why unrelated issues are appearing on the Exponent board (e.g., 'create intercom connector' unexpectedly on Exponent mirror).\n\n- Verify routing/search scoping to the selected team only\n- Karen: review logs to trace how the issue was added to the board\n- Reproduce in staging if possible and identify faulty filters/rules\n- Add diagnostics to make future occurrences easier to debug",
+        "assigneeId": null
+      },
+      {
+        "id": "issue-dec2-github-pr-links",
+        "title": "Auto-link GitHub PRs to Linear tickets on state changes",
+        "description": "When a Linear issue transitions to In Review or is Merged, automatically link the corresponding GitHub PR to the Linear issue for context.\n\n- Add linking in the Linear operation that handles state updates\n- Include PR URL in the Linear issue (description/comment/attachment)\n- Optionally post a Slack update on the ticket with PR link\n- Ensure behavior is scoped to relevant teams/projects only",
+        "assigneeId": null
+      },
+      {
+        "id": "issue-dec2-async-enrichment",
+        "title": "Create async enrichment job for ambient extraction using triage prompt",
+        "description": "Build a separate async job to enrich extracted tasks with more human-friendly details using the triage bot's quality prompt, keeping initial extraction fast.\n\n- Keep extraction path fast; run enrichment asynchronously post-extraction\n- Consider Aspasia-fast; target ~20–30s runtime budget\n- Kumail: set up initial stub; Johnny: take over and tune starting tomorrow\n- Avoid blocking demo flow; ensure graceful fallback if enrichment fails",
+        "assigneeId": null
+      },
+      {
+        "id": "issue-dec2-admin-tasks-prompt",
+        "title": "Refine prompts to avoid administrative tasks in ambient extraction",
+        "description": "Reduce/avoid extraction of purely administrative tasks in ambient extraction.\n\n- Tune prompt language to explicitly exclude admin-only tasks\n- Incorporate the two Slack examples from today's standup as negative cases\n- Re-test on connectors channel examples that previously slipped through\n- Add eval cases to ensure this doesn't regress over time",
+        "assigneeId": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,6 @@
+import * as React from "react";
+import type { SVGProps } from "react";
+import { memo } from "react";
+const SvgGift = (props: SVGProps<SVGSVGElement>) => <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" {...props}><path d="M20,8h-16c-0.552,0 -1,0.448 -1,1v2c0,0.552 0.448,1 1,1h16c0.552,0 1,-0.448 1,-1v-2c0,-0.552 -0.448,-1 -1,-1Z" strokeLinecap="round" strokeWidth={1.5} fillRule="evenodd" stroke="currentColor" fill="none" strokeLinejoin="round" /><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12,21v-13" /><g strokeLinecap="round" strokeWidth={1.5} stroke="currentColor" fill="none" strokeLinejoin="round"><path d="M15.696,6.612c-1.078,1.122 -2.775,1.388 -3.597,1.388" /><path d="M12.099,8c0,0 -0.494,-3.116 0.721,-4.38" /><path d="M15.696,6.612c0.794,-0.826 0.794,-2.166 0,-2.992c-0.794,-0.826 -2.081,-0.826 -2.875,0" /><path d="M8.304,6.612c1.078,1.122 2.775,1.388 3.597,1.388" /><path d="M11.901,8c0,0 0.494,-3.116 -0.721,-4.38" /><path d="M8.304,6.612c-0.794,-0.826 -0.794,-2.166 0,-2.992c0.794,-0.826 2.081,-0.826 2.875,0" /><path fillRule="evenodd" d="M19,12v8c0,0.552 -0.448,1 -1,1h-12c-0.552,0 -1,-0.448 -1,-1v-8" /></g><path fill="none" d="M0,0h24v24h-24Z" /></svg>;
+const Memo = memo(SvgGift);
+export default Memo;

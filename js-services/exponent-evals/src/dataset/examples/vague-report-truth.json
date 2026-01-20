@@ -1,0 +1,14 @@
+{
+  "operations": [
+    {
+      "action": "SKIP",
+      "skipData": {
+        "title": "User reported an issue",
+        "reason": "Report is too vague. User said 'something doesn't work' without specifying which feature, error messages, or reproduction steps. Cannot create meaningful ticket without these details.",
+        "issueId": null
+      },
+      "confidence": 100,
+      "reasoning": "Completely non-actionable report. No information about what failed, when, or how to reproduce."
+    }
+  ]
+}

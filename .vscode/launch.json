@@ -1,0 +1,22 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Jest Tests",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/js-services/node_modules/.bin/jest",
+      "args": [
+        "--runInBand",
+        "--config",
+        "${workspaceFolder}/js-services/admin-backend/jest.config.cjs"
+      ],
+      "cwd": "${workspaceFolder}/js-services/admin-backend",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "env": {
+        "CI": "true"
+      }
+    }
+  ]
+}

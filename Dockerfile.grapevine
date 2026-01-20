@@ -1,0 +1,138 @@
+# syntax=docker/dockerfile:1
+# check=skip=InvalidDefaultArgInFrom # Handled by scripts.
+ARG NODE_VERSION
+FROM node:${NODE_VERSION}-slim
+
+# Build arguments for frontend environment variables
+ARG VITE_AMPLITUDE_API_KEY
+ENV VITE_AMPLITUDE_API_KEY=$VITE_AMPLITUDE_API_KEY
+
+ARG VITE_POSTHOG_API_KEY
+ENV VITE_POSTHOG_API_KEY=$VITE_POSTHOG_API_KEY
+
+ARG VITE_POSTHOG_HOST
+ENV VITE_POSTHOG_HOST=$VITE_POSTHOG_HOST
+
+ARG VITE_NEW_RELIC_LICENSE_KEY
+ENV VITE_NEW_RELIC_LICENSE_KEY=$VITE_NEW_RELIC_LICENSE_KEY
+
+ARG VITE_NEW_RELIC_APPLICATION_ID
+ENV VITE_NEW_RELIC_APPLICATION_ID=$VITE_NEW_RELIC_APPLICATION_ID
+
+ARG VITE_NEW_RELIC_ACCOUNT_ID
+ENV VITE_NEW_RELIC_ACCOUNT_ID=$VITE_NEW_RELIC_ACCOUNT_ID
+
+ARG VITE_NEW_RELIC_TRUST_KEY
+ENV VITE_NEW_RELIC_TRUST_KEY=$VITE_NEW_RELIC_TRUST_KEY
+
+ARG VITE_NEW_RELIC_AGENT_ID
+ENV VITE_NEW_RELIC_AGENT_ID=$VITE_NEW_RELIC_AGENT_ID
+
+ARG VITE_WORKOS_CLIENT_ID
+ENV VITE_WORKOS_CLIENT_ID=$VITE_WORKOS_CLIENT_ID
+
+# SSO/frontend runtime configuration baked at build time
+ARG VITE_SSO_ALLOWED_PARENT_ORIGINS
+ENV VITE_SSO_ALLOWED_PARENT_ORIGINS=$VITE_SSO_ALLOWED_PARENT_ORIGINS
+
+# Optional WorkOS overrides (defaults exist in code)
+ARG VITE_WORKOS_API_HOSTNAME
+ENV VITE_WORKOS_API_HOSTNAME=$VITE_WORKOS_API_HOSTNAME
+
+ARG VITE_WORKOS_REDIRECT_URI
+ENV VITE_WORKOS_REDIRECT_URI=$VITE_WORKOS_REDIRECT_URI
+
+ARG VITE_JIRA_APP_ID
+ENV VITE_JIRA_APP_ID=$VITE_JIRA_APP_ID
+
+ARG VITE_JIRA_APP_ENVIRONMENT_ID
+ENV VITE_JIRA_APP_ENVIRONMENT_ID=$VITE_JIRA_APP_ENVIRONMENT_ID
+
+ARG VITE_JIRA_APP_INSTALLATION_URL
+ENV VITE_JIRA_APP_INSTALLATION_URL=$VITE_JIRA_APP_INSTALLATION_URL
+
+ARG VITE_CONFLUENCE_APP_ID
+ENV VITE_CONFLUENCE_APP_ID=$VITE_CONFLUENCE_APP_ID
+
+ARG VITE_CONFLUENCE_APP_ENVIRONMENT_ID
+ENV VITE_CONFLUENCE_APP_ENVIRONMENT_ID=$VITE_CONFLUENCE_APP_ENVIRONMENT_ID
+
+ARG VITE_CONFLUENCE_APP_INSTALLATION_URL
+ENV VITE_CONFLUENCE_APP_INSTALLATION_URL=$VITE_CONFLUENCE_APP_INSTALLATION_URL
+
+ARG VITE_INTERCOM_CLIENT_ID
+ENV VITE_INTERCOM_CLIENT_ID=$VITE_INTERCOM_CLIENT_ID
+
+# Assets commit SHA for S3/CloudFront asset URLs
+ARG ASSETS_COMMIT_SHA
+ENV ASSETS_COMMIT_SHA=$ASSETS_COMMIT_SHA
+
+# Flag to use pre-built assets instead of building
+ARG USE_PREBUILT_ASSETS=false
+
+# Disable Nx daemon for Docker builds
+ENV NX_DAEMON=false
+
+# Set Node.js memory limit for builds to prevent OOM errors
+ENV NODE_OPTIONS="--max-old-space-size=4096"
+
+# Enable corepack for Yarn
+RUN corepack enable
+
+WORKDIR /app
+
+# Copy Yarn configuration and package files (needed for both build and runtime)
+COPY js-services/ ./
+
+# Copy prebuilt assets if they exist in build context
+# The directory will always exist (created in workflow), but may be empty
+COPY --chown=node:node prebuilt-assets /tmp/prebuilt-assets/
+
+# Build assets only if not using prebuilt assets or if prebuilt assets directory is empty
+RUN if [ "$USE_PREBUILT_ASSETS" != "true" ] || [ -z "$(ls -A /tmp/prebuilt-assets 2>/dev/null)" ] || [ ! -f /tmp/prebuilt-assets/index.html ]; then \
+      # Install all deps inside container for correct arch \
+      yarn workspaces focus @corporate-context/admin-backend @corporate-context/admin-frontend @corporate-context/js-services && \
+      # Run linting before build to fail fast on lint errors (includes dependencies via nx dependsOn) \
+      yarn nx run admin-frontend:lint && \
+      yarn nx run admin-backend:lint && \
+      # Build with nx (builds dependencies automatically) \
+      yarn nx build admin-frontend && \
+      yarn nx build admin-backend && \
+      # Make frontend accessible to backend to serve \
+      mkdir -p /app/admin-backend/dist/public && \
+      cp -r /app/admin-frontend/dist/* /app/admin-backend/dist/public/ && \
+      # Copy the environment config template to the public directory \
+      cp /app/admin-frontend/public/env-config.js /app/admin-backend/dist/public/env-config.js; \
+    else \
+      # When using prebuilt frontend assets, we still need to build admin-backend \
+      # because it contains TypeScript code (server.ts) that must be compiled \
+      # Install dependencies for admin-backend and its dependencies \
+      yarn workspaces focus @corporate-context/admin-backend @corporate-context/js-services && \
+      # Run linting before build to fail fast on lint errors \
+      yarn nx run admin-backend:lint && \
+      # Build admin-backend (compiles TypeScript to JavaScript) \
+      yarn nx build admin-backend && \
+      # Copy prebuilt frontend assets to the final location \
+      mkdir -p /app/admin-backend/dist/public && \
+      cp -r /tmp/prebuilt-assets/* /app/admin-backend/dist/public/; \
+    fi
+
+# Change ownership of the public directory to node user so env-config.js can be modified at runtime
+RUN chown -R node:node /app/admin-backend/dist/public/
+
+# Copy and set up the entrypoint script
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
+# Switch to non-root
+USER node
+
+EXPOSE 5000
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:5002/api/health/live || exit 1
+
+ENV NODE_ENV=production
+
+# Use the entrypoint script to configure environment and start the server
+ENTRYPOINT ["/docker-entrypoint.sh"]

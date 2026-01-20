@@ -1,0 +1,6 @@
+import * as React from "react";
+import type { SVGProps } from "react";
+import { memo } from "react";
+const SvgChevronDownSm = (props: SVGProps<SVGSVGElement>) => <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}><path fillRule="evenodd" clipRule="evenodd" d="M12.5303 13.7803C12.2374 14.0732 11.7626 14.0732 11.4697 13.7803L8.96967 11.2803C8.67678 10.9874 8.67678 10.5126 8.96967 10.2197C9.26256 9.92681 9.73744 9.92681 10.0303 10.2197L12 12.1893L13.9697 10.2197C14.2626 9.92681 14.7374 9.92681 15.0303 10.2197C15.3232 10.5126 15.3232 10.9874 15.0303 11.2803L12.5303 13.7803Z" fill="currentColor" /></svg>;
+const Memo = memo(SvgChevronDownSm);
+export default Memo;

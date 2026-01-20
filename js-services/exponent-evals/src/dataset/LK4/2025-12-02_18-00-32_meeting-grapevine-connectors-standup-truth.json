@@ -1,0 +1,88 @@
+{
+  "output": {
+    "operations": [
+      {
+        "action": "CREATE",
+        "confidence": 90,
+        "reasoning": "Jonathas committed to fixing the webhook refactor break on staging before resuming other work. Clear coding task with urgency.",
+        "createData": {
+          "title": "Fix webhook verification issue impacting all connectors",
+          "description": "Fix the webhook refactor break on staging and notify the team when stable.\n\n- Reproduce failing webhook case on staging\n- Identify and patch the breaking change\n- Verify end-to-end health across connectors\n- Notify team once staging is healthy",
+          "teamId": "825a22b2-ce63-46fe-a428-1cecc3f299ae",
+          "assigneeId": null,
+          "priority": null,
+          "dueDate": null
+        }
+      },
+      {
+        "action": "CREATE",
+        "confidence": 90,
+        "reasoning": "Konrad committed to implementing Zendesk Help Center article syncing with incremental API support. Clear coding task.",
+        "createData": {
+          "title": "Implement Zendesk Help Center article sync",
+          "description": "Add Zendesk Help Center article syncing with incremental behavior.\n\n- Use Zendesk Help Center APIs to fetch articles\n- Implement incremental sync via updated_since timestamp\n- Convert HTML content to Markdown for indexing\n- Validate on staging",
+          "teamId": "825a22b2-ce63-46fe-a428-1cecc3f299ae",
+          "assigneeId": null,
+          "priority": null,
+          "dueDate": null
+        }
+      },
+      {
+        "action": "CREATE",
+        "confidence": 90,
+        "reasoning": "Chandler committed to migrating the platform off legacy connector installations tables. Clear infrastructure/coding task.",
+        "createData": {
+          "title": "Replace legacy connector installations tables",
+          "description": "Migrate platform off legacy installation tables.\n\n- Create/verify new schema and migration plan\n- Write and execute data migration scripts\n- Update application code to use new tables\n- Clean up old tables once stable",
+          "teamId": "825a22b2-ce63-46fe-a428-1cecc3f299ae",
+          "assigneeId": null,
+          "priority": null,
+          "dueDate": null
+        }
+      },
+      {
+        "action": "CREATE",
+        "confidence": 90,
+        "reasoning": "Chandler committed to expanding connector health-check coverage and surfacing status in the admin UI. Clear coding task.",
+        "createData": {
+          "title": "Expand connector health-check coverage and surface status in admin UI",
+          "description": "Broaden health checks and expose connector status in UI.\n\n- Add checks for configuration errors, auth errors, and edge cases\n- Implement UI indicators showing connector health\n- Add reconnect actions for failed connectors\n- Incrementally expand coverage across all connectors",
+          "teamId": "825a22b2-ce63-46fe-a428-1cecc3f299ae",
+          "assigneeId": null,
+          "priority": null,
+          "dueDate": null
+        }
+      },
+      {
+        "action": "CREATE",
+        "confidence": 90,
+        "reasoning": "Jonathas said he will 'resume the Attio connector implementation' after fixing the webhook issue. Clear coding task commitment.",
+        "createData": {
+          "title": "Implement Attio connector",
+          "description": "Build the Attio CRM connector integration.\n\n- Implement Attio API integration\n- Sync CRM data to knowledge store\n- Validate on staging",
+          "teamId": "825a22b2-ce63-46fe-a428-1cecc3f299ae",
+          "assigneeId": null,
+          "priority": null,
+          "dueDate": null
+        }
+      }
+    ]
+  },
+  "input": {
+    "docs": ["2025-12-02_18-00-32_meeting-grapevine-connectors-standup.json"],
+    "linearState": [
+      {
+        "id": "LK4-TRELLO-001",
+        "title": "Implement Trello incremental scraping",
+        "description": "Replace unreliable Trello webhooks with incremental scraping for data sync.\n\n- Implement incremental scrape for Trello data\n- Retain only deletion/permission-revocation webhooks for cleanup\n- Validate reliability vs previous webhook approach",
+        "assigneeId": null
+      },
+      {
+        "id": "LK4-CREDS-001",
+        "title": "Migrate connectors to use credentials with connector id namespace",
+        "description": "Restructure connector credential storage to use connector ID namespace.\n\n- Update credential storage to scope under connector ID\n- Migrate existing credentials to new namespace structure\n- Update code that reads/writes credentials",
+        "assigneeId": null
+      }
+    ]
+  }
+}

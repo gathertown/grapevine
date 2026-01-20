@@ -1,0 +1,209 @@
+{
+  "input": {
+    "linearState": [
+      {
+        "id": "1e5a3030-f1db-4822-9c75-5c9c089ebbec",
+        "identifier": "AIVP-939",
+        "title": "Share test plan generation prompt/setup with @U09P6RVHE7P",
+        "description": "PR #2224: Share test plan generation prompt and setup\nLink: [https://github.com/gathertown/corporate-context/pull/2224](https://github.com/gathertown/corporate-context/pull/2224)\nStatus: Open (in review)\n\nSummary of changes:\n\n* Added comprehensive documentation for test plan generation to share with @U09P6RVHE7P\n* New docs:\n  * docs/test-plan-generation-setup.md (full technical documentation and integration guide)\n  * TEST_PLAN_GENERATION_SUMMARY.md (quick reference)\n  * SHARE_WITH_RECIPIENT.md (shareable message and instructions)\n  * LINEAR_ISSUE_SUMMARY.md (summary/status for this issue)\n* References and existing core files:\n  * .github/prompts/test-plan-prompt.md (main prompt)\n  * .github/workflows/generate-test-plan.yaml (CI workflow)\n  * js-services/scripts/generate_pr_spec.ts (PR context/spec generator)\n  * docs/acceptance-testing-action-spec.md (acceptance testing integration)\n\nNotes:\n\n* This PR documents the prompt and setup for test plan generation and prepares materials for the intended recipient to integrate into their agent workflows.",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 3,
+        "state": "In Review",
+        "createdAt": "2025-12-02T19:40:08.983Z"
+      },
+      {
+        "id": "5ee8ca0e-af7c-4777-93fc-f95635d62c46",
+        "identifier": "AIVP-938",
+        "title": "Update Responses API integration to support ZDR (copy)",
+        "description": "Tracking additional ZDR compatibility updates.\n\nPR #2229 (open): [https://github.com/gathertown/corporate-context/pull/2229](https://github.com/gathertown/corporate-context/pull/2229)\nTitle: zdr fix\n\nKey changes in PR #2229:\n\n* Include reasoning.encrypted_content in Responses API call (include: \\[\"reasoning.encrypted_content\"\\]) for ZDR compatibility.\n* Update \\_process_response and \\_agent_think to return reasoning_items and propagate them across turns.\n* Set store=False and rely on encrypted reasoning items to preserve context with ZDR enabled.\n* In stream_advanced_search_answer, prepend prior reasoning_items to subsequent requests to maintain multi‑turn reasoning under ZDR.\n* Adjust function signatures and error paths to handle reasoning_items consistently.\n\nStatus: Open (in review)",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 0,
+        "state": "In Review",
+        "createdAt": "2025-12-02T17:49:45.549Z"
+      },
+      {
+        "id": "493ed38f-6d20-43d4-b771-eaf82045215f",
+        "identifier": "AIVP-936",
+        "title": "Fill out today’s Grapevine Core/Q&A standup doc (async)",
+        "description": "Jordan will fill out the standup document asynchronously for today’s standup (2025-12-02).\n\n* Use the usual standup doc format\n* Note blockers (if any) and today’s focus\n* This replaces a live update for today",
+        "priority": 0,
+        "state": "Triage",
+        "createdAt": "2025-12-02T17:27:45.876Z"
+      },
+      {
+        "id": "6ab7c16f-e6f8-4313-9cfa-539b02b0bc0a",
+        "identifier": "AIVP-935",
+        "title": "Schedule afternoon regroup for reviewer work (Andy, Dave, Vic)",
+        "description": "Vic will schedule a regroup meeting later today with Andy and Dave to review reviewer work progress and next steps.\n\n* Include Andy and Dave Orr as required attendees\n* Target: later this afternoon (2025-12-02)\n* Add agenda: quick status, current blockers, immediate next steps",
+        "priority": 4,
+        "state": "Triage",
+        "createdAt": "2025-12-02T17:27:45.715Z"
+      },
+      {
+        "id": "4d7b85ab-2b0b-46a3-9f51-ad0eb27da61a",
+        "identifier": "AIVP-934",
+        "title": "Update deletion script to use single connector_installations table and remove per-connector table references",
+        "description": "PR #2251: Fix Python import ordering lint error\nLink: [https://github.com/gathertown/corporate-context/pull/2251](https://github.com/gathertown/corporate-context/pull/2251)\nStatus: Open (in review)\n\nKey changes in this PR:\n\n* Corrected import block ordering in src/mcp/api/tool_executor.py to satisfy ruff/isort rules (grouped mcp imports separately from src imports)\n* No functional changes; supports the ongoing connector_installations migration (removal of CONNECTOR_GONG and updated table references already present in this PR)",
+        "priority": 3,
+        "state": "In Review",
+        "createdAt": "2025-12-02T17:27:45.492Z"
+      },
+      {
+        "id": "1ab5e349-c39f-4aef-87a2-b0e5323a75e1",
+        "identifier": "AIVP-933",
+        "title": "Failure to bulk index",
+        "description": "> builtins:Exception",
+        "priority": 0,
+        "state": "Triage",
+        "createdAt": "2025-12-02T17:15:34.394Z"
+      },
+      {
+        "id": "7335679e-b619-4dc0-a08f-d9fdeab2b7d6",
+        "identifier": "AIVP-932",
+        "title": "Base: Update Responses API integration to support ZDR",
+        "description": "Problem:\n\n* We want to enable ZDR on our OpenAI organization\n* Enabling ZDR may break the OpenAI Responses API, as `store` will no longer be respected\n* To continue using the Responses API, we must update our strategy to utilize`reasoning.encrypted_content`",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 0,
+        "state": "Todo",
+        "createdAt": "2025-12-02T16:54:50.491Z"
+      },
+      {
+        "id": "b62db996-dd9a-4c15-bab0-5c0213f5e355",
+        "identifier": "AIVP-931",
+        "title": "Investigate connection issue when there's a tool error",
+        "description": "Investigate connection issue when there's a tool error.\n\n* Chandler Roth will fix the issue with connections not closing properly, identified as a potential reason for 502 errors. [View original Slack message](https://slack.com/archives/C08BMCZK81F/p1764695550691579?thread_ts=1764692639.380429)",
+        "assigneeId": "57031e99-ad28-4d55-9182-8fa292bdfc71",
+        "assignee": "Chandler Roth",
+        "priority": 3,
+        "state": "Todo",
+        "createdAt": "2025-12-02T16:45:38.697Z"
+      },
+      {
+        "id": "ba41935b-9690-487b-995a-b26b46ab36ba",
+        "identifier": "AIVP-930",
+        "title": "Investigate 502 error from production MCP server",
+        "description": "David Orr encountered a 502 Bad Gateway error while running reviewer internally on the production MCP server.\n\n* Investigate cause of the 502 error\n* Determine if it relates to recent infrastructure changes\n* Check server logs for request tracking\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1764692639380429)",
+        "assigneeId": "57031e99-ad28-4d55-9182-8fa292bdfc71",
+        "assignee": "Chandler Roth",
+        "priority": 2,
+        "state": "In Progress",
+        "createdAt": "2025-12-02T16:24:13.566Z"
+      },
+      {
+        "id": "768cf257-4e47-4f3e-95dd-16a0b1273ef0",
+        "identifier": "AIVP-929",
+        "title": "Fold Categories into Main Branch",
+        "description": "Keep categories: correctness, perf, security, reliability.\n\n* Cut categories: maintainability, documentation, error handling, style.\n* Run n \\* m approach for each diff chunk.\n* Run with no category instructions as well.\n* NEW: Restore \"impact\" (accidentally removed).\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1764698621008849?thread_ts=1764633582.776639)",
+        "assigneeId": "77222287-ba34-46bc-b360-d5be5b4c009b",
+        "assignee": "David Orr",
+        "priority": 3,
+        "state": "In Progress",
+        "createdAt": "2025-12-02T00:01:55.311Z"
+      },
+      {
+        "id": "d3bc3830-83dc-4d55-840c-b23cc4b7f25c",
+        "identifier": "AIVP-928",
+        "title": "Dedupe",
+        "description": "Focus on deduplication tasks.\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1764633582776639)",
+        "priority": 3,
+        "state": "Triage",
+        "createdAt": "2025-12-01T23:59:57.152Z"
+      },
+      {
+        "id": "fe965d24-5a34-482d-aad9-34213bc8273b",
+        "identifier": "AIVP-927",
+        "title": "Bring Category Reviewers into Main Reviewer Branch",
+        "description": "Integrate category-specific reviewers into the main branch.\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1764633582776639)",
+        "priority": 3,
+        "state": "Triage",
+        "createdAt": "2025-12-01T23:59:56.941Z"
+      },
+      {
+        "id": "2cb464ed-1d9f-4326-a3da-80ef5937332c",
+        "identifier": "AIVP-926",
+        "title": "Improve Diff Chunking Behavior",
+        "description": "Implements diff computation and agent integration for reprocessing documents with content changes. **PR #2204**: successfully merged\n\n* Created `utils/diff.ts` with line-by-line diff computation\n* Updated processors to compute diffs\n* Modified agent prompts to include diff information",
+        "priority": 3,
+        "state": "Done",
+        "createdAt": "2025-12-01T23:59:56.719Z"
+      },
+      {
+        "id": "b6461a43-f9cd-45d8-8f6a-ae0c5fdbe758",
+        "identifier": "AIVP-925",
+        "title": "Add yarn checkpoint support for exponent-evals",
+        "description": "Improve realness of eval capture for Slack messages and Linear context.\n\nPR #2255: Merged (2025-12-03)\nLink: [https://github.com/gathertown/corporate-context/pull/2255](https://github.com/gathertown/corporate-context/pull/2255)\nAuthor: cursor\\[bot\\]\n\nKey changes in PR #2255:\n\n* Slack capture:\n  * parseSlackLink returns channelId, messageTs, and optional parentThreadTs (supports reply URLs)\n  * Added isHumanMessage; filter human-only messages up to the linked timestamp\n  * fetchSlackThread uses parentThreadTs, formats sections with headers, fetches user display names\n  * Returns artifactTimestamp and richer metadata (messageCount, priorMessageCount, newMessageCount, participants)\n  * SlackMessage updated with bot_id, subtype, thread_ts\n* Linear issues:\n  * Fetch first 20 (was 50) with optional createdAt <= before filter\n  * Use artifactTimestamp (from Slack/PR/meeting) to filter\n  * Conditional GraphQL variables and improved error handling\n* Controller:\n  * Compute artifactTimestamp across Slack/GitHub/Meeting flows and pass to Linear fetch\n* Frontend:\n  * Helper text updated to say 20 most recent issues instead of 50\n\nThis PR completes the tracked work; marking the issue as done.",
+        "priority": 0,
+        "state": "Done",
+        "createdAt": "2025-12-01T23:30:37.721Z"
+      },
+      {
+        "id": "ff932f8d-5d41-43b6-bc6b-e3102b9117bd",
+        "identifier": "AIVP-924",
+        "title": "Confirm Activity for Last Week",
+        "description": "Clint wants someone to verify recent activity discrepancies:\n\n* Determine if lack of activity this week is due to a bug, holidays, forgetfulness, or product issues.\n* Related to spike observed last week during setup/incentive offer.",
+        "priority": 3,
+        "state": "Triage",
+        "createdAt": "2025-12-01T22:39:40.440Z"
+      },
+      {
+        "id": "c800bad7-c438-42c8-8a6e-9aa68b99c2d5",
+        "identifier": "AIVP-923",
+        "title": "Investigate invite flow issue on staging this week",
+        "description": "Victor Zhou has requested help to investigate the invite flow issue on staging within the week as it was affecting the invite process. This request follows confirmation of error occurrence linked to WorkOS configuration.\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1764623732382949?thread_ts=1764623038.917649)",
+        "priority": 1,
+        "state": "Triage",
+        "createdAt": "2025-12-01T21:15:46.255Z"
+      },
+      {
+        "id": "f1695f3e-013b-4aae-8e76-fc9f8170c34f",
+        "identifier": "AIVP-922",
+        "title": "Investigate invite flow issues on staging",
+        "description": "Evangeline Cheng requested verification if the invite flow on staging is broken. This requires investigation to confirm and resolve any issues.\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1764623038917649)",
+        "priority": 2,
+        "state": "Triage",
+        "createdAt": "2025-12-01T21:04:08.686Z"
+      },
+      {
+        "id": "5b0e169c-adbc-474a-ba7f-29e68cdfe77c",
+        "identifier": "AIVP-921",
+        "title": "Evaluate Slackbot Setup Process for Friction",
+        "description": "Consider further optimizations for making the setup more frictionless. Assess whether the recent one-click setup improvement has been effective.\n\n[View original Slack message](https://slack.com/archives/C08UFM8FRNE/p1764622345994019)",
+        "priority": 2,
+        "state": "Triage",
+        "createdAt": "2025-12-01T20:52:43.598Z"
+      },
+      {
+        "id": "6f53d414-c97c-410d-9721-ae8842365f4e",
+        "identifier": "AIVP-920",
+        "title": "Verify `slackbot_setup_complete` Event Firing",
+        "description": "Ensure that the `slackbot_setup_complete` event is firing correctly. Confirm that the only entry point is `integration_alert_modal_setup_clicked` with `integration_type` = 'Slack'.\n\n* Observation (2025-12-02T22:42:51Z, Sam Smith): In some sessions where this event fired, the user was not on the \"set up slack\" page; possible spurious firing.\n* Session replays to review:\n  * [https://us.posthog.com/project/222082/replay/home?filters=%7B%22filter_test_accounts%22%3Afalse%2C%22date_from%22%3A%22-30d%22%2C%22date_to%22%3Anull%2C%22filter_group%22%3A%7B%22type%22%3A%22AND%22%2C%22values%22%3A%5B%7B%22type%22%3A%22AND%22%2C%22values%22%3A%5B%7B%22id%22%3A%22integration_alert_modal_setup_clicked%22%2C%22name%22%3A%22integration_alert_modal_setup_clicked%22%2C%22type%22%3A%22events%22%2C%22properties%22%3A%5B%7B%22key%22%3A%22integration_name%22%2C%22value%22%3A%5B%22Slack%22%5D%2C%22operator%22%3A%22exact%22%2C%22type%22%3A%22event%22%7D%5D%7D%5D%7D%5D%7D%2C%22duration%22%3A%5B%7B%22key%22%3A%22active_seconds%22%2C%22operator%22%3A%22gt%22%2C%22type%22%3A%22recording%22%2C%22value%22%3A5%7D%5D%2C%22order%22%3A%22start_time%22%2C%22order_direction%22%3A%22DESC%22%7D&sessionRecordingId=019ac4e7-a52c-7ff5-a607-2a0c4ebf0bf6&inspectorSideBar=false&tab=overview](https://us.posthog.com/project/222082/replay/home?filters=%7B%22filter_test_accounts%22%3Afalse%2C%22date_from%22%3A%22-30d%22%2C%22date_to%22%3Anull%2C%22filter_group%22%3A%7B%22type%22%3A%22AND%22%2C%22values%22%3A%5B%7B%22type%22%3A%22AND%22%2C%22values%22%3A%5B%7B%22id%22%3A%22integration_alert_modal_setup_clicked%22%2C%22name%22%3A%22integration_alert_modal_setup_clicked%22%2C%22type%22%3A%22events%22%2C%22properties%22%3A%5B%7B%22key%22%3A%22integration_name%22%2C%22value%22%3A%5B%22Slack%22%5D%2C%22operator%22%3A%22exact%22%2C%22type%22%3A%22event%22%7D%5D%7D%5D%7D%5D%7D%2C%22duration%22%3A%5B%7B%22key%22%3A%22active_seconds%22%2C%22operator%22%3A%22gt%22%2C%22type%22%3A%22recording%22%2C%22value%22%3A5%7D%5D%2C%22order%22%3A%22start_time%22%2C%22order_direction%22%3A%22DESC%22%7D&sessionRecordingId=019ac4e7-a52c-7ff5-a607-2a0c4ebf0bf6&inspectorSideBar=false&tab=overview)\n  * [https://us.posthog.com/project/222082/replay/home?filters=%7B%22filter_test_accounts%22%3Afalse%2C%22date_from%22%3A%22-30d%22%2C%22date_to%22%3Anull%2C%22filter_group%22%3A%7B%22type%22%3A%22AND%22%2C%22values%22%3A%5B%7B%22type%22%3A%22AND%22%2C%22values%22%3A%5B%7B%22id%22%3A%22integration_alert_modal_setup_clicked%22%2C%22name%22%3A%22integration_alert_modal_setup_clicked%22%2C%22type%22%3A%22events%22%2C%22properties%22%3A%5B%7B%22key%22%3A%22integration_name%22%2C%22value%22%3A%5B%22Slack%22%5D%2C%22operator%22%3A%22exact%22%2C%22type%22%3A%22event%22%7D%5D%7D%5D%7D%5D%7D%2C%22duration%22%3A%5B%7B%22key%22%3A%22active_seconds%22%2C%22operator%22%3A%22gt%22%2C%22type%22%3A%22recording%22%2C%22value%22%3A5%7D%5D%2C%22order%22%3A%22start_time%22%2C%22order_direction%22%3A%22DESC%22%7D&sessionRecordingId=019ad3d9-0a1a-758b-bc4e-a62522adbdb8&inspectorSideBar=false&tab=overview](https://us.posthog.com/project/222082/replay/home?filters=%7B%22filter_test_accounts%22%3Afalse%2C%22date_from%22%3A%22-30d%22%2C%22date_to%22%3Anull%2C%22filter_group%22%3A%7B%22type%22%3A%22AND%22%2C%22values%22%3A%5B%7B%22type%22%3A%22AND%22%2C%22values%22%3A%5B%7B%22id%22%3A%22integration_alert_modal_setup_clicked%22%2C%22name%22%3A%22integration_alert_modal_setup_clicked%22%2C%22type%22%3A%22events%22%2C%22properties%22%3A%5B%7B%22key%22%3A%22integration_name%22%2C%22value%22%3A%5B%22Slack%22%5D%2C%22operator%22%3A%22exact%22%2C%22type%22%3A%22event%22%7D%5D%7D%5D%7D%5D%7D%2C%22duration%22%3A%5B%7B%22key%22%3A%22active_seconds%22%2C%22operator%22%3A%22gt%22%2C%22type%22%3A%22recording%22%2C%22value%22%3A5%7D%5D%2C%22order%22%3A%22start_time%22%2C%22order_direction%22%3A%22DESC%22%7D&sessionRecordingId=019ad3d9-0a1a-758b-bc4e-a62522adbdb8&inspectorSideBar=false&tab=overview)\n* Please verify whether the event could be triggered outside the setup page or if the wrong start event is being used in the funnel.\n\n[View original Slack message](https://slack.com/archives/C08UFM8FRNE/p1764715371513539?thread_ts=1764622345.994019)",
+        "priority": 2,
+        "state": "Triage",
+        "createdAt": "2025-12-01T20:52:43.392Z"
+      },
+      {
+        "id": "611e691f-41bc-4f11-97bf-5a8397155c4d",
+        "identifier": "AIVP-919",
+        "title": "Set client to the correct billing tier",
+        "description": "Andy Liu noted that a client's plan was adjusted to unblock them over the break. Once the billing portal is fixed, the client should be set to the correct tier. [View original Slack message](https://slack.com/archives/C08BMCZK81F/p1764618474529019?thread_ts=1764608601.441279)",
+        "priority": 3,
+        "state": "Triage",
+        "createdAt": "2025-12-01T19:48:01.155Z"
+      }
+    ],
+    "docs": ["2025-12-03_04-51-28_slack--https-github-com-gathertown-c.json"]
+  },
+  "output": {
+    "operations": [
+      {
+        "action": "SKIP",
+        "skipData": {
+          "reason": "Asks for a PR approval but PR reviews should not be tasks"
+        }
+      }
+    ]
+  }
+}

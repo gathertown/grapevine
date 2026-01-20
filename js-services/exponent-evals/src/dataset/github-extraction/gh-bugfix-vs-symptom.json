@@ -1,0 +1,21 @@
+{
+  "_comment": {
+    "description": "Test: PR describes the code fix, Linear describes the user symptom",
+    "expected": "Should find via semantic search and UPDATE",
+    "difficulty": "HARD - 'null pointer in getAvatar()' vs 'app crashes viewing profiles'",
+    "LINEAR_TICKET_TO_CREATE": {
+      "title": "App crashes when viewing certain user profiles",
+      "description": "Clicking on some user profiles causes the app to crash. Seems to happen with users who haven't uploaded a profile picture. Reproduced on iOS and Android."
+    }
+  },
+  "id": "gh-bugfix-vs-symptom",
+  "title": "Fix null pointer in UserProfileService.getAvatar()",
+  "date": "2025-01-24",
+  "type": "github",
+  "author": "mobile-dev",
+  "repository": "gathertown/corporate-context",
+  "prNumber": 205,
+  "content": "Repository: gathertown/corporate-context\nPull Request: #205 - Fix null pointer in UserProfileService.getAvatar()\nURL: https://github.com/gathertown/corporate-context/pull/205\nStatus: open\nAuthor: mobile-dev\n\nDescription:\nHandle case where user.avatarUrl is null instead of throwing NullPointerException.\n\nRoot cause:\nThe getAvatar() method was calling .toString() on avatarUrl without null check. Users without profile pictures have null avatarUrl.\n\nChanges:\n- Added null check before accessing avatarUrl\n- Return default avatar placeholder when avatarUrl is null\n- Added unit tests for null avatar case\n\nStack trace from crash reports:\n```\njava.lang.NullPointerException\n  at UserProfileService.getAvatar(UserProfileService.java:142)\n  at ProfileViewController.loadProfile(ProfileViewController.java:87)\n```\n\nActivity:\n\n2025-01-24 16:00:00 mobile-dev opened pull request\n2025-01-24 16:30:00 CI passed",
+  "participants": [],
+  "files": []
+}

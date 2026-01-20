@@ -1,0 +1,14 @@
+{
+  "title": "low prio request <@U087BT3GUDR> - it would be very helpful in <#C0A11JME3N1|> if there was 1 thread ",
+  "type": "slack",
+  "date": "2025-12-11",
+  "content": "=== Earlier conversation (context, already processed) ===\n[2025-12-04T19:41:59.614Z] Johnny D: low prio request <@U087BT3GUDR> - it would be very helpful in <#C0A11JME3N1|> if there was 1 thread / ticket. i.e if a ticket is updated, the message should be in the same thread as the message that created the ticket\n\nwhen tickets are updated multiple times, it creates a lot of noise and is annoying to review\n[2025-12-04T19:50:40.280Z] David Rios: sounds good -- I think a naive message search would be good enough to solve this\n\n=== New messages since last pass (process these) ===\n[2025-12-11T18:13:14.164Z] David Rios: I think this is one-shottable by a coding agent",
+  "metadata": {
+    "channel": "C09HTTVUSH5",
+    "threadTs": "1764877319.614899",
+    "messageCount": 3,
+    "priorMessageCount": 2,
+    "newMessageCount": 1,
+    "participants": ["Johnny D", "David Rios"]
+  }
+}

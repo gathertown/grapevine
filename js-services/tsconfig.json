@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "noImplicitReturns": false,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "esModuleInterop": true,
+    "useUnknownInCatchVariables": false,
+    "allowSyntheticDefaultImports": true,
+    "isolatedModules": true
+  },
+  "exclude": ["node_modules", "**/dist", "**/build", "**/*.test.ts", "**/*.spec.ts"],
+  "references": [
+    { "path": "./admin-backend" },
+    { "path": "./admin-frontend" },
+    { "path": "./backend-common" },
+    { "path": "./slack-bot" },
+    { "path": "./localstack-ui-backend" },
+    { "path": "./localstack-ui-frontend" }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "operations": [
+    {
+      "action": "CREATE",
+      "createData": {
+        "title": "OAuth fails with invalid_scope error when connecting Google Calendar",
+        "description": "## Summary\n\nUser reports OAuth error when connecting Google Calendar. After completing the OAuth flow, user is redirected to a 404 page instead of successful connection.\n\n## Root Cause\n\nLikely cause: When users deny certain required OAuth permissions (specifically calendar.acls.readonly), the backend redirects to /calendar/google/error. However, this frontend route doesn't exist, causing a 404 error.\n\n## Reproduction Steps\n\n1. Navigate to Calendar settings\n2. Click 'Connect Google Calendar'\n3. Complete OAuth flow with at least one scope unchecked\n4. Observe 404 error on redirect\n\n## Current Behavior\n\nUser gets 404 error page after OAuth redirect. Calendar connection fails silently.\n\n## Expected Behavior\n\nUser should see error page explaining which permissions are required, or be redirected back to settings with clear error message.\n\n## Additional Context\n\n- Browser: Chrome 120\n- OS: macOS Sonoma 14.2\n- Error: invalid_scope",
+        "issueId": null
+      },
+      "confidence": 95,
+      "reasoning": "Clear bug report with specific error message, reproduction context, and system details. No existing tickets found for this specific OAuth error."
+    }
+  ]
+}

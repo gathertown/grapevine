@@ -1,0 +1,233 @@
+{
+  "input": {
+    "linearState": [
+      {
+        "id": "c7205a71-9ff0-4d46-94f0-e294def775c2",
+        "identifier": "AIVP-910",
+        "title": "Address tenant provisioning issues and test <U03DDV4UNG3>’s tenant pruning script",
+        "description": "Victor Zhou discussed tenant provisioning issues encountered again as per INC-686. Testing is needed in staging, and dry runs should be conducted in production using <U03DDV4UNG3>’s tenant pruning script.\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1764612766993569?thread_ts=1764608601.441279)",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 3,
+        "state": "Triage",
+        "createdAt": "2025-12-01T18:12:57.150Z"
+      },
+      {
+        "id": "28b7bc84-9ca1-4f37-b9ed-7c177c4a2fc8",
+        "identifier": "AIVP-909",
+        "title": "Evaluate replacing n8n flow with GHA script for cursor agent",
+        "description": "Evaluate replacing n8n flow with GHA script for cursor agent.\n\nBrent Traut suggested replacing the current n8n flow with a script that GitHub Actions (GHA) calls, utilizing the new API to kick off the cursor agent.\n\n* Assess feasibility and impacts\n* Implementation plan if viable\n* Update from Slack (Dec 1): Swap the n8n workflow to fire only on ambiently extracted tickets.\n\nNEW (Standup 2025-12-02): Immediate next step for the many-stage pipeline is to run automatically. Jordan and Brent are working on browser-based runners to execute the pipeline end-to-end. Align this work with the GHA evaluation and any changes to the n8n cursor flow so we converge on one automation path.",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 3,
+        "state": "Triage",
+        "createdAt": "2025-12-01T17:50:53.355Z"
+      },
+      {
+        "id": "d9da19e6-53c3-458d-b0c7-f1688a179552",
+        "identifier": "AIVP-908",
+        "title": "Investigate Cursor budget overage",
+        "description": "Brent Traut mentioned a potential issue with exceeding the Cursor budget.\n\n* Review recent expenses and allocations\n* Identify sources of budget overage\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1764610779488849)",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 2,
+        "state": "Triage",
+        "createdAt": "2025-12-01T17:39:48.184Z"
+      },
+      {
+        "id": "09e8a877-e33c-49b9-b2d9-9eb6386b6f5e",
+        "identifier": "AIVP-907",
+        "title": "Pass all relevant context to Cloud Agents API",
+        "description": "Brent Traut highlighted the need to pass all relevant context to the Cloud Agents API as MCP is not yet supported. Discuss potential methods to integrate pre-exponentified tickets.\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1764610711316629?thread_ts=1764609972.275099)",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 3,
+        "state": "Canceled",
+        "createdAt": "2025-12-01T17:38:45.013Z"
+      },
+      {
+        "id": "3e2e5e2b-2092-4155-9228-270668c2ff5d",
+        "identifier": "AIVP-906",
+        "title": "Investigate missing tenant record in Notion CRM",
+        "description": "Chandler Roth will check out the missing Notion CRM page for tenant `37a2382da58d465b`.\n\n* Ensure tenant is provisioned\n* Run the backfill for Notion CRM page creation",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 3,
+        "state": "Canceled",
+        "createdAt": "2025-12-01T17:38:23.464Z"
+      },
+      {
+        "id": "e2f4195a-35a5-4024-916b-221ba4bae710",
+        "identifier": "AIVP-905",
+        "title": "Evaluate readiness to wind down Notion CRM",
+        "description": "Evaluate readiness to wind down Notion CRM.\n\n* Chandler Roth will finalize connector health by tomorrow morning.\n* Discuss transitioning from Notion CRM to real connector health.\n* Chandler Roth will check out the missing Notion CRM page, which ties into readiness evaluation.\n* Decision needed on overall readiness and potential timeline.\n\n[View original Slack message](https://slack.com/archives/C08UFM8FRNE/p1764628830840569?thread_ts=1764609913.905289)",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 3,
+        "state": "Canceled",
+        "createdAt": "2025-12-01T17:36:04.131Z"
+      },
+      {
+        "id": "6f755101-8280-4cb5-adb5-4e130ecfe341",
+        "identifier": "AIVP-904",
+        "title": "Verify tenant provisioning for Vista Social",
+        "description": "Use scripts/lookup_tenant.py to verify tenant provisioning for tenant `37a2382da58d465b`.\n\n* Confirm the tenant is provisioned before attempting backfill\n\n[View original Slack message](https://slack.com/archives/C08UFM8FRNE/p1764610490064719?thread_ts=1764609913.905289)",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 3,
+        "state": "Canceled",
+        "createdAt": "2025-12-01T17:35:12.454Z"
+      },
+      {
+        "id": "102d68eb-27c1-430d-badf-0d0740067a79",
+        "identifier": "AIVP-903",
+        "title": "Run backfill for missing Notion CRM pages",
+        "description": "Ensure the backfill script is executed for tenant `37a2382da58d465b`.\n\n* Verify orgName and adminEmails are set at provisioning\n* Execute Notion CRM backfill script\n* Ensure `NOTION_CRM` environment variables are set\n\n[View original Slack message](https://slack.com/archives/C08UFM8FRNE/p1764610490064719?thread_ts=1764609913.905289)",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 3,
+        "state": "Canceled",
+        "createdAt": "2025-12-01T17:35:12.152Z"
+      },
+      {
+        "id": "d34b4d70-b5e8-43b9-af0d-d512c8027e78",
+        "identifier": "AIVP-902",
+        "title": "Investigate missing tenant record in Notion CRM",
+        "description": "Sam Smith will investigate why tenant `37a2382da58d465b` is not appearing in Notion CRM.\n\n* Investigate integrations related to the tenant.",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 3,
+        "state": "Triage",
+        "createdAt": "2025-12-01T17:26:18.918Z"
+      },
+      {
+        "id": "c8a4640e-fbef-4837-bf4b-4ac2fc2ef6fd",
+        "identifier": "AIVP-900",
+        "title": "Implement Checkout Instrumentation for Grapevine",
+        "description": "Sam Smith suggested implementing checkout instrumentation:\n\n* Add frontend events like `billing_checkout_started` and `billing_checkout_returned` in PlanPickerModal.\n* Mirror key Stripe webhook events to analytics for checkout attribution.\n\n[View original Slack message](https://slack.com/archives/C08UFM8FRNE/p1764609414667109?thread_ts=1764018704.015959)",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 3,
+        "state": "Triage",
+        "createdAt": "2025-12-01T17:17:21.328Z"
+      },
+      {
+        "id": "fbcde6b9-a503-4f2b-aae4-d54957fe291a",
+        "identifier": "AIVP-899",
+        "title": "Add 'Upgrade Plan' Event During Checkout",
+        "description": "Implement an 'Upgrade Plan' event when users check out. [View original Slack message](https://slack.com/archives/C08UFM8FRNE/p1764609414667109?thread_ts=1764018704.015959)",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 3,
+        "state": "Triage",
+        "createdAt": "2025-12-01T17:17:21.036Z"
+      },
+      {
+        "id": "f5e1930e-b145-4d39-8bce-1a97bab68d9e",
+        "identifier": "AIVP-898",
+        "title": "Renew bugbot trial",
+        "description": "Renew bugbot trial.\n\nVictor Zhou confirmed the decision to renew the trial on a cancellable monthly basis. [View original Slack message](https://slack.com/archives/C08BMCZK81F/p1764612794122929?thread_ts=1764609306.649219)",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 2,
+        "state": "Done",
+        "createdAt": "2025-12-01T17:15:16.380Z"
+      },
+      {
+        "id": "b5ff9312-02d2-4375-beef-663b26053cbe",
+        "identifier": "AIVP-897",
+        "title": "Setup Dev EKS Cluster in Grapevine Account",
+        "description": "Add Kustomize overlay and comprehensive documentation for a new dedicated dev EKS cluster to enable persistent infrastructure testing.\n\n**PR #2194**: Currently in review\n\n* Add Kustomize overlay\n* Add comprehensive documentation",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 2,
+        "state": "In Review",
+        "createdAt": "2025-12-01T10:34:22.535Z"
+      },
+      {
+        "id": "a07dd302-4d44-4fdd-8142-a9755a712a0b",
+        "identifier": "AIVP-901",
+        "title": "Implement S3 Upload Workflow for Versioned JS Assets",
+        "description": "Addressing issue with whitescreen errors due to disallowed MIME types by uploading versioned static assets to AWS S3 and serving through CloudFront. This involves creating a new reusable workflow to build and upload JavaScript assets to S3 with immutable cache headers and build-date metadata.\n\n**GitHub PR #2176**: [https://github.com/gathertown/corporate-context/pull/2176](https://github.com/gathertown/corporate-context/pull/2176) (in review)",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 0,
+        "state": "Triage",
+        "createdAt": "2025-12-01T09:14:44.838Z"
+      },
+      {
+        "id": "616437aa-b2a3-4804-9788-be9f9e1eed25",
+        "identifier": "AIVP-896",
+        "title": "GatherGPT not triggered by system messages",
+        "description": "@konrad said:\n\n> does gatherGPT get triggered on reminder messages? iirc they get sent as system messages so it doesn't",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 0,
+        "state": "Triage",
+        "createdAt": "2025-11-20T18:26:41.459Z"
+      },
+      {
+        "id": "21bdda99-8304-4846-b961-2f8f3ff08fae",
+        "identifier": "AIVP-895",
+        "title": "Rename grapevine in README to applevine",
+        "description": "",
+        "assigneeId": "66792a5f-1fbc-4c4b-9fbb-3310dddc2b3c",
+        "assignee": "Brent Traut",
+        "priority": 0,
+        "state": "In Review",
+        "createdAt": "2025-11-17T21:58:27.160Z"
+      },
+      {
+        "id": "5498f24e-013c-40eb-9e81-19247821ca3b",
+        "identifier": "AIVP-869",
+        "title": "Handle context overflow errors more gracefully",
+        "description": "@vic said:\n\n> we should probably handle errors like this better, but also it shouldn’t happen to begin with ideally",
+        "assigneeId": "c39f54da-ad27-45fa-8ac3-c2232a831918",
+        "assignee": "jdallas@gather.town",
+        "priority": 4,
+        "state": "In Review",
+        "createdAt": "2025-11-17T19:04:17.176Z"
+      },
+      {
+        "id": "e78e41a2-451e-4bcf-a200-d98f845a83a9",
+        "identifier": "AIVP-868",
+        "title": "Schedule catch-up after A5 leads to make a plan",
+        "description": "Brent proposed a follow-up after A5 leads to align and make a plan.\n\n* Timing: After A5 leads\n* Agenda: Discuss Brent’s ideas and define the plan\n* Participants: Brent + relevant stakeholders (undecided)\n* Owner to schedule: Brent (tentative)",
+        "priority": 4,
+        "state": "Triage",
+        "createdAt": "2025-11-17T17:35:44.429Z"
+      },
+      {
+        "id": "866f14d5-97df-4530-84c9-1ad5299620da",
+        "identifier": "AIVP-867",
+        "title": "Review 4 chat tickets",
+        "description": "Brent has four chat tickets that need review, potentially by Andy.\n\n* Context: Related to testing; Brent requested review during standup\n* Proposed reviewer: Andy (undecided)\n* Confirm assignee and scope of review\n* Share findings with Brent",
+        "priority": 3,
+        "state": "Triage",
+        "createdAt": "2025-11-17T17:35:44.004Z"
+      },
+      {
+        "id": "86e7f627-3695-435a-8a8d-96b8684f3bfd",
+        "identifier": "AIVP-866",
+        "title": "Add check in fast-response path",
+        "description": "Jordan will add a check related to response handling.\n\n* Fast response is not filtered\n* Issue only happens on the slow response\n* Commitment: “I will add the check” (Jordan Maduro, 2025-11-17T16:15:03Z)\n\n[View original Slack message](https://slack.com/archives/C08BMCZK81F/p1763396103535209?thread_ts=1763395704.024619)",
+        "assigneeId": "932c0d3c-39cf-4521-abbf-1dc34fe3e73b",
+        "assignee": "Jordan Maduro",
+        "priority": 0,
+        "state": "Triage",
+        "createdAt": "2025-11-17T16:16:22.298Z"
+      }
+    ],
+    "docs": ["2025-12-03_04-51-52_slack-could-use-a-hand-on-reviews-fo.json"]
+  },
+  "output": {
+    "operations": [
+      {
+        "action": "SKIP",
+        "skipData": {
+          "reason": "Asks for a PR review but PR reviews should not be tasks and there is no owner"
+        }
+      }
+    ]
+  }
+}

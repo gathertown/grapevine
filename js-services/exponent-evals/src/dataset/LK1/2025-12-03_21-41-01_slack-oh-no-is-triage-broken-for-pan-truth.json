@@ -1,0 +1,205 @@
+{
+  "output": {
+    "operations": [
+      {
+        "action": "SKIP",
+        "skipData": {
+          "reason": "Chore to merge a PR and hotfix. Not a coding task"
+        }
+      }
+    ]
+  },
+  "input": {
+    "docs": ["2025-12-03_21-41-01_slack-oh-no-is-triage-broken-for-pan.json"],
+    "linearState": [
+      {
+        "id": "09bbf943-25dc-45d5-86c4-a5d22d83a25c",
+        "identifier": "EXMR-744",
+        "title": "Send Exponent-extracted baseline ticket list for Grapevine standups",
+        "description": "Karen will send a baseline list of what Exponent would have extracted from Grapevine standup summaries to be modified by the team.\n\n* Deliver initial list in \\~10 minutes from message time\n* Context: Grapevine Core/Q&A and Grapevine Connectors standups\n* Intended for Chandler (and others) to modify within a 20–30 min timebox\n\n[View original Slack message](https://slack.com/archives/C09HTTVUSH5/p1764789786504389?thread_ts=1764789127.218369)",
+        "assigneeId": "51b51810-a5b5-4578-a95e-3322a9b6eedf",
+        "assignee": "Karen Ying",
+        "priority": 0,
+        "state": "Done",
+        "createdAt": "2025-12-03T19:24:35.692Z"
+      },
+      {
+        "id": "572e0829-3164-4b81-bf3c-8425acedc145",
+        "identifier": "EXMR-743",
+        "title": "Timebox 20–30 min to list coding tickets from Grapevine Connectors Standup (past 3 days)",
+        "description": "Chandler will produce a bullet list of coding ticket titles and brief descriptions based on the Grapevine Connectors Standup summaries from the past 3 days.\n\n* Use the Summary tab instead of reading entire transcripts (per Karen)\n* Focus strictly on coding tasks that result in a PR (bug fixes, features, refactoring, tests, infra)\n* Skip planning/docs/coordination and vague \"look into X\" unless it’s debugging a specific bug\n* Timebox: 20–30 minutes today or tomorrow\n* Modify the Exponent-extracted list that Karen will send\n\n[View original Slack message](https://slack.com/archives/C09HTTVUSH5/p1764789786504389?thread_ts=1764789127.218369)",
+        "assigneeId": "57031e99-ad28-4d55-9182-8fa292bdfc71",
+        "assignee": "Chandler Roth",
+        "priority": 0,
+        "state": "Done",
+        "createdAt": "2025-12-03T19:24:35.377Z"
+      },
+      {
+        "id": "d605ff8f-2c82-47c9-b921-07c0cf2d9c99",
+        "identifier": "EXMR-742",
+        "title": "Assist David in setting up a quick DB check to verify meeting transcript processing",
+        "description": "Pair with David to establish a fast method to confirm whether a meeting transcript was processed.\n\n* Show how to check the relevant DB tables manually\n* Consider alternative quick checks (ask Grapevine, New Relic logs)\n* Document the steps for future verification",
+        "priority": 0,
+        "state": "Backlog",
+        "createdAt": "2025-12-03T18:23:20.906Z"
+      },
+      {
+        "id": "3c470af3-9a56-4460-a388-17988e418aeb",
+        "identifier": "EXMR-741",
+        "title": "Collect additional eval data from Slack today; GitHub and meetings next",
+        "description": "Expand the eval dataset with more real-world samples.\n\n* Focus on Slack today; then gather GitHub PRs and meetings later\n* Include examples where the bot should skip (use Camilla’s examples as seeds)\n* Use the eval capture tool; ensure artifacts include references and ground truth\n* Track gaps and edge cases observed during collection",
+        "priority": 0,
+        "state": "Backlog",
+        "createdAt": "2025-12-03T18:23:20.678Z"
+      },
+      {
+        "id": "a949b39b-4c01-46c7-812d-de9a9ef8772b",
+        "identifier": "EXMR-740",
+        "title": "Investigate Slack→Linear assignee mapping edge case (post-EXMR-735)",
+        "description": "Reproduce and diagnose a reported failure case where Slack→Linear user mapping did not correctly assign the issue.\n\n* Start from Karen’s observed failure example; capture inputs (Slack user, Linear team, channel)\n* Audit linearSlackUserMapping data and matching logic for that user/org\n* Add a regression test for the failing case\n* Propose and implement a fix if needed\n* Reference: EXMR-735 (mapping restore) recently merged",
+        "priority": 0,
+        "state": "Backlog",
+        "createdAt": "2025-12-03T18:23:20.424Z"
+      },
+      {
+        "id": "ff4ff705-0166-4d9b-a3b4-5c8ae1f51ab1",
+        "identifier": "EXMR-739",
+        "title": "Test meeting extraction Slack notifications end-to-end in staging and verify channel mappings",
+        "description": "Enables E2E testing of meeting extraction Slack notifications + channel mappings.\n\nPR #2275: Currently in review\nLink: [https://github.com/gathertown/corporate-context/pull/2275](https://github.com/gathertown/corporate-context/pull/2275)\nAuthor: drios-gather\n\nKey changes supporting EXMR-739:\n\n* meetingProcessor posts Slack summaries when operations succeed (includes per-issue links/identifiers)\n* Uses Linear team → Slack channel mapping from ambient_extraction_channels\n* Provides structured block formatting and plain text for readability\n* Utilizes SSM-provided Slack bot token for posting\n\nThis should unblock staging tests to verify messages and channel mappings end-to-end.",
+        "assigneeId": "a53ca982-8854-4161-b91a-ad17363f4477",
+        "assignee": "David Rios",
+        "priority": 0,
+        "state": "In Review",
+        "createdAt": "2025-12-03T18:23:20.227Z"
+      },
+      {
+        "id": "be426c12-48e5-4089-8313-0361ada25dd5",
+        "identifier": "EXMR-738",
+        "title": "Fix MCP in headless mode",
+        "description": "Documentation update to align MCP behavior in headless mode with working implementation.\n\nPR #2262: Currently in review — [https://github.com/gathertown/corporate-context/pull/2262](https://github.com/gathertown/corporate-context/pull/2262)\nKey changes:\n\n* Update docs/acceptance-testing-action-spec.md to require the --mcp-config flag for Claude Code in headless mode; do not rely on \\~/.claude.json or \\~/.config/claude-code/settings.json.\n* Build /tmp/mcp-config.json at runtime and pass via --mcp-config.\n* Switch Browserbase MCP server to @browserbasehq/mcp-server-browserbase (via npx).\n* Provide modelName openai/gpt-4o and modelApiKey using OPENAI_API_KEY.\n* Add OPENAI_API_KEY to workflow secrets and propagate alongside BROWSERBASE_API_KEY and BROWSERBASE_PROJECT_ID.\n* Update CI step to run claude with --mcp-config, --output-format stream-json, --verbose, and --dangerously-skip-permissions; capture conversation to /tmp/full_conversation.jsonl and extract final response to /tmp/test_results.txt.\n* Update secrets checklist to include OPENAI_API_KEY.\n\nNote: Original issue (AIVP-953) behavior addressed in PR #2261; this PR updates documentation to match the headless-mode configuration.",
+        "priority": 0,
+        "state": "In Review",
+        "createdAt": "2025-12-03T04:33:20.689Z"
+      },
+      {
+        "id": "3b1c8a8f-877b-4542-bf33-526cde339789",
+        "identifier": "EXMR-737",
+        "title": "Post meeting + GitHub extraction notifications to AMBIENT_FEEDBACK_CHANNEL_ID; keep meeting extraction posting to team Linear",
+        "description": "Progress: Implement Slack message sending for meeting extraction to mapped team channels.\n\nPR #2275: Currently in review\nLink: [https://github.com/gathertown/corporate-context/pull/2275](https://github.com/gathertown/corporate-context/pull/2275)\nAuthor: drios-gather\n\nKey changes:\n\n* Added SlackMessageSender singleton (uses SSM Slack bot token; posts via chat.postMessage)\n* Implemented sendMeetingNotification with structured blocks and plain text\n* meetingProcessor now posts a Slack summary after successful operations using Linear team channel mapping (ambient_extraction_channels via getSlackChannelIdForLinearTeam)\n* Minor improvement to error logging\n\nNote: This covers posting to the team Linear channel(s). Posting to AMBIENT_FEEDBACK_CHANNEL_ID remains for a follow-up.",
+        "assigneeId": "a53ca982-8854-4161-b91a-ad17363f4477",
+        "assignee": "David Rios",
+        "priority": 0,
+        "state": "In Review",
+        "createdAt": "2025-12-03T03:20:43.729Z"
+      },
+      {
+        "id": "270ae9bb-6e83-4949-b4c3-c4b7a552b76d",
+        "identifier": "EXMR-736",
+        "title": "Build Notion connector",
+        "description": "Build a Notion connector.\n\n* Owner: <@U087BT3GUDR>\n* Timing: later this week\n\n[View original Slack message](https://slack.com/archives/C09HTTVUSH5/p1764714728096239)",
+        "priority": 0,
+        "state": "Backlog",
+        "createdAt": "2025-12-02T22:35:06.707Z"
+      },
+      {
+        "id": "1ad40cd9-dba6-4fe5-872d-4717fe53ae6b",
+        "identifier": "EXMR-735",
+        "title": "Restore Slack user → Linear user mapping to fix assignee assignment",
+        "description": "Restore Slack user → Linear user mapping to fix assignee assignment.\n\nPR #2249: Merged on 2025-12-03\nLink: [https://github.com/gathertown/corporate-context/pull/2249](https://github.com/gathertown/corporate-context/pull/2249)\nAuthor: karenying\n\nKey changes:\n\n* Utils (src/utils/userMapping.ts): Implement mapSlackToLinearId using linearSlackUserMapping with flexible identifier matching; add reverse lookup mapLinearToSlackId returning UserMapping; introduce and export UserMapping type.\n* Data/Primitives (src/primitives/linear-slack-user-mapping.ts): Add populated linearSlackUserMapping array of Linear↔Slack user records.\n* Scripts (scripts/fetch-linear-slack-user-mapping.ts): New script to fetch users from Linear/Slack, produce mapping, and write JSON/CSV/TS outputs.\n* Public API (src/index.ts): Export mapLinearToSlackId and UserMapping alongside mapSlackToLinearId.\n\nImpact: Restores Slack→Linear assignee mapping, improving assignee accuracy during ticket creation and updates.",
+        "priority": 0,
+        "state": "Done",
+        "createdAt": "2025-12-02T22:27:12.529Z"
+      },
+      {
+        "id": "56817e97-a93c-4f12-b1c0-0311d00e057b",
+        "identifier": "EXMR-734",
+        "title": "Fix the APIs",
+        "description": "Karen Ying will fix the APIs.\n\n* No deadline specified\n\n[View original Slack message](https://slack.com/archives/C09HTTVUSH5/p1764713314699989)",
+        "priority": 0,
+        "state": "Backlog",
+        "createdAt": "2025-12-02T22:09:16.240Z"
+      },
+      {
+        "id": "7a369cd4-6fc3-43ef-b698-6e971370ba9f",
+        "identifier": "EXMR-733",
+        "title": "Set AMBIENT_FEEDBACK_CHANNEL_ID to a separate monitoring Slack channel",
+        "description": "Karen will configure AMBIENT_FEEDBACK_CHANNEL_ID to point to a separate/random Slack channel we can monitor, to avoid spamming team channels.\n\n* Purpose: keep Slack team channels from getting spammy\n* Context: meeting extraction posts will continue to relevant team channels; a separate channel will collect ambient feedback\n* Suggestion (not yet committed by David): also post meeting extraction updates to AMBIENT_FEEDBACK_CHANNEL_ID\n\n[View original Slack message](https://slack.com/archives/C09HTTVUSH5/p1764711619960509?thread_ts=1764711502.322169)",
+        "priority": 0,
+        "state": "Backlog",
+        "createdAt": "2025-12-02T21:41:22.345Z"
+      },
+      {
+        "id": "d841449c-484d-472d-be63-790e7024edcf",
+        "identifier": "EXMR-732",
+        "title": "Investigate observability readiness for debugging issues",
+        "description": "Karen will spend \\~30 minutes looking into whether we have the necessary observability framework in place to debug issues.\n\n* Timebox: \\~30 minutes\n* Goal: Determine if current observability setup is sufficient to debug issues\n* Note: A separate suggestion was made to possibly set up a channel to monitor ambient extraction changes (not yet committed)\n\n[View original Slack message](https://slack.com/archives/C09HTTVUSH5/p1764710862307629?thread_ts=1764710302.045679)",
+        "priority": 0,
+        "state": "In Progress",
+        "createdAt": "2025-12-02T21:28:26.856Z"
+      },
+      {
+        "id": "73d1b614-27a0-43b2-a269-b94d6f61369b",
+        "identifier": "EXMR-731",
+        "title": "Enable ZDR for multi-turn agent conversations by preserving reasoning via encrypted_content",
+        "description": "Goal: Support Zero Data Retention (ZDR) mode for multi-turn agent conversations by preserving reasoning context client-side via encrypted_content rather than server-side storage.\n\nPR #2229 (open): [https://github.com/gathertown/corporate-context/pull/2229](https://github.com/gathertown/corporate-context/pull/2229)\nDevenv: [https://cc-devenv-2229.stg.getgrapevine.ai](https://cc-devenv-2229.stg.getgrapevine.ai)\nMCP API: [https://mcp-cc-devenv-2229.stg.getgrapevine.ai](https://mcp-cc-devenv-2229.stg.getgrapevine.ai)\n\nKey changes in PR #2229:\n\n* Include reasoning.encrypted_content in OpenAI call include list to retrieve encrypted reasoning items\n* Parse reasoning items from response.output and collect encrypted_content\n* Return reasoning_items from \\_process_response and \\_agent_think; track them across turns\n* Set store=false for ZDR compatibility; avoid relying on server-side state\n* Prepend collected reasoning_items to subsequent request messages to preserve context in multi-turn flows\n\nTest plan (from bot):\n\n* Multi-turn conversation preserves reasoning via encrypted_content with response_id chaining\n* ZDR-enabled org flow maintains context across tool calls and turns\n* Single-turn regression check behaves as before\n* Logs show reasoning_items extraction and prepending to additional_messages",
+        "priority": 0,
+        "state": "In Review",
+        "createdAt": "2025-12-02T21:16:30.952Z"
+      },
+      {
+        "id": "15a98ae9-176f-489c-95a5-a892fa488d5b",
+        "identifier": "EXMR-730",
+        "title": "Ungate and release Gong connector",
+        "description": "Refactor Gong backfill to fetch active Gong tenant IDs via ConnectorInstallationsRepository and add a repository method to query them.\n\nPR #2267: Closed without merge on 2025-12-03\nLink: [https://github.com/gathertown/corporate-context/pull/2267](https://github.com/gathertown/corporate-context/pull/2267)\n\nKey changes in PR #2267:\n\n* Cron job (src/cron/jobs/gong_backfill.py): Replace SSM/tenant DB logic with ConnectorInstallationsRepository.get_active_tenant_ids_by_type('gong') to determine tenants for backfill.\n* Database repository (src/database/connector_installations.py): Add get_active_tenant_ids_by_type(connector_type) to return provisioned tenants with connectors not in 'disconnected' status via a control DB query joining connector_installations and tenants.\n* Remove dependencies on SSMClient and tenant_db_manager from the backfill module.\n* Continue publishing SQS backfill messages per tenant using GongCallBackfillRootConfig.\n\nNotes:\n\n* This PR was closed without merge; confirm if a follow-up PR supersedes these changes.",
+        "priority": 0,
+        "state": "Canceled",
+        "createdAt": "2025-12-02T21:11:10.406Z"
+      },
+      {
+        "id": "09c1b57a-6140-4e87-83e0-a07dbda26826",
+        "identifier": "EXMR-729",
+        "title": "Set up Notion processor in SingleAgentStrategy with MVP test evals",
+        "description": "David Rios will set up a Notion processor in SingleAgentStrategy and create a few MVP test evals.\n\n* Will continue work tomorrow (per 2025-12-02 Slack thread)\n* If time permits: begin work on a Notion connector\n\n[View original Slack message](https://slack.com/archives/C09HTTVUSH5/p1764705126796389?thread_ts=1764633652.363289)",
+        "priority": 0,
+        "state": "Backlog",
+        "createdAt": "2025-12-02T19:53:32.330Z"
+      },
+      {
+        "id": "b7f4ef6e-4c62-4568-8830-279670cc9e34",
+        "identifier": "EXMR-728",
+        "title": "Enable `yarn eval` to work with passed-in Linear state",
+        "description": "Karen Ying will update the eval CLI so `yarn eval` can consume the Linear state embedded in the truth doc.\n\n* Currently, only `yarn checkpoint` works with the passed-in Linear state\n* Context: With the new eval capture tool, the Linear state will be present in the truth doc, reducing need for `--linear-fixture`\n\n[View original Slack message](https://slack.com/archives/C09HTTVUSH5/p1764700841123859?thread_ts=1764623610.003959)",
+        "priority": 0,
+        "state": "Backlog",
+        "createdAt": "2025-12-02T18:41:29.710Z"
+      },
+      {
+        "id": "a181b05c-d88c-4a31-8e09-d64f367af5a1",
+        "identifier": "EXMR-727",
+        "title": "Implement one-click convert to eval",
+        "description": "Karen Ying will work on a one-click convert-to-eval workflow next, following the merge of yarn checkpoint support.\n\n* Trigger: follow-up after merging yarn checkpoint support (PR #2210)\n* Goal: one-click convert to eval\n\n[View original Slack message](https://slack.com/archives/C09HTTVUSH5/p1764700605726299?thread_ts=1764623610.003959)",
+        "priority": 0,
+        "state": "Backlog",
+        "createdAt": "2025-12-02T18:39:29.753Z"
+      },
+      {
+        "id": "2032f56e-2d23-4fc4-8600-90f219a072fc",
+        "identifier": "EXMR-726",
+        "title": "Review PR #2210 (yarn checkpoint support) and take another look",
+        "description": "PR #2227: Eval capture + yarn checkpoint fixes\nLink: [https://github.com/gathertown/corporate-context/pull/2227](https://github.com/gathertown/corporate-context/pull/2227)\nStatus: Closed without merge\n\nKey changes in PR:\n\n* Eval capture (admin):\n  * Backend: optional issueIdentifiers support; fetchSingleLinearIssue and fetchLinearIssuesByIdentifier in admin-backend eval-capture controller\n  * Frontend: EvalCapturePage adds 'Linear Issue Identifiers' input, includes in payload, auto-dismisses success\n* Core strategy/tools:\n  * SingleAgentStrategy: frozen-state flow uses a mock linear_task_lookup tool and skips live API sections\n  * Adds state to SimpleLinearIssue; prompts allow SKIP for “no actionable content”\n  * MCP: createMockLinearTaskLookupTool to return frozen issues via lookup interface\n* Schemas: make skipData.title optional in core and slack-bot\n* Evals:\n  * CLI: adds --accumulate mode; improved help/mode descriptions\n  * Processor: supports default fresh-per-doc vs accumulated state; only accumulates when --accumulate\n  * Comparison: improves SKIP matching (reason-based), ensures all expected ops are represented, preserves default thresholds\n  * README/scripts: documents modes; adds checkpoints:accumulate; new example checkpoint datasets and truth files",
+        "priority": 0,
+        "state": "Canceled",
+        "createdAt": "2025-12-02T18:39:29.540Z"
+      },
+      {
+        "id": "7a1b1098-ed2e-4887-a208-d0423a15b0c5",
+        "identifier": "EXMR-725",
+        "title": "Collect initial eval suite from real meetings and Slack threads (with ground truth and rubrics)",
+        "description": "PR #2255: Improve realness of eval capture for Slack messages + Linear context — Merged on 2025-12-03\nLink: [https://github.com/gathertown/corporate-context/pull/2255](https://github.com/gathertown/corporate-context/pull/2255)\n\nKey changes:\n\n* Backend — Slack capture:\n  * Extend parseSlackLink to return messageTs and optional parentThreadTs (supports reply URLs)\n  * Add isHumanMessage and filter messages to human-only up to the linked timestamp\n  * Revise fetchSlackThread to use parent thread ts, format with section headers (Earlier/New), fetch user display names, and return richer metadata counts\n  * Update SlackMessage type with bot_id, subtype, thread_ts\n* Backend — Linear issues:\n  * Fetch first 20 issues with optional createdAt <= before filter and improved GraphQL vars/error handling\n  * Use artifactTimestamp (from Slack/PR metadata/meeting) to bound issues\n* Controller:\n  * Compute artifactTimestamp for Slack/GitHub/Meeting flows and pass to Linear fetch\n* Frontend:\n  * Update helper text to say 20 most recent issues instead of 50\n\nResult: The eval capture better mirrors real Slack threads and filters Linear issues by the artifact timestamp to improve evaluation realism.",
+        "priority": 2,
+        "state": "Done",
+        "createdAt": "2025-12-02T18:38:42.889Z"
+      }
+    ]
+  }
+}
