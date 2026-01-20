@@ -7,9 +7,6 @@ on:
 
   pull_request:
     types: [opened, labeled, reopened, synchronize]
-    branches-ignore:
-      - 'deploy-queue/**'
-      - 'deploy-queue-hotfix/**'
 
 concurrency:
   # We build all commits on main, but on PRs we want to cancel-in-progress.
@@ -19,7 +16,6 @@ concurrency:
 permissions:
   contents: read # Clone repo
   packages: read # Read private npm packages
-  id-token: write
 
 
 jobs:
@@ -193,9 +189,6 @@ jobs:
 
   docker-build:
     uses: ./.github/workflows/build-docker-images.yaml
-    # devenv.yaml workflow handles this
-    if: ${{ !contains(github.event.pull_request.labels.*.name, 'devenv') }}
     with:
       # use the branch name on pushes, PR head branch name on PRs
       cache-key: ${{ github.event_name == 'push' && github.ref_name || github.head_ref }}
-    secrets: inherit

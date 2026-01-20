@@ -3,318 +3,82 @@ name: Build Docker Images
 on:
   workflow_call:
     inputs:
-      push:
-        description: 'Also push the built image(s)'
-        type: boolean
-        required: false
       cache-key:
         description: 'Cache key to use for build cache (usually branch)'
         type: string
         required: true
-      sha:
-        description: 'Optional override for SHA detection (expects full SHA)'
-        type: string
-        required: false
-      upload-s3-assets:
-        description: 'Upload static assets to S3 (for staging/devenv/production deployments)'
-        type: boolean
-        required: false
-        default: false
   workflow_dispatch:
     inputs:
-      push:
-        description: 'Also push the built image(s)'
-        type: boolean
-        required: false
       cache-key:
         description: 'Cache key to use for build cache (usually branch)'
         type: string
         required: true
-      sha:
-        description: 'Optional override for SHA detection (expects full SHA)'
-        type: string
-        required: false
-      upload-s3-assets:
-        description: 'Upload static assets to S3 (for staging/devenv/production deployments)'
-        type: boolean
-        required: false
-        default: false
 
 permissions:
   contents: read
   packages: read
-  id-token: write
 
 jobs:
-  build-assets:
-    name: "Build JS assets"
-    runs-on: ubuntu-latest
-    if: ${{ inputs.upload-s3-assets == true }}
-    env:
-      # Match Dockerfile env
-      NX_DAEMON: "false"
-      NODE_OPTIONS: "--max-old-space-size=4096"
-      GITHUB_TOKEN: ${{ github.token }}
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-
-      - name: Extract SHA for deployment
-        id: sha
-        env:
-          INPUT_SHA: ${{ inputs.sha }}
-        run: |-
-          # Use the input SHA if provided, otherwise get the first
-          # non-merge commit SHA.
-          SHA="${INPUT_SHA:-"$(git log --no-merges -1 --format='%H')"}"
-          echo "full=$SHA" >> "$GITHUB_OUTPUT"
-          echo "short=$(cut -c1-10 <<< "$SHA")" >> "$GITHUB_OUTPUT"
-
-      - name: Set build date
-        id: build_date
-        run: |
-          echo "value=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT"
-
-      - name: Sanitize cache-key
-        id: cache-key
-        env:
-          CACHE_KEY: ${{ inputs.cache-key }}
-        run: |-
-          SANITIZED_KEY=$(tr '[:upper:]' '[:lower:]' <<< "$CACHE_KEY" | sed 's/[^a-z0-9._-]/-/g')
-          echo "sanitized=$SANITIZED_KEY" >> "$GITHUB_OUTPUT"
-          echo "raw=$CACHE_KEY" >> "$GITHUB_OUTPUT"
-
-      - uses: ./.github/actions/setup-tools
-        id: tools
-        with:
-          github_token: ${{ github.token }}
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ steps.tools.outputs.node }}
-
-      - name: Enable corepack
-        run: corepack enable
-
-      - name: Restore Yarn cache
-        uses: actions/cache@v4
-        with:
-          path: js-services/.yarn/cache
-          key: ${{ runner.os }}-yarn-${{ hashFiles('js-services/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
-      - name: Restore Nx cache
-        uses: actions/cache@v4
-        with:
-          path: js-services/.nx/cache
-          key: ${{ runner.os }}-nx-${{ steps.cache-key.outputs.sanitized }}
-          restore-keys: |
-            ${{ runner.os }}-nx-
-
-      - name: Install dependencies (workspace focus)
-        working-directory: js-services
-        run: |
-          yarn workspaces focus \
-            @corporate-context/admin-backend \
-            @corporate-context/admin-frontend \
-            @corporate-context/js-services
-
-      - name: Lint frontend and backend
-        working-directory: js-services
-        run: |
-          yarn nx run admin-frontend:lint
-          yarn nx run admin-backend:lint
-
-      - name: Build frontend and backend
-        working-directory: js-services
-        env:
-          VITE_AMPLITUDE_API_KEY: ${{ secrets.VITE_AMPLITUDE_API_KEY }}
-          VITE_NEW_RELIC_ACCOUNT_ID: ${{ secrets.VITE_NEW_RELIC_ACCOUNT_ID }}
-          VITE_NEW_RELIC_AGENT_ID: ${{ secrets.VITE_NEW_RELIC_AGENT_ID }}
-          VITE_NEW_RELIC_APPLICATION_ID: ${{ secrets.VITE_NEW_RELIC_APPLICATION_ID }}
-          VITE_NEW_RELIC_ENABLED: ${{ secrets.VITE_NEW_RELIC_ENABLED }}
-          VITE_NEW_RELIC_LICENSE_KEY: ${{ secrets.VITE_NEW_RELIC_LICENSE_KEY }}
-          VITE_NEW_RELIC_TRUST_KEY: ${{ secrets.VITE_NEW_RELIC_TRUST_KEY }}
-          VITE_POSTHOG_API_KEY: ${{ secrets.VITE_POSTHOG_API_KEY }}
-          VITE_POSTHOG_HOST: ${{ secrets.VITE_POSTHOG_HOST }}
-          VITE_SSO_ALLOWED_PARENT_ORIGINS: ${{ secrets.VITE_SSO_ALLOWED_PARENT_ORIGINS }}
-          VITE_WORKOS_CLIENT_ID: ${{ secrets.VITE_WORKOS_CLIENT_ID }}
-          VITE_WORKOS_API_HOSTNAME: ${{ secrets.VITE_WORKOS_API_HOSTNAME }}
-          VITE_WORKOS_REDIRECT_URI: ${{ secrets.VITE_WORKOS_REDIRECT_URI }}
-          VITE_JIRA_APP_ID: ${{ secrets.VITE_JIRA_APP_ID }}
-          VITE_JIRA_APP_ENVIRONMENT_ID: ${{ secrets.VITE_JIRA_APP_ENVIRONMENT_ID }}
-          VITE_JIRA_APP_INSTALLATION_URL: ${{ secrets.VITE_JIRA_APP_INSTALLATION_URL }}
-          VITE_CONFLUENCE_APP_ID: ${{ secrets.VITE_CONFLUENCE_APP_ID }}
-          VITE_CONFLUENCE_APP_ENVIRONMENT_ID: ${{ secrets.VITE_CONFLUENCE_APP_ENVIRONMENT_ID }}
-          VITE_CONFLUENCE_APP_INSTALLATION_URL: ${{ secrets.VITE_CONFLUENCE_APP_INSTALLATION_URL }}
-        run: |
-          yarn nx build admin-frontend
-          yarn nx build admin-backend
-
-      - name: Copy frontend dist into backend public
-        working-directory: js-services
-        run: |
-          mkdir -p admin-backend/dist/public
-          cp -r admin-frontend/dist/* admin-backend/dist/public/
-          cp admin-frontend/public/env-config.js admin-backend/dist/public/env-config.js
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-region: us-east-1
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_AI_ACCOUNT_ID }}:role/corporate-context-ci
-
-      - name: Upload assets to S3
-        run: |
-          aws s3 sync js-services/admin-backend/dist/public/assets \
-              s3://assets.getgrapevine.ai/app/${{ steps.sha.outputs.short }}/assets \
-              --delete \
-              --cache-control "public,max-age=31536000,immutable" \
-              --metadata \
-                build-date=${{ steps.build_date.outputs.value }}
-
-      - name: Upload built assets artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: built-assets
-          path: js-services/admin-backend/dist/public
-          retention-days: 1
-
   build:
-    name: "Build${{ inputs.push && ' and push' || ''}} Docker Image (${{ matrix.image }})"
+    name: "Build Docker Image (${{ matrix.name }})"
     runs-on: ubuntu-latest
-    needs: [build-assets]
-    if: always() && (needs.build-assets.result == 'success' || needs.build-assets.result == 'skipped')
     strategy:
       matrix:
         include:
           - name: api
             dockerfile: Dockerfile.api
-            image: gathertown/grapevine-api
-            needs-assets: false
-          - name: ingest-gatekeeper
-            dockerfile: Dockerfile.ingest-gatekeeper
-            image: gathertown/grapevine-ingest-gatekeeper
-            needs-assets: false
-          - name: ingest-worker
-            dockerfile: Dockerfile.ingest-worker
-            image: gathertown/grapevine-ingest-worker
-            needs-assets: false
-          - name: index-worker
-            dockerfile: Dockerfile.index-worker
-            image: gathertown/grapevine-index-worker
-            needs-assets: false
-          - name: cron-worker
-            dockerfile: Dockerfile.cron-worker
-            image: gathertown/grapevine-cron-worker
-            needs-assets: false
-          - name: slackbot
-            dockerfile: Dockerfile.slackbot
-            image: gathertown/grapevine-slackbot
-            needs-assets: false
-          - name: ambient-extraction
-            dockerfile: Dockerfile.ambient-extraction
-            image: gathertown/grapevine-ambient-extraction
-            needs-assets: false
-          - name: steward
-            dockerfile: Dockerfile.steward
-            image: gathertown/grapevine-steward
-            needs-assets: false
           - name: grapevine
             dockerfile: Dockerfile.grapevine
-            image: gathertown/grapevine
-            needs-assets: true
+          - name: ingest
+            dockerfile: Dockerfile.ingest
+          - name: ingest-gatekeeper
+            dockerfile: Dockerfile.ingest-gatekeeper
+          - name: ingest-worker
+            dockerfile: Dockerfile.ingest-worker
+          - name: index-worker
+            dockerfile: Dockerfile.index-worker
+          - name: cron-worker
+            dockerfile: Dockerfile.cron-worker
+          - name: slackbot
+            dockerfile: Dockerfile.slackbot
+          - name: steward
+            dockerfile: Dockerfile.steward
           - name: migrations
             dockerfile: Dockerfile.migrations
-            image: gathertown/grapevine-migrations
-            needs-assets: false
-          - name: pr-reviewer
-            dockerfile: Dockerfile.pr-reviewer
-            image: gathertown/grapevine-pr-reviewer
-            needs-assets: false
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
-        with:
-          fetch-depth: 0 # Need the full history to determine if we have a merge commit or not.
-
-      - name: Download built assets
-        if: ${{ matrix.needs-assets && inputs.upload-s3-assets == true }}
-        uses: actions/download-artifact@v4
-        with:
-          name: built-assets
-          path: prebuilt-assets
-
-      - name: Ensure prebuilt-assets directory exists
-        if: ${{ matrix.needs-assets }}
-        run: |
-          mkdir -p prebuilt-assets
 
       - uses: ./.github/actions/setup-tools
         id: tools
         with:
           github_token: ${{ github.token }}
 
-      - name: Extract SHA for deployment
-        id: sha
-        env:
-          INPUT_SHA: ${{ inputs.sha }}
-        run: |-
-          # Use the input SHA if provided, othersise get the first
-          # non-merge commit SHA.
-          SHA="${INPUT_SHA:-"$(git log --no-merges -1 --format='%H')"}"
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-          echo "full=$SHA" >> "$GITHUB_OUTPUT"
-          echo "short=$(cut -c1-10 <<< "$SHA")" >> "$GITHUB_OUTPUT"
-
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ matrix.image }}
-          tags: |
-            type=raw,value=sha-${{ steps.sha.outputs.short }}
-            type=raw,value=latest,enable=${{ matrix.name == 'pr-reviewer' }}
+      - name: Create prebuilt-assets directory
+        run: mkdir -p prebuilt-assets
 
       - name: Sanitize cache-key
         id: cache-key
         env:
           CACHE_KEY: ${{ inputs.cache-key }}
         run: |-
-          # Docker tags must be lowercase and can only contain [a-z0-9_.-]
           SANITIZED_KEY=$(tr '[:upper:]' '[:lower:]' <<< "$CACHE_KEY" | sed 's/[^a-z0-9._-]/-/g')
           echo "sanitized=$SANITIZED_KEY" >> "$GITHUB_OUTPUT"
-          echo "raw=$CACHE_KEY" >> "$GITHUB_OUTPUT"
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
 
       - name: Build Docker image
         uses: docker/build-push-action@v6
         with:
           file: ${{ matrix.dockerfile }}
-          push: ${{ inputs.push }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          push: false
           context: .
           build-args: |-
             GITHUB_TOKEN=${{ github.token }}
             PYTHON_VERSION=${{ steps.tools.outputs.python }}
             NODE_VERSION=${{ steps.tools.outputs.node }}
             UV_VERSION=${{ steps.tools.outputs.uv }}
-            ASSETS_COMMIT_SHA=${{ inputs.upload-s3-assets == true && steps.sha.outputs.short || '' }}
-            USE_PREBUILT_ASSETS=${{ matrix.needs-assets && inputs.upload-s3-assets == true && needs.build-assets.result == 'success' && 'true' || 'false' }}
-          cache-to: type=registry,ref=${{ matrix.image }}-cache:${{ steps.cache-key.outputs.sanitized }},mode=max
-          cache-from: type=registry,ref=${{ matrix.image }}-cache:${{ steps.cache-key.outputs.sanitized }}
+          cache-from: type=gha,scope=${{ matrix.name }}-${{ steps.cache-key.outputs.sanitized }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.name }}-${{ steps.cache-key.outputs.sanitized }}
