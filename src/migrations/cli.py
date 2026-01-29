@@ -10,6 +10,7 @@ import os
 import re
 from datetime import datetime
 from pathlib import Path
+from urllib.parse import quote_plus
 
 import asyncpg
 import typer
@@ -132,6 +133,15 @@ def validate_local_environment() -> tuple[str, str | None, str | None, str | Non
             )
 
     return control_db_url, tenant_host, tenant_port, tenant_username, tenant_password
+
+
+def build_tenant_db_url(
+    username: str | None, password: str | None, host: str | None, port: str | None, database: str
+) -> str:
+    """Build a tenant database URL with properly encoded credentials."""
+    if not username or not password or not host or not port:
+        raise MigrationError("Tenant database credentials are required")
+    return f"postgresql://{quote_plus(username)}:{quote_plus(password)}@{host}:{port}/{database}"
 
 
 async def test_database_connectivity(db_url: str, timeout: int = 10) -> bool:
@@ -374,7 +384,7 @@ async def run_migrations(
         console.print()
         console.print(f"[blue]🏠 Migrating tenant: {tenant}[/blue]")
 
-        tenant_db_url = f"postgresql://{tenant_username}:{tenant_password}@{tenant_host}:{tenant_port}/db_{tenant}"
+        tenant_db_url = build_tenant_db_url(tenant_username, tenant_password, tenant_host, tenant_port, f"db_{tenant}")
 
         applied, total, success = await migrate_database(
             tenant_db_url,
@@ -417,7 +427,7 @@ async def run_migrations(
 
                 async def migrate_tenant_with_semaphore(tenant_id: str) -> tuple[int, int, bool]:
                     async with semaphore:
-                        tenant_db_url = f"postgresql://{tenant_username}:{tenant_password}@{tenant_host}:{tenant_port}/db_{tenant_id}"
+                        tenant_db_url = build_tenant_db_url(tenant_username, tenant_password, tenant_host, tenant_port, f"db_{tenant_id}")
                         return await migrate_database(
                             tenant_db_url,
                             TENANT_MIGRATIONS_DIR,
@@ -542,7 +552,7 @@ async def show_migration_status(
             log_error("Tenant database credentials not configured")
             raise typer.Exit(1)
 
-        tenant_db_url = f"postgresql://{tenant_username}:{tenant_password}@{tenant_host}:{tenant_port}/db_{tenant}"
+        tenant_db_url = build_tenant_db_url(tenant_username, tenant_password, tenant_host, tenant_port, f"db_{tenant}")
         await show_database_status(
             tenant_db_url, TENANT_MIGRATIONS_DIR, f"Tenant Database ({tenant})", verbose
         )
@@ -558,7 +568,7 @@ async def show_migration_status(
                 log_warning("No provisioned tenants found")
             else:
                 for tenant_id in tenant_ids:
-                    tenant_db_url = f"postgresql://{tenant_username}:{tenant_password}@{tenant_host}:{tenant_port}/db_{tenant_id}"
+                    tenant_db_url = build_tenant_db_url(tenant_username, tenant_password, tenant_host, tenant_port, f"db_{tenant_id}")
                     await show_database_status(
                         tenant_db_url,
                         TENANT_MIGRATIONS_DIR,
@@ -825,7 +835,7 @@ async def run_mark_operation(
             raise typer.Exit(1)
 
         console.print(f"[blue]🏠 Tenant: {tenant}[/blue]")
-        tenant_db_url = f"postgresql://{tenant_username}:{tenant_password}@{tenant_host}:{tenant_port}/db_{tenant}"
+        tenant_db_url = build_tenant_db_url(tenant_username, tenant_password, tenant_host, tenant_port, f"db_{tenant}")
 
         try:
             if operation == "apply_all":
@@ -869,7 +879,7 @@ async def run_mark_operation(
             log_info(f"Found {len(tenant_ids)} provisioned tenants")
 
             for tenant_id in tenant_ids:
-                tenant_db_url = f"postgresql://{tenant_username}:{tenant_password}@{tenant_host}:{tenant_port}/db_{tenant_id}"
+                tenant_db_url = build_tenant_db_url(tenant_username, tenant_password, tenant_host, tenant_port, f"db_{tenant_id}")
 
                 try:
                     if operation == "apply_all":
@@ -1143,7 +1153,7 @@ async def run_reset_operation(
             raise typer.Exit(1)
 
         console.print(f"[blue]🏠 Resetting tenant: {tenant}[/blue]")
-        tenant_db_url = f"postgresql://{tenant_username}:{tenant_password}@{tenant_host}:{tenant_port}/db_{tenant}"
+        tenant_db_url = build_tenant_db_url(tenant_username, tenant_password, tenant_host, tenant_port, f"db_{tenant}")
 
         try:
             success = await drop_database_schema(
@@ -1188,7 +1198,7 @@ async def run_reset_operation(
             log_info(f"Found {len(tenant_ids)} provisioned tenants")
 
             for tenant_id in tenant_ids:
-                tenant_db_url = f"postgresql://{tenant_username}:{tenant_password}@{tenant_host}:{tenant_port}/db_{tenant_id}"
+                tenant_db_url = build_tenant_db_url(tenant_username, tenant_password, tenant_host, tenant_port, f"db_{tenant_id}")
 
                 try:
                     success = await drop_database_schema(
