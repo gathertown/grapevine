@@ -72,16 +72,29 @@ def run_in_executor[T](func: Callable[..., T]) -> Callable[..., asyncio.Future[T
 class SQSClient(AWSBaseClient):
     """Client for AWS SQS (Simple Queue Service) operations."""
 
-    def __init__(self, region_name: str | None = None):
+    def __init__(
+        self, region_name: str | None = None, extended_client_queue_arns: set[str] | None = None
+    ):
         """Initialize SQS client.
 
         Args:
             region_name: AWS region name, defaults to config value
+            extended_client_queue_arns: Queue ARNs/URLs that should use SQS extended client.
+                Defaults to ingest jobs queue for backward compatibility.
         """
         super().__init__("sqs", region_name)
         self._extended_client = None
         self._extended_client_enabled = False
         self._extended_client_s3_bucket: str | None = None
+        if extended_client_queue_arns is None:
+            self._extended_client_queue_arns = (
+                {INGEST_JOBS_QUEUE_ARN} if INGEST_JOBS_QUEUE_ARN else set()
+            )
+        else:
+            self._extended_client_queue_arns = {
+                queue_arn for queue_arn in extended_client_queue_arns if queue_arn
+            }
+        self._invalid_extended_client_queue_arns: set[str] = set()
 
     def _convert_arn_to_url(self, queue_arn: str) -> str:
         """Convert SQS queue ARN to URL format required by boto3.
@@ -153,7 +166,7 @@ class SQSClient(AWSBaseClient):
             raise
 
     def _get_extended_client(self) -> BaseClient | None:
-        """Get or create the extended SQS client for ingest operations."""
+        """Get or create the extended SQS client."""
         self._configure_extended_client()
 
         if not self._extended_client_enabled:
@@ -162,6 +175,24 @@ class SQSClient(AWSBaseClient):
         if self._extended_client is None:
             self._extended_client = self._create_extended_client()
         return self._extended_client
+
+    def _matches_extended_client_queue(self, queue_url: str) -> bool:
+        """Check whether queue URL is configured to use SQS extended client."""
+        for configured_queue_arn in self._extended_client_queue_arns:
+            try:
+                configured_queue_url = self._convert_arn_to_url(configured_queue_arn)
+            except ValueError:
+                if configured_queue_arn not in self._invalid_extended_client_queue_arns:
+                    self._invalid_extended_client_queue_arns.add(configured_queue_arn)
+                    logger.warning(
+                        "Skipping invalid extended-client queue ARN",
+                        queue_arn=configured_queue_arn,
+                    )
+                continue
+
+            if queue_url == configured_queue_url:
+                return True
+        return False
 
     def _should_use_extended_client(self, queue_url: str) -> bool:
         """Check if extended client should be used for this queue URL.
@@ -172,8 +203,9 @@ class SQSClient(AWSBaseClient):
         Returns:
             True if extended client should be used, False otherwise
         """
-        ingest_queue_url = self._convert_arn_to_url(INGEST_JOBS_QUEUE_ARN)
-        return queue_url == ingest_queue_url and self._get_extended_client() is not None
+        if not self._matches_extended_client_queue(queue_url):
+            return False
+        return self._get_extended_client() is not None
 
     def _get_client_for_queue_url(self, queue_url: str) -> BaseClient:
         """Get appropriate client (extended or standard) based on queue URL.
@@ -182,7 +214,7 @@ class SQSClient(AWSBaseClient):
             queue_url: SQS queue URL (e.g., https://sqs.us-east-1.amazonaws.com/123456789012/my-queue)
 
         Returns:
-            Extended client for ingest queue, standard client for others
+            Extended client for configured queues, standard client for others
         """
         if self._should_use_extended_client(queue_url):
             return self._get_extended_client()
@@ -227,8 +259,9 @@ class SQSClient(AWSBaseClient):
                 and len(body) > INGEST_JOBS_LARGE_PAYLOAD_SIZE
             ):
                 logger.info(
-                    f"Large ingest message ({len(body)} bytes) will be stored in S3",
+                    f"Large SQS message ({len(body)} bytes) will be stored in S3",
                     payload_size=len(body),
+                    queue_url=queue_url,
                     s3_bucket=self._extended_client_s3_bucket,
                 )
 

@@ -66,7 +66,11 @@ class IndexJobWorker(BaseJobWorker):
     def __init__(self, http_port: int | None = None):
         super().__init__(http_port)
         self.index_handler = IndexJobHandler()
-        self.sqs_client = SQSClient()
+        self.index_queue_arn = (
+            get_config_value("INDEX_JOBS_QUEUE_ARN") or "corporate-context-index-jobs"
+        )
+        # Index worker must be able to consume/delete extended-client payload pointers from index queue.
+        self.sqs_client = SQSClient(extended_client_queue_arns={self.index_queue_arn})
 
     def _get_default_http_port(self) -> int:
         """Get the default HTTP server port for index worker."""
@@ -355,7 +359,7 @@ async def process_index_job(message_data: dict[str, Any], sqs_metadata: SQSMessa
 async def main() -> None:
     """Main entry point for index job worker."""
     # Get queue ARN from configuration
-    queue_arn = get_config_value("INDEX_JOBS_QUEUE_ARN") or "corporate-context-index-jobs"
+    queue_arn = worker.index_queue_arn
 
     logger.info(f"Starting index job worker for queue: {queue_arn}")
 
@@ -375,6 +379,7 @@ async def main() -> None:
                 # 6 minute vis timeout
                 # TODO AIVP-460 extend visibility timeouts for long running tasks
                 visibility_timeout_seconds=6 * 60,
+                sqs_client=worker.sqs_client,
             )
 
             await processor.start()
