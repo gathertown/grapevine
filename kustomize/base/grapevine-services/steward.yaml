@@ -41,19 +41,6 @@ spec:
               drop:
                 - all
 ---
-apiVersion: policy/v1
-kind: PodDisruptionBudget
-metadata:
-  name: steward
-  namespace: grapevine-services
-  labels:
-    app.kubernetes.io/name: steward
-spec:
-  minAvailable: 60%
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: steward
----
 apiVersion: v1
 kind: Service
 metadata:

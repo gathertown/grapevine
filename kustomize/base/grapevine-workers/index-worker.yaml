@@ -70,19 +70,6 @@ spec:
               drop:
                 - all
 ---
-apiVersion: policy/v1
-kind: PodDisruptionBudget
-metadata:
-  name: index-worker
-  namespace: grapevine-workers
-  labels:
-    app.kubernetes.io/name: index-worker
-spec:
-  minAvailable: 60%
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: index-worker
----
 apiVersion: v1
 kind: Service
 metadata:

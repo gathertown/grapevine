@@ -1,0 +1,90 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: grapevine-api
+  namespace: grapevine-services
+  labels:
+    app.kubernetes.io/name: grapevine-api
+spec:
+  minAvailable: 60%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: grapevine-api
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: grapevine-app
+  namespace: grapevine-services
+  labels:
+    app.kubernetes.io/name: grapevine-app
+spec:
+  minAvailable: 60%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: grapevine-app
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: ingest-gatekeeper
+  namespace: grapevine-services
+  labels:
+    app.kubernetes.io/name: ingest-gatekeeper
+spec:
+  minAvailable: 60%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ingest-gatekeeper
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: steward
+  namespace: grapevine-services
+  labels:
+    app.kubernetes.io/name: steward
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: steward
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: ingest-worker
+  namespace: grapevine-workers
+  labels:
+    app.kubernetes.io/name: ingest-worker
+spec:
+  minAvailable: 60%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ingest-worker
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: index-worker
+  namespace: grapevine-workers
+  labels:
+    app.kubernetes.io/name: index-worker
+spec:
+  minAvailable: 60%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: index-worker
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: slackbot
+  namespace: grapevine-workers
+  labels:
+    app.kubernetes.io/name: slackbot
+spec:
+  minAvailable: 60%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: slackbot

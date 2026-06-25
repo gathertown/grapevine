@@ -6,6 +6,7 @@ metadata:
 
 resources:
   - ../../base
+  - pdbs.yaml
 
 # Image transformations - updated dynamically by CI/CD
 # Replace REGISTRY with your container registry (e.g., docker.io/myorg, ghcr.io/myorg, etc.)
