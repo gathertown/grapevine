@@ -73,19 +73,6 @@ spec:
               drop:
                 - all
 ---
-apiVersion: policy/v1
-kind: PodDisruptionBudget
-metadata:
-  name: ingest-worker
-  namespace: grapevine-workers
-  labels:
-    app.kubernetes.io/name: ingest-worker
-spec:
-  minAvailable: 60%
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: ingest-worker
----
 apiVersion: v1
 kind: Service
 metadata:

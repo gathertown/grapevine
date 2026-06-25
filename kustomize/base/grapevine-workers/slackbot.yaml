@@ -60,16 +60,3 @@ spec:
             capabilities:
               drop:
                 - all
----
-apiVersion: policy/v1
-kind: PodDisruptionBudget
-metadata:
-  name: slackbot
-  namespace: grapevine-workers
-  labels:
-    app.kubernetes.io/name: slackbot
-spec:
-  minAvailable: 60%
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: slackbot
